@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Dynamic Page Title -->
     <title>@yield('title', 'Default Page Title')</title>
 
@@ -15,7 +16,9 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <script src="{{ asset('js/tailwind.js') }}"></script>
 </head>
+
 <body>
     <div class="container">
         <!-- Sidebar -->
@@ -27,6 +30,18 @@
             <x-header :page-name="View::yieldContent('title', 'Default Page Title')" />
 
             <!-- Page-specific content -->
+            @if(session('success'))
+            <div class="max-w-4xl mx-auto mb-4 p-4 bg-green-100 text-green-800 rounded shadow">
+                {{ session('success') }}
+            </div>
+            @endif
+
+            @if(session('error'))
+            <div class="max-w-4xl mx-auto mb-4 p-4 bg-red-100 text-red-800 rounded shadow">
+                {{ session('error') }}
+            </div>
+            @endif
+
             @yield('content')
         </main>
     </div>
@@ -34,4 +49,5 @@
     <!-- Custom JS -->
     <script src="{{ asset('js/index.js') }}"></script>
 </body>
+
 </html>

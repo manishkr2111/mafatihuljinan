@@ -21,7 +21,7 @@
                 </li>
                 <li class="sidebar-nav-item">
                     <i class="fa fa-bars" aria-hidden="true"></i>
-                    <span>Menu Item</span>
+                    <a href="{{route('admin.menus.index')}}"><span>Menu Item</span></a>
                 </li>
                 <li class="sidebar-nav-item">
                     <i class="fa fa-calendar" aria-hidden="true"></i>
