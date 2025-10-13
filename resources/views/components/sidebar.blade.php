@@ -15,21 +15,29 @@
         <div class="sidebar-section">
             <div class="sidebar-section-title">Main</div>
             <ul class="sidebar-nav">
-                <li class="sidebar-nav-item active">
-                    <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
-                </li>
                 <li class="sidebar-nav-item">
-                    <i class="fa fa-bars" aria-hidden="true"></i>
-                    <a href="{{route('admin.menus.index')}}"><span>Menu Item</span></a>
+                    <a href="#">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
                 </li>
-                <li class="sidebar-nav-item">
-                    <i class="fa fa-calendar" aria-hidden="true"></i>
-                    <a href=""><span>Hijri Date/Event</span></a>
+                <li class="sidebar-nav-item {{ Route::is('admin.menus.index') ? 'active' : '' }}">
+                    <a href="{{route('admin.menus.index')}}">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                        <span>Menu Item</span>
+                    </a>
                 </li>
-                <li class="sidebar-nav-item">
+                <li class="sidebar-nav-item {{ Route::is('admin.hijri.date.event') ? 'active' : '' }}">
+                    <a href="{{route('admin.hijri.date.event')}}">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                        <span>Hijri Date/Event</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item {{ Route::is('admin.marquee.index') ? 'active' : '' }}"">
+                    <a href=" {{route('admin.marquee.index')}}">
                     <i class="fa fa-file-text" aria-hidden="true"></i>
-                    <a href=""><span>Marquee Text</span></a>
+                    <span>Marquee Text</span>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -38,20 +46,28 @@
             <div class="sidebar-section-title">Management</div>
             <ul class="sidebar-nav">
                 <li class="sidebar-nav-item">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                    <a href=""><span>Search Posts</span></a>
+                    <a href="#">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                        <span>Search Posts</span>
+                    </a>
                 </li>
                 <li class="sidebar-nav-item">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
+                    <a href="#">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item {{ Route::is('admin.users.*') ? 'active' : '' }}">
+                    <a href="{{ Route('admin.users')}}">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                    </a>
                 </li>
                 <li class="sidebar-nav-item">
-                    <i class="fas fa-users"></i>
-                    <span>Users</span>
-                </li>
-                <li class="sidebar-nav-item">
-                    <i class="fas fa-bell"></i>
-                    <a href=""><span>Notifications</span></a>
+                    <a href="#">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -60,16 +76,22 @@
             <div class="sidebar-section-title">Support</div>
             <ul class="sidebar-nav">
                 <li class="sidebar-nav-item">
-                    <i class="fas fa-question-circle"></i>
-                    <span>Help Center</span>
+                    <a href="#">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Help Center</span>
+                    </a>
                 </li>
                 <li class="sidebar-nav-item">
-                    <i class="fas fa-headset"></i>
-                    <span>Contact Support</span>
+                    <a href="#">
+                        <i class="fas fa-headset"></i>
+                        <span>Contact Support</span>
+                    </a>
                 </li>
                 <li class="sidebar-nav-item">
-                    <i class="fas fa-book"></i>
-                    <span>Documentation</span>
+                    <a href="#">
+                        <i class="fas fa-book"></i>
+                        <span>Documentation</span>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -88,7 +110,7 @@
                 <i class="fas fa-ellipsis-v"></i>
             </div>
         </div>
-         <!-- Always visible logout -->
+        <!-- Always visible logout -->
         <div class="user-logout" style="margin-top: 10px;">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

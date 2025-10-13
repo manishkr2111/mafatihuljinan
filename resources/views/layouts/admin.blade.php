@@ -31,13 +31,13 @@
 
             <!-- Page-specific content -->
             @if(session('success'))
-            <div class="max-w-4xl mx-auto mb-4 p-4 bg-green-100 text-green-800 rounded shadow">
+            <div class=" p-4 bg-green-100 text-green-500 rounded shadow">
                 {{ session('success') }}
             </div>
             @endif
 
             @if(session('error'))
-            <div class="max-w-4xl mx-auto mb-4 p-4 bg-red-100 text-red-800 rounded shadow">
+            <div class=" mx-auto mb-4 p-4 bg-red-100 text-red-800 rounded shadow">
                 {{ session('error') }}
             </div>
             @endif

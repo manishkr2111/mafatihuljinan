@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('title', 'Menus')
 @section('content')
-<div class="max-w-4xl mx-auto mt-10">
+<div class=" mt-10">
 
     <!-- Top controls: Create + Filter + Count -->
     <div class="flex justify-between items-center mb-6">

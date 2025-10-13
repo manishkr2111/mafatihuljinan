@@ -8,11 +8,12 @@
     </div>
 
     <div class="header-actions">
+        <!--
         <div class="search-bar">
             <i class="fas fa-search search-icon"></i>
             <input type="text" class="search-input" placeholder="Search...">
         </div>
-        <!--  
+          
         <div class="header-icon">
             <i class="fas fa-bell"></i>
             <div class="notification-indicator"></div>

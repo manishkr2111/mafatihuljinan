@@ -20,7 +20,7 @@
         <div>
             <label class="block font-medium mb-1 text-[#034E7A]">Sort Number:</label>
             <input type="number" name="sort_number" value="{{ old('sort_number', 0) }}"
-                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A']"
+                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A]"
                 required>
         </div>
 
