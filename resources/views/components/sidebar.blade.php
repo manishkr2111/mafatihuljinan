@@ -16,7 +16,7 @@
             <div class="sidebar-section-title">Main</div>
             <ul class="sidebar-nav">
                 <li class="sidebar-nav-item">
-                    <a href="#">
+                    <a href="{{ route('admin.dashboard') }}">
                         <i class="fas fa-home"></i>
                         <span>Dashboard</span>
                     </a>

@@ -36,6 +36,8 @@ class AuthController extends Controller
         // Log the user in after registration
         Auth::login($user);
 
+        return redirect('/admin/dashboard');
+
         return redirect()->intended('/home');
     }
 
@@ -59,8 +61,8 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => $request->password,
         ], $request->remember)) {
-            
-            return redirect('/dashboard-start');
+
+            return redirect('/admin/dashboard');
             return redirect()->intended('/home');
         }
 

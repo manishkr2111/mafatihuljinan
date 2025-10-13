@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\HijriEvent;
+use Illuminate\Support\Facades\Cache;
 
 class HijriDateEventController extends Controller
 {
@@ -32,9 +33,11 @@ class HijriDateEventController extends Controller
 
     public function store(Request $request)
     {
+        //dd($request->all());
         $request->validate([
             'date' => 'required|integer|min:1|max:30',
             'month' => 'required|string',
+            'language' => 'required|string',
             'event' => 'required|string',
             'textcolor' => 'required|string',
         ]);
@@ -45,10 +48,11 @@ class HijriDateEventController extends Controller
                 'date' => $request->date,
                 'month' => $request->month,
                 'event' => $request->event,
+                'language' => $request->language,
                 'text_color' => $request->textcolor
             ]
         );
-
+        Cache::forget('hijri_events_' . $request->language);
         return redirect()->back()->with('success', 'Event saved successfully!');
     }
 
@@ -78,6 +82,7 @@ class HijriDateEventController extends Controller
             'date' => 'required|integer|min:1|max:30',
             'month' => 'required|string',
             'event' => 'required|string',
+            'language' => 'required|string',
             'textcolor' => 'required|string',
         ]);
 
@@ -85,9 +90,10 @@ class HijriDateEventController extends Controller
             'date' => $request->date,
             'month' => $request->month,
             'event' => $request->event,
+            'language' => $request->language,
             'text_color' => $request->textcolor
         ]);
-
+        Cache::forget('hijri_events_' . $request->language);
         return redirect()->route('admin.hijri.date.event')->with('success', 'Event updated successfully!');
     }
 

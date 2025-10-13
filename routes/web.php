@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\HijriDateEventController;
 use App\Http\Controllers\Admin\MarqueeTextController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\UserController;
 
 
@@ -14,7 +15,7 @@ Route::get('/greet', function () {
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 Route::middleware('auth')->get('/home', function () {
     return view('welcome');  // A view for logged-in users
@@ -46,7 +47,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/users', [UserController::class, 'index'])->name('users');
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::post('/regenerateToken', [DashboardController::class, 'GenerateAPItoken'])->name('regenerateToken');
 
     Route::get('/hijri-date-event', [HijriDateEventController::class, 'index'])->name('hijri.date.event');
     Route::post('/hijri-date-event/store', [HijriDateEventController::class, 'store'])->name('hijri.date.event.store');
