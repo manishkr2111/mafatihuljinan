@@ -8,6 +8,11 @@ use App\Http\Controllers\Admin\HijriDateEventController;
 use App\Http\Controllers\Admin\MarqueeTextController;
 use App\Http\Controllers\UserController;
 
+
+Route::get('/greet', function () {
+    return greet_user('Manish');
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
