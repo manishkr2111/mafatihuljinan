@@ -3,7 +3,7 @@
 @section('title', 'Create Menu')
 
 @section('content')
-<div class="max-w-lg mx-auto mt-10 bg-white p-6 rounded shadow">
+<div class="max-w-lg mt-10 bg-white p-6 rounded shadow">
     @if ($errors->any())
     <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
         <ul class="list-disc pl-5">

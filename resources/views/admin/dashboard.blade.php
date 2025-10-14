@@ -6,7 +6,7 @@
     <!-- API Token Section -->
     <div class="bg-white rounded shadow p-5 mb-6">
         <h2 class="text-lg font-semibold text-[#034E7A] mb-3">API Token</h2>
-        <form method="POST" action="{{ route('admin.regenerateToken') }}">
+        <form method="POST" action="{{ route('admin.regenerateToken') }}" onsubmit="return confirm('Are you sure you want to regenerate the API token?');">
             @csrf
             <div class="flex space-x-3 items-center mb-2">
                 <input type="text" class="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A]"

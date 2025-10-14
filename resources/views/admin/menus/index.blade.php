@@ -1,8 +1,7 @@
 @extends('layouts.admin')
 @section('title', 'Menus')
 @section('content')
-<div class=" mt-10">
-
+<div class=" mt-2">
     <!-- Top controls: Create + Filter + Count -->
     <div class="flex justify-between items-center mb-6">
         <a href="{{ route('admin.menus.create') }}"

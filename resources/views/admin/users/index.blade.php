@@ -3,7 +3,7 @@
 @section('title', 'Users')
 
 @section('content')
-<div class="max-w-6xl mx-auto mt-4 bg-white p-6 rounded-xl shadow-lg">
+<div class="max-w-6xl mt-4 bg-white p-6 rounded-xl shadow-lg">
 
     <!-- Header -->
     <h2 class="text-2xl font-bold text-[#034E7A] mb-6">Users List</h2>

@@ -3,7 +3,7 @@
 @section('title', 'Edit Marquee Text')
 
 @section('content')
-<div class=" mx-auto mt-10 bg-white p-6 rounded-xl shadow-lg">
+<div class=" mt-10 bg-white p-6 rounded-xl shadow-lg">
 
     <!-- Success Message -->
     @if(session('success'))

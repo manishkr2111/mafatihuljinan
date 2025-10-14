@@ -3,7 +3,7 @@
 @section('title', 'Marquee Texts')
 
 @section('content')
-<div class="max-w-5xl mx-auto mt-4 bg-white p-6 rounded-xl shadow-lg">
+<div class="max-w-5xl mt-2 bg-white p-6 rounded-xl shadow-lg">
 
     <!-- Add Marquee Text Form -->
     <h2 class="text-2xl font-bold text-[#034E7A] mb-6">Add Marquee Text</h2>

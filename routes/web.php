@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\HijriDateEventController;
 use App\Http\Controllers\Admin\MarqueeTextController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\English\EnglishPostController;
 use App\Http\Controllers\UserController;
 
 
@@ -67,4 +68,24 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/marquee/edit/{marqueeText}', [MarqueeTextController::class, 'edit'])->name('marquee.edit');
     Route::post('/marquee/update/{marqueeText}', [MarqueeTextController::class, 'update'])->name('marquee.update');
     Route::delete('/marquee/delete/{marqueeText}', [MarqueeTextController::class, 'destroy'])->name('marquee.delete');
+
+    Route::prefix('english/categories')->name('english.category.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\English\CategoryController::class, 'index'])->name('index');
+        Route::get('/create', [\App\Http\Controllers\Admin\English\CategoryController::class, 'create'])->name('create');
+        Route::post('/', [\App\Http\Controllers\Admin\English\CategoryController::class, 'store'])->name('store');
+        Route::get('/{category}/edit', [\App\Http\Controllers\Admin\English\CategoryController::class, 'edit'])->name('edit');
+        Route::put('/{category}', [\App\Http\Controllers\Admin\English\CategoryController::class, 'update'])->name('update');
+        Route::delete('/{category}', [\App\Http\Controllers\Admin\English\CategoryController::class, 'destroy'])->name('destroy');
+
+        Route::get('/parents', [\App\Http\Controllers\Admin\English\CategoryController::class, 'getParentCategories'])->name('parents');
+    });
+
+    Route::prefix('english/post')->name('english.post.')->group(function () {
+        Route::get('/', [EnglishPostController::class, 'index'])->name('index');
+        Route::get('/create', [EnglishPostController::class, 'create'])->name('create');
+        Route::post('/store', [EnglishPostController::class, 'store'])->name('store');
+        Route::get('/{englishPost}/edit', [EnglishPostController::class, 'edit'])->name('edit');
+        Route::put('/{englishPost}', [EnglishPostController::class, 'update'])->name('update');
+        Route::delete('/{englishPost}', [EnglishPostController::class, 'destroy'])->name('destroy');
+    });
 });

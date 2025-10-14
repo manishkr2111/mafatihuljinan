@@ -252,7 +252,7 @@
     /* Main Content */
     .main-content {
       flex: 1;
-      margin-left: 260px;
+      /* margin-left: 260px; */
       transition: var(--transition);
       padding: 1.5rem;
     }

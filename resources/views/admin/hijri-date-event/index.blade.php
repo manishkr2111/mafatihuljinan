@@ -3,7 +3,7 @@
 @section('title', 'Hijri Events')
 
 @section('content')
-<div class=" mt-10 bg-white p-6 rounded-xl shadow-lg">
+<div class=" mt-2 bg-white p-6 rounded-xl shadow-lg">
     @if ($errors->any())
     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
         <ul class="list-disc list-inside">
