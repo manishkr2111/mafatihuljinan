@@ -27,7 +27,7 @@
                 <tr class="hover:bg-gray-50">
                     <td class="p-3 border">{{ $post->id }}</td>
                     <td class="p-3 border font-medium text-gray-800">{{ $post->title }}</td>
-                    <td class="p-3 border">
+                    <td class="p-3 border max-w-20">
                         @foreach($post->categories() as $category)
                         <span class="inline-block bg-[#034E7A] text-white text-xs px-2 py-1 rounded mr-1 mb-1">
                             {{ $category->name }}

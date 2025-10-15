@@ -14,9 +14,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Custom CSS -->
     <!-- <link rel="stylesheet" href="{{ asset('css/style.css') }}"> -->
     <script src="{{ asset('js/tailwind.js') }}"></script>
+    <script src="{{ asset('vendor/tinymce/js/tinymce/tinymce.min.js') }}"></script>
 </head>
 
 <body class="bg-gray-50">

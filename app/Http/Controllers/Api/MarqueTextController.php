@@ -8,13 +8,24 @@ use App\Models\MarqueeText;
 
 class MarqueTextController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = MarqueeText::all();
-
-        return response()->json([
-            'success' => true,
-            'data' => $data
-        ]);
+        $language = $request->get('language', 'english'); // default to English
+        try {
+            $marqueeTexts = MarqueeText::where('language', $language)
+                ->select('language', 'text')
+                ->get();
+            return response()->json([
+                'status' => true,
+                'message' => 'Marquee texts fetched successfully',
+                'language' => $language,
+                'data' => $marqueeTexts     
+            ],200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Error fetching marquee texts'
+            ], 500);
+        }
     }
 }

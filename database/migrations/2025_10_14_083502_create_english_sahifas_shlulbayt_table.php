@@ -24,6 +24,7 @@ return new class extends Migration
             $table->boolean('arabic_4line')->default(true);
             $table->string('arabic_audio_url')->nullable();
             $table->longText('arabic_content')->nullable();
+            $table->longText('simple_arabic')->nullable();
 
             // Transliteration fields
             $table->text('transliteration_islrc')->nullable();

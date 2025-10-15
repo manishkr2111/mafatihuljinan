@@ -11,13 +11,22 @@ class MenuController extends Controller
     public function getContent(Request $request)
     {
         $language = $request->get('language', 'english'); // default to English
+        try {
+            $menus = Menu::where('language', $language)->orderBy('sort_number')
+                ->select('id','menu_name', 'language')
+                ->get();
 
-        $menus = Menu::where('language', $language)->orderBy('sort_number')->get();
-
-        return response()->json([
-            'success' => true,
-            'language' => $language,
-            'menus' => $menus
-        ]);
+            return response()->json([
+                'status' => true,
+                'language' => $language,
+                'message' => 'Menu fetched successfully',
+                'data' => $menus
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Error fetching menu: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

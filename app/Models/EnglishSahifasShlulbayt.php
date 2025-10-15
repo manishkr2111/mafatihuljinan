@@ -18,6 +18,7 @@ class EnglishSahifasShlulbayt extends Model
         'arabic_4line',
         'arabic_audio_url',
         'arabic_content',
+        'simple_arabic',
         'transliteration_islrc',
         'transliteration_4line',
         'transliteration_audio_url',

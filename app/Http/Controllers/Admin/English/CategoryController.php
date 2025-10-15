@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\English;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\EnglishCategory;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {
@@ -59,6 +60,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $post_type = $request->input('post_type', $request->post_type);
         $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|unique:english_categories,slug',
@@ -68,6 +70,7 @@ class CategoryController extends Controller
         ]);
 
         EnglishCategory::create($request->all());
+        Cache::forget('english_categories_' . $post_type);
 
         return redirect()->route('admin.english.category.index')->with('success', 'Category created successfully.');
     }
@@ -90,7 +93,8 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $category = EnglishCategory::findOrFail($id);
-
+        $post_type = $request->input('post_type', $request->post_type);
+        Cache::forget('english_categories_' . $post_type);
         $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|unique:english_categories,slug,' . $category->id,

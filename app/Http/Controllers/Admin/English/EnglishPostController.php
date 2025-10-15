@@ -19,7 +19,12 @@ class EnglishPostController extends Controller
     // Show create form
     public function create()
     {
-        $categories = EnglishCategory::where('post_type', 'sahifas-shlulbayt')->get();
+        //$categories = EnglishCategory::where('post_type', 'sahifas-shlulbayt')->get();
+        $categories = EnglishCategory::where('post_type', 'sahifas-shlulbayt')
+            ->whereNull('parent_id') // only top-level
+            ->with('allChildren')    // load children recursively
+            ->orderBy('sort_number')
+            ->get();
         return view('admin.english.posts.create', compact('categories'));
     }
 
@@ -38,6 +43,7 @@ class EnglishPostController extends Controller
             'arabic_4line' => 'nullable|boolean',
             'arabic_audio_url' => 'nullable|url|max:255',
             'arabic_content' => 'nullable|string',
+            'simple_arabic' => 'nullable|string',
 
             // Transliteration
             'transliteration_islrc' => 'nullable|string',
@@ -78,14 +84,24 @@ class EnglishPostController extends Controller
     // Show edit form
     public function edit(EnglishSahifasShlulbayt $englishPost)
     {
-        $categories = EnglishCategory::where('post_type', 'sahifas-shlulbayt')->get();
-        return view('admin.english.posts.edit', compact('englishPost', 'categories'));
+        $categories = EnglishCategory::where('post_type', 'sahifas-shlulbayt')
+            ->whereNull('parent_id') // only top-level parents
+            ->with('allChildren')    // eager load children recursively
+            ->orderBy('sort_number')
+            ->get();
+
+        $selectedIds = old('category_ids', $englishPost->category_ids ?? []);
+
+        return view('admin.english.posts.edit', compact('englishPost', 'categories', 'selectedIds'));
     }
+
+
 
 
     // Update post
     public function update(Request $request, EnglishSahifasShlulbayt $englishPost)
     {
+        //dd($request->all());
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'search_text' => 'nullable|string',
@@ -94,20 +110,21 @@ class EnglishPostController extends Controller
             'sort_number' => 'nullable|integer',
 
             // Arabic
-            'arabic_islrc' => 'nullable|string',
+            'arabic_islrc' => 'nullable|boolean',
             'arabic_4line' => 'nullable|boolean',
             'arabic_audio_url' => 'nullable|url|max:255',
             'arabic_content' => 'nullable|string',
+            'simple_arabic' => 'nullable|string',
 
             // Transliteration
-            'transliteration_islrc' => 'nullable|string',
+            'transliteration_islrc' => 'nullable|boolean',
             'transliteration_4line' => 'nullable|boolean',
             'transliteration_audio_url' => 'nullable|url|max:255',
             'transliteration_content' => 'nullable|string',
             'simple_transliteration' => 'nullable|string',
 
             // Translation
-            'translation_islrc' => 'nullable|string',
+            'translation_islrc' => 'nullable|boolean',
             'translation_4line' => 'nullable|boolean',
             'translation_audio_url' => 'nullable|url|max:255',
             'translation_content' => 'nullable|string',
@@ -125,10 +142,19 @@ class EnglishPostController extends Controller
             'status' => 'required|in:draft,published,archived',
         ]);
 
+        // Explicitly handle checkboxes - set to false if not present
+        $data['arabic_islrc'] = $request->has('arabic_islrc') ? 1 : 0;
+        $data['arabic_4line'] = $request->has('arabic_4line') ? 1 : 0;
+        $data['transliteration_islrc'] = $request->has('transliteration_islrc') ? 1 : 0;
+        $data['transliteration_4line'] = $request->has('transliteration_4line') ? 1 : 0;
+        $data['translation_islrc'] = $request->has('translation_islrc') ? 1 : 0;
+        $data['translation_4line'] = $request->has('translation_4line') ? 1 : 0;
+
         $data['category_ids'] = $data['category_ids'] ?? [];
 
         $englishPost->update($data);
 
+        return redirect()->back()->with('success', 'Post updated successfully.');
         return redirect()->route('admin.english.post.index')->with('success', 'Post updated successfully.');
     }
 

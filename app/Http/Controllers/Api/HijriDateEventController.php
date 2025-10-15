@@ -13,17 +13,26 @@ class HijriDateEventController extends Controller
     public function index(Request $request)
     {
         $language = $request->get('language', 'english');
-        $cacheKey = "hijri_events_" . $language;
+        try {
+            $cacheKey = "hijri_events_" . $language;
 
-        $events = Cache::rememberForever($cacheKey, function () use ($language) {
-            return HijriEvent::where('language', $language)->get();
-        });
+            $events = Cache::rememberForever($cacheKey, function () use ($language) {
+                return HijriEvent::where('language', $language)
+                    ->select('id', 'date', 'month', 'event', 'language', 'text_color')
+                    ->get();
+            });
 
-        return response()->json([
-            'success' => true,
-            'language' => $language,
-            'events' => $events
-        ]);
+            return response()->json([
+                'success' => true,
+                'language' => $language,
+                'events' => $events
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Error fetching events'
+            ], 500);
+        }
     }
 
     // Store new event
