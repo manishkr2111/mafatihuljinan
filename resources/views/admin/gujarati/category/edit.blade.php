@@ -14,7 +14,7 @@
     </div>
     @endif
 
-    <form action="{{ route('admin.english.category.update', $category->id) }}" method="POST" class="space-y-4">
+    <form action="{{ route('admin.gujarati.category.update', $category->id) }}" method="POST" class="space-y-4">
         @csrf
         @method('PUT')
 
@@ -44,7 +44,7 @@
             <label class="block font-medium mb-1 text-[#034E7A]">Post Type:</label>
             <select name="post_type" id="post_type" class="w-full border rounded px-3 py-2">
                 <option value="">-- Select Post Type --</option>
-                @foreach(EnglishPostTypeOptions() as $value => $label)
+                @foreach(GujaratiPostTypeOptions() as $value => $label)
                 <option value="{{ $value }}" {{ old('post_type', $category->post_type ?? 'blog') == $value ? 'selected' : '' }}>
                     {{ $label }}
                 </option>
@@ -71,7 +71,7 @@
                 const parentSelect = document.getElementById('parent_id');
                 parentSelect.innerHTML = '<option value="">Loading...</option>';
 
-                fetch(`{{ route('admin.english.category.parents') }}?post_type=${postType}`)
+                fetch(`{{ route('admin.gujarati.category.parents') }}?post_type=${postType}`)
                     .then(response => response.json())
                     .then(data => {
                         parentSelect.innerHTML = '<option value="">-- Select Parent --</option>';

@@ -63,9 +63,9 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.english.post.index') }}"
+                                <a href="{{ route('admin.english.post.index', ['post_type' => 'sahifas-ahlulbayt']) }}"
                                     class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] {{ Route::is('admin.english.post.*') ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
-                                    <i class="fa fa-pencil-alt mr-2"></i> Sahifas Shlulbayt
+                                    <i class="fa fa-pencil-alt mr-2"></i> Sahifas Ahlulbayt
                                 </a>
                             </li>
                         </ul>
@@ -77,14 +77,20 @@
                 <li>
                     <details class="group">
                         <summary class="flex justify-between items-center px-2 py-2 cursor-pointer rounded hover:bg-gray-100">
-                            <span><i class="fa fa-language mr-2"></i> Hindi</span>
+                            <span><i class="fa fa-language mr-2"></i> Gujarati</span>
                             <i class="fas fa-chevron-down transition-transform duration-200 group-open:rotate-180"></i>
                         </summary>
                         <ul class="pl-6 mt-1 space-y-1">
                             <li>
-                                <a href=""
-                                    class="flex items-center px-2 py-1 rounded hover:bg-gray-100 {{ Route::is('admin.hindi.category.*') ? 'bg-gray-100 font-semibold' : '' }}">
+                                <a href="{{ route('admin.gujarati.category.index') }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-gray-100 {{ Route::is('admin.gujarati.category.*') ? 'bg-gray-100 font-semibold' : '' }}">
                                     <i class="fa fa-folder-open mr-2"></i> Categories
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.gujarati.post.index', ['post_type' => 'sahifas-ahlulbayt']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] {{ Route::is('admin.gujarati.post.*') ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Sahifas Ahlulbayt
                                 </a>
                             </li>
                         </ul>

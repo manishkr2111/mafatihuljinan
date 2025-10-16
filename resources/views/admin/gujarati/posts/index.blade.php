@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
-@php $EnglishPostTypeOptions = EnglishPostTypeOptions() @endphp
+@php $GujaratiPostTypeOptions = GujaratiPostTypeOptions() @endphp
 
-@section('title', 'All ' . $EnglishPostTypeOptions[$postType] . ' Post')
+@section('title', 'All ' . $GujaratiPostTypeOptions[$postType] . ' Post')
 
 @section('content')
 @if ($errors->any())
@@ -17,7 +17,7 @@
 
 <div class="max-w-6xl mt-6 bg-white p-6 rounded shadow">
     <div class="flex justify-between items-center mb-6">
-        <a href="{{ route('admin.english.post.create' , ['post_type' => $postType]) }}"
+        <a href="{{ route('admin.gujarati.post.create' , ['post_type' => $postType]) }}"
             class="bg-[#034E7A] text-white px-4 py-2 rounded hover:bg-[#02629B] transition">
             Add New Post
         </a>
@@ -53,11 +53,11 @@
                         </span>
                     </td>
                     <td class="p-3 border">
-                        <a href="{{ route('admin.english.post.edit', ['postId' => $post->id, 'post_type' => $postType] ) }}"
+                        <a href="{{ route('admin.gujarati.post.edit', ['postId' => $post->id, 'post_type' => $postType] ) }}"
                             class="bg-[#034E7A] text-white px-3 py-1 rounded hover:bg-[#02629B] transition text-sm">
                             Edit
                         </a>
-                        <form action="{{ route('admin.english.post.destroy', ['postId' => $post->id, 'post_type' => $postType]) }}" method="POST" class="inline-block"
+                        <form action="{{ route('admin.gujarati.post.destroy', ['postId' => $post->id, 'post_type' => $postType]) }}" method="POST" class="inline-block"
                             onsubmit="return confirm('Are you sure you want to delete this post?');">
                             @csrf
                             <input type="hidden" name="post_type" value="{{ $postType ?? 'sahifa' }}">

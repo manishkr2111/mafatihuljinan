@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
 
-@php $EnglishPostTypeOptions = EnglishPostTypeOptions() @endphp
+@php $GujaratiPostTypeOptions = GujaratiPostTypeOptions() @endphp
 
-@section('title', 'Edit ' . $EnglishPostTypeOptions[$postType] . ' Post')
+@section('title', 'Edit ' . $GujaratiPostTypeOptions[$postType] . ' Post')
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
     <div class="flex justify-between items-center mb-1 py-2">
-        <a href="{{ route('admin.english.post.index' , ['post_type' => $postType]) }}"
+        <a href="{{ route('admin.gujarati.post.index' , ['post_type' => $postType]) }}"
             class="bg-[#034E7A] text-white px-4 py-1 rounded hover:bg-[#02629B] transition">
             <i class="fa fa-arrow-left" aria-hidden="true"></i>
             Back
@@ -35,7 +35,7 @@
         </div>
         @endif
 
-        <form action="{{ route('admin.english.post.update', ['postId' => $englishPost->id]) }}?post_type={{ $postType }}" method="POST" class="space-y-6">
+        <form action="{{ route('admin.gujarati.post.update', ['postId' => $Post->id]) }}?post_type={{ $postType }}" method="POST" class="space-y-6">
             @csrf
             @method('PUT')
             <input type="hidden" name="post_type" value="{{ $postType ?? 'sahifa' }}">
@@ -53,12 +53,12 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Title <span class="text-red-500">*</span></label>
-                            <input type="text" name="title" value="{{ old('title', $englishPost->title) }}"
+                            <input type="text" name="title" value="{{ old('title', $Post->title) }}"
                                 class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition" required>
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Sort Number</label>
-                            <input type="number" name="sort_number" value="{{ old('sort_number', $englishPost->sort_number) }}"
+                            <input type="number" name="sort_number" value="{{ old('sort_number', $Post->sort_number) }}"
                                 class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
                         </div>
                     </div>
@@ -66,16 +66,16 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Search Text</label>
-                            <input type="text" name="search_text" value="{{ old('search_text', $englishPost->search_text) }}"
+                            <input type="text" name="search_text" value="{{ old('search_text', $Post->search_text) }}"
                                 class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Status <span class="text-red-500">*</span></label>
                             <select name="status" required
                                 class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition bg-white">
-                                <option value="draft" {{ old('status', $englishPost->status)=='draft' ? 'selected' : '' }}>Draft</option>
-                                <option value="published" {{ old('status', $englishPost->status)=='published' ? 'selected' : '' }}>Published</option>
-                                <option value="archived" {{ old('status', $englishPost->status)=='archived' ? 'selected' : '' }}>Archived</option>
+                                <option value="draft" {{ old('status', $Post->status)=='draft' ? 'selected' : '' }}>Draft</option>
+                                <option value="published" {{ old('status', $Post->status)=='published' ? 'selected' : '' }}>Published</option>
+                                <option value="archived" {{ old('status', $Post->status)=='archived' ? 'selected' : '' }}>Archived</option>
                             </select>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Roman Data</label>
                         <textarea name="roman_data" rows="2"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('roman_data', $englishPost->roman_data) }}</textarea>
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('roman_data', $Post->roman_data) }}</textarea>
                     </div>
                 </div>
             </div>
@@ -100,10 +100,10 @@
                 </div>
                 <div class="p-6">
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-3 border p-4 rounded">
-                        @include('admin.english.posts.partials.edit-category-checkbox', [
+                        @include('admin.gujarati.posts.partials.edit-category-checkbox', [
                         'categories' => $categories,
                         'level' => 0,
-                        'englishPost' => $englishPost,
+                        'Post' => $Post,
                         'selectedIds' => $selectedIds
                         ])
                     </div>
@@ -125,30 +125,30 @@
                 <div class="p-6 space-y-6">
                     <div class="flex flex-wrap gap-6">
                         <label class="flex items-center gap-3 px-4 py-3 bg-blue-50 border-2 border-blue-200 rounded-lg hover:bg-blue-100 cursor-pointer transition">
-                            <input type="checkbox" name="arabic_islrc" value="1" {{ old('arabic_islrc', $englishPost->arabic_islrc) ? 'checked' : '' }}
+                            <input type="checkbox" name="arabic_islrc" value="1" {{ old('arabic_islrc', $Post->arabic_islrc) ? 'checked' : '' }}
                                 class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
                             <span class="text-sm font-semibold text-gray-700">Enable ISLRC</span>
                         </label>
                         <label class="flex items-center gap-3 px-4 py-3 bg-blue-50 border-2 border-blue-200 rounded-lg hover:bg-blue-100 cursor-pointer transition">
-                            <input type="checkbox" name="arabic_4line" value="1" {{ old('arabic_4line', $englishPost->arabic_4line) ? 'checked' : '' }}
+                            <input type="checkbox" name="arabic_4line" value="1" {{ old('arabic_4line', $Post->arabic_4line) ? 'checked' : '' }}
                                 class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
                             <span class="text-sm font-semibold text-gray-700">4-line format</span>
                         </label>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Arabic Audio URL</label>
-                        <input type="url" name="arabic_audio_url" value="{{ old('arabic_audio_url', $englishPost->arabic_audio_url) }}"
+                        <input type="url" name="arabic_audio_url" value="{{ old('arabic_audio_url', $Post->arabic_audio_url) }}"
                             class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Arabic Content</label>
                         <textarea name="arabic_content" rows="5" dir=""
-                            class="w-full text-left min-h-80 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition font-arabic">{{ old('arabic_content', $englishPost->arabic_content) }}</textarea>
+                            class="w-full text-left min-h-80 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition font-arabic">{{ old('arabic_content', $Post->arabic_content) }}</textarea>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Simple Arabic</label>
                         <textarea id="simple_arabic" class="tinymce-editor" name="simple_arabic" rows="4"
-                            class="w-full min-h-80 text-left border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('simple_arabic', $englishPost->simple_arabic) }}</textarea>
+                            class="w-full min-h-80 text-left border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('simple_arabic', $Post->simple_arabic) }}</textarea>
                     </div>
                 </div>
             </div>
@@ -166,30 +166,30 @@
                 <div class="p-6 space-y-6">
                     <div class="flex flex-wrap gap-6">
                         <label class="flex items-center gap-3 px-4 py-3 bg-green-50 border-2 border-green-200 rounded-lg hover:bg-green-100 cursor-pointer transition">
-                            <input type="checkbox" name="transliteration_islrc" value="1" {{ old('transliteration_islrc', $englishPost->transliteration_islrc) ? 'checked' : '' }}
+                            <input type="checkbox" name="transliteration_islrc" value="1" {{ old('transliteration_islrc', $Post->transliteration_islrc) ? 'checked' : '' }}
                                 class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
                             <span class="text-sm font-semibold text-gray-700">Enable ISLRC</span>
                         </label>
                         <label class="flex items-center gap-3 px-4 py-3 bg-green-50 border-2 border-green-200 rounded-lg hover:bg-green-100 cursor-pointer transition">
-                            <input type="checkbox" name="transliteration_4line" value="1" {{ old('transliteration_4line', $englishPost->transliteration_4line) ? 'checked' : '' }}
+                            <input type="checkbox" name="transliteration_4line" value="1" {{ old('transliteration_4line', $Post->transliteration_4line) ? 'checked' : '' }}
                                 class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
                             <span class="text-sm font-semibold text-gray-700">4-line format</span>
                         </label>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Transliteration Audio URL</label>
-                        <input type="url" name="transliteration_audio_url" value="{{ old('transliteration_audio_url', $englishPost->transliteration_audio_url) }}"
+                        <input type="url" name="transliteration_audio_url" value="{{ old('transliteration_audio_url', $Post->transliteration_audio_url) }}"
                             class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Transliteration Content</label>
                         <textarea name="transliteration_content" rows="5"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('transliteration_content', $englishPost->transliteration_content) }}</textarea>
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('transliteration_content', $Post->transliteration_content) }}</textarea>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Simple Transliteration</label>
                         <textarea id="simple_transliteration" class="tinymce-editor" name="simple_transliteration" rows="4"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('simple_transliteration', $englishPost->simple_transliteration) }}</textarea>
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('simple_transliteration', $Post->simple_transliteration) }}</textarea>
                     </div>
                 </div>
             </div>
@@ -207,30 +207,30 @@
                 <div class="p-6 space-y-6">
                     <div class="flex flex-wrap gap-6">
                         <label class="flex items-center gap-3 px-4 py-3 bg-purple-50 border-2 border-purple-200 rounded-lg hover:bg-purple-100 cursor-pointer transition">
-                            <input type="checkbox" name="translation_islrc" value="1" {{ old('translation_islrc', $englishPost->translation_islrc) ? 'checked' : '' }}
+                            <input type="checkbox" name="translation_islrc" value="1" {{ old('translation_islrc', $Post->translation_islrc) ? 'checked' : '' }}
                                 class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
                             <span class="text-sm font-semibold text-gray-700">Enable ISLRC</span>
                         </label>
                         <label class="flex items-center gap-3 px-4 py-3 bg-purple-50 border-2 border-purple-200 rounded-lg hover:bg-purple-100 cursor-pointer transition">
-                            <input type="checkbox" name="translation_4line" value="1" {{ old('translation_4line', $englishPost->translation_4line) ? 'checked' : '' }}
+                            <input type="checkbox" name="translation_4line" value="1" {{ old('translation_4line', $Post->translation_4line) ? 'checked' : '' }}
                                 class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
                             <span class="text-sm font-semibold text-gray-700">4-line format</span>
                         </label>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Translation Audio URL</label>
-                        <input type="url" name="translation_audio_url" value="{{ old('translation_audio_url', $englishPost->translation_audio_url) }}"
+                        <input type="url" name="translation_audio_url" value="{{ old('translation_audio_url', $Post->translation_audio_url) }}"
                             class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Translation Content</label>
                         <textarea name="translation_content" rows="5"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('translation_content', $englishPost->translation_content) }}</textarea>
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('translation_content', $Post->translation_content) }}</textarea>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Simple Translation</label>
                         <textarea id="simple_translation" class="tinymce-editor" name="simple_translation" rows="5"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('simple_translation', $englishPost->simple_translation) }}</textarea>
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('simple_translation', $Post->simple_translation) }}</textarea>
                     </div>
                 </div>
             </div>
@@ -249,17 +249,17 @@
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Next Post Title</label>
-                            <input type="text" name="next_post_title" value="{{ old('next_post_title', $englishPost->next_post_title) }}"
+                            <input type="text" name="next_post_title" value="{{ old('next_post_title', $Post->next_post_title) }}"
                                 class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Next Post URL</label>
-                            <input type="text" name="next_post_url" value="{{ old('next_post_url', $englishPost->next_post_url) }}"
+                            <input type="text" name="next_post_url" value="{{ old('next_post_url', $Post->next_post_url) }}"
                                 class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Internal Link</label>
-                            <input type="text" name="internal_link" value="{{ old('internal_link', $englishPost->internal_link) }}"
+                            <input type="text" name="internal_link" value="{{ old('internal_link', $Post->internal_link) }}"
                                 class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
                         </div>
                     </div>
@@ -268,7 +268,7 @@
 
             <!-- Action Buttons -->
             <div class="flex flex-wrap gap-4 justify-end bg-white rounded-xl shadow-md p-6">
-                <a href="{{ route('admin.english.post.index') }}"
+                <a href="{{ route('admin.gujarati.post.index') }}"
                     class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-semibold flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

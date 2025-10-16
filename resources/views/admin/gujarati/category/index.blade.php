@@ -1,20 +1,20 @@
 @extends('layouts.admin')
 
-@section('title', 'English Categories')
+@section('title', 'Gujarati Categories')
 
 @section('content')
 <div class="max-w-5xl mt-10 bg-white p-6 rounded shadow">
     <div class="flex justify-between items-center mb-6">
-        <a href="{{ route('admin.english.category.create') }}"
+        <a href="{{ route('admin.gujarati.category.create') }}"
             class="bg-[#034E7A] text-white px-4 py-2 rounded hover:bg-[#02629B] transition">Create Category</a>
     </div>
 
     <!-- Filter Form -->
-    <form method="GET" action="{{ route('admin.english.category.index') }}" class="mb-6 flex items-center space-x-3">
+    <form method="GET" action="{{ route('admin.gujarati.category.index') }}" class="mb-6 flex items-center space-x-3">
         <label class="font-medium text-[#034E7A]">Filter by Post:</label>
         <select name="post_type" onchange="this.form.submit()" class="border rounded px-3 py-2">
             <option value="">-- All Types --</option>
-            @foreach(EnglishPostTypeOptions() as $value => $label)
+            @foreach(GujaratiPostTypeOptions() as $value => $label)
             <option value="{{ $value }}" {{ $postType == $value ? 'selected' : '' }}>
                 {{ $label }}
             </option>

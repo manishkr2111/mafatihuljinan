@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\HijriDateEventController;
 use App\Http\Controllers\Admin\MarqueeTextController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\English\EnglishPostController;
+use App\Http\Controllers\Admin\Gujarati\GujaratiPostController;
 use App\Http\Controllers\UserController;
 
 
@@ -87,8 +88,28 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::get('/', [EnglishPostController::class, 'index'])->name('index');
         Route::get('/create', [EnglishPostController::class, 'create'])->name('create');
         Route::post('/store', [EnglishPostController::class, 'store'])->name('store');
-        Route::get('/{englishPost}/edit', [EnglishPostController::class, 'edit'])->name('edit');
-        Route::put('/{englishPost}', [EnglishPostController::class, 'update'])->name('update');
-        Route::delete('/{englishPost}', [EnglishPostController::class, 'destroy'])->name('destroy');
+        Route::get('/{postId}/edit', [EnglishPostController::class, 'edit'])->name('edit');
+        Route::put('/{postId}', [EnglishPostController::class, 'update'])->name('update');
+        Route::delete('/{postId}', [EnglishPostController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('gujarati/post')->name('gujarati.post.')->group(function () {
+        Route::get('/', [GujaratiPostController::class, 'index'])->name('index');
+        Route::get('/create', [GujaratiPostController::class, 'create'])->name('create');
+        Route::post('/store', [GujaratiPostController::class, 'store'])->name('store');
+        Route::get('/{postId}/edit', [GujaratiPostController::class, 'edit'])->name('edit');
+        Route::put('/{postId}', [GujaratiPostController::class, 'update'])->name('update');
+        Route::delete('/{postId}', [GujaratiPostController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('gujarati/categories')->name('gujarati.category.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController::class, 'index'])->name('index');
+        Route::get('/create', [\App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController::class, 'create'])->name('create');
+        Route::post('/', [\App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController::class, 'store'])->name('store');
+        Route::get('/{category}/edit', [\App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController::class, 'edit'])->name('edit');
+        Route::put('/{category}', [\App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController::class, 'update'])->name('update');
+        Route::delete('/{category}', [\App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController::class, 'destroy'])->name('destroy');
+
+        Route::get('/parents', [\App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController::class, 'getParentCategories'])->name('parents');
     });
 });

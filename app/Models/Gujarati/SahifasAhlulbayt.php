@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Gujarati;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EnglishSahifasShlulbayt extends Model
+class SahifasAhlulbayt extends Model
 {
-    protected $table = 'english_sahifas_shlulbayt';
+    protected $table = 'gujarati_sahifas_ahlulbayt';
 
     protected $fillable = [
         'title',
@@ -43,7 +43,7 @@ class EnglishSahifasShlulbayt extends Model
     // Helper to get assigned categories
     public function old_categories()
     {
-        return \App\Models\EnglishCategory::whereIn('id', $this->category_ids ?? [])->get();
+        return \App\Models\Gujarati\Category::whereIn('id', $this->category_ids ?? [])->get();
     }
     public function categories()
     {
@@ -58,6 +58,8 @@ class EnglishSahifasShlulbayt extends Model
             $ids = [];
         }
 
-        return \App\Models\EnglishCategory::whereIn('id', $ids)->get();
+        return \App\Models\Gujarati\Category::whereIn('id', $ids)->get();
     }
 }
+
+

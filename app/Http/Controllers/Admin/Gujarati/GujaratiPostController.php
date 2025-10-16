@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Admin\English;
+namespace App\Http\Controllers\Admin\Gujarati;
 
 use App\Http\Controllers\Controller;
+use App\Models\Gujarati\Category;
 use Illuminate\Http\Request;
-use App\Models\EnglishCategory;
 
-class EnglishPostController extends Controller
+class GujaratiPostController extends Controller
 {
-
     protected function getModel($postType)
     {
         $map = [
-            'sahifas-ahlulbayt' => \App\Models\EnglishSahifasAhlulbayt::class,
-            'surah' => \App\Models\EnglishSahifasAhlulbayt::class,
-            'dua' => \App\Models\EnglishSahifasAhlulbayt::class,
+            'sahifas-ahlulbayt' => \App\Models\Gujarati\SahifasAhlulbayt::class,
+            'surah' => \App\Models\Gujarati\SahifasAhlulbayt::class,
+            'dua' => \App\Models\Gujarati\SahifasAhlulbayt::class,
 
         ];
 
@@ -26,35 +25,35 @@ class EnglishPostController extends Controller
     {
         //dd($request->all());
         $postType = $request->post_type;
-        if(!$postType){
+        if (!$postType) {
             return redirect()->back()->withErrors(['post_type' => 'Post type is required.']);
         }
         $modelClass = $this->getModel($postType);
-        if(!$modelClass) {
+        if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
         $posts = $modelClass::latest()->paginate(10);
-        return view('admin.english.posts.index', compact('posts','postType'));
+        return view('admin.gujarati.posts.index', compact('posts', 'postType'));
     }
 
     // Show create form
     public function create(Request $request)
     {
         $postType = $request->query('post_type');
-        if(!$postType){
+        if (!$postType) {
             return redirect()->back()->withErrors(['post_type' => 'Post type is required.']);
         }
         $modelClass = $this->getModel($postType);
-        if(!$modelClass) {
+        if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
-        //$categories = EnglishCategory::where('post_type', 'sahifas-shlulbayt')->get();
-        $categories = EnglishCategory::where('post_type', 'english-sahifas-ahlulbayt')
+        //$categories = Category::where('post_type', 'sahifas-shlulbayt')->get();
+        $categories = Category::where('post_type', 'sahifas-ahlulbayt')
             ->whereNull('parent_id') // only top-level
             ->with('allChildren')    // load children recursively
             ->orderBy('sort_number')
             ->get();
-        return view('admin.english.posts.create', compact('categories', 'postType'));
+        return view('admin.gujarati.posts.create', compact('categories', 'postType'));
     }
 
     // Store new post
@@ -97,7 +96,7 @@ class EnglishPostController extends Controller
 
             // Categories (JSON)
             'category_ids' => 'nullable|array',
-            'category_ids.*' => 'integer|exists:english_categories,id',
+            'category_ids.*' => 'integer|exists:gujarati_categories,id',
 
             'status' => 'required|in:draft,published,archived',
         ]);
@@ -109,36 +108,36 @@ class EnglishPostController extends Controller
         $data['category_ids'] = $data['category_ids'] ?? [];
 
         $modelClass = $this->getModel($data['post_type']);
-        if(!$modelClass) {
+        if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type selected.'])->withInput();
         }
         $modelClass::create($data);
         return redirect()->back()->with('success', 'Post created successfully.');
-        return redirect()->route('admin.english.post.index')->with('success', 'Post created successfully.');
+        return redirect()->route('admin.gujarati.post.index')->with('success', 'Post created successfully.');
     }
 
     // Show edit form
     public function edit(Request $request, $id)
     {
-        if($request->has('post_type')){
+        if ($request->has('post_type')) {
             $postType = $request->query('post_type');
-        }else{
+        } else {
             return redirect()->back()->withErrors(['post_type' => 'Post type is required.']);
         }
         $modelClass = $this->getModel($postType);
-        if(!$modelClass) {
+        if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
-        $englishPost = $modelClass::findOrFail($id);
-        $categories = EnglishCategory::where('post_type', 'sahifas-ahlulbayt')
+        $Post = $modelClass::findOrFail($id);
+        $categories = Category::where('post_type', 'sahifas-ahlulbayt')
             ->whereNull('parent_id') // only top-level parents
             ->with('allChildren')    // eager load children recursively
             ->orderBy('sort_number')
             ->get();
 
-        $selectedIds = old('category_ids', $englishPost->category_ids ?? []);
+        $selectedIds = old('category_ids', $Post->category_ids ?? []);
 
-        return view('admin.english.posts.edit', compact('englishPost', 'categories', 'selectedIds', 'postType'));
+        return view('admin.gujarati.posts.edit', compact('Post', 'categories', 'selectedIds', 'postType'));
     }
 
 
@@ -184,7 +183,7 @@ class EnglishPostController extends Controller
 
             // Categories (JSON)
             'category_ids' => 'nullable|array',
-            'category_ids.*' => 'integer|exists:english_categories,id',
+            'category_ids.*' => 'integer|exists:gujarati_categories,id',
 
             'status' => 'required|in:draft,published,archived',
         ]);
@@ -201,25 +200,25 @@ class EnglishPostController extends Controller
 
         $postType = $data['post_type'];
         $modelClass = $this->getModel($postType);
-        if(!$modelClass) {
+        if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type selected.'])->withInput();
         }
-        $englishPost = $modelClass::find($id);
-        $englishPost->update($data);
+        $Post = $modelClass::find($id);
+        $Post->update($data);
 
         return redirect()->back()->with('success', 'Post updated successfully.');
-        return redirect()->route('admin.english.post.index')->with('success', 'Post updated successfully.');
+        return redirect()->route('admin.gujarati.post.index')->with('success', 'Post updated successfully.');
     }
 
     public function destroy(Request $request, $id)
     {
-        if($request->has('post_type')){
+        if ($request->has('post_type')) {
             $postType = $request->query('post_type');
-        }else{
+        } else {
             return redirect()->back()->withErrors(['post_type' => 'Post type is required.']);
         }
         $modelClass = $this->getModel($postType);
-        if(!$modelClass) {
+        if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
         $post = $modelClass::findOrFail($id);

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('english_sahifas_ahlulbayt', function (Blueprint $table) {
+        Schema::create('gujarati_sahifas_ahlulbayt', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->text('search_text')->nullable();
@@ -56,6 +56,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('english_sahifas_shlulbayt');
+        Schema::dropIfExists('gujarati_sahifas_ahlulbayt');
     }
 };

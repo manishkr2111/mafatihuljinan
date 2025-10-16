@@ -1,11 +1,21 @@
 @extends('layouts.admin')
 
-@section('title', 'Create Sahifas Shlulbayt Post')
+@php $EnglishPostTypeOptions = EnglishPostTypeOptions() @endphp
+
+@section('title', 'Create ' . $EnglishPostTypeOptions[$postType] . ' Post')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4">
-    <div class="max-w-7xl mx-auto">
 
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+
+    <div class="flex justify-between items-center mb-1 py-2">
+        <a href="{{ route('admin.english.post.index' , ['post_type' => $postType]) }}"
+            class="bg-[#034E7A] text-white px-4 py-1 rounded hover:bg-[#02629B] transition">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            Back
+        </a>
+    </div>
+    <div class="max-w-7xl mx-auto">
         @if ($errors->any())
         <div class="mb-6 bg-red-50 border-l-4 border-red-500 rounded-lg p-6 shadow-sm">
             <div class="flex items-start">
@@ -28,7 +38,7 @@
 
         <form action="{{ route('admin.english.post.store') }}" method="POST" class="space-y-6">
             @csrf
-
+            <input type="hidden" name="post_type" value="{{ $postType ?? 'sahifa' }}">
             <!-- Main Information Card -->
             <div class="bg-white rounded-xl shadow-md overflow-hidden">
                 <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">

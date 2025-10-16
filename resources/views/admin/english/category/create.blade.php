@@ -43,7 +43,7 @@
             <label class="block font-medium mb-1 text-[#034E7A]">Post Type:</label>
             <select name="post_type" id="post_type" class="w-full border rounded px-3 py-2">
                 <option value="">-- Select Post Type --</option>
-                @foreach(postTypeOptions() as $value => $label)
+                @foreach(EnglishPostTypeOptions() as $value => $label)
                 <option value="{{ $value }}" {{ old('post_type', $category->post_type ?? 'blog') == $value ? 'selected' : '' }}>
                     {{ $label }}
                 </option>
