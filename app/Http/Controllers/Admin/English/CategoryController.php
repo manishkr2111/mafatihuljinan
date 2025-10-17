@@ -28,21 +28,16 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $postType = $request->input('post_type', 'sahifas-shlulbayt');
-
-        $query = EnglishCategory::whereNull('parent_id')->with('allChildren')->orderBy('sort_number');
-        //dd($query);
-        if (!empty($postType)) {
+        $postType = $request->input('post_type');
+        $query = EnglishCategory::whereNull('parent_id')
+            ->with('allChildren')
+            ->orderBy('sort_number');
+        if ($postType) {
             $query->where('post_type', $postType);
         }
-
         $categories = $query->get();
-        //dd( $categories );
-
         return view('admin.english.category.index', compact('categories', 'postType'));
     }
-
-
 
     /**
      * Show the form for creating a new category.

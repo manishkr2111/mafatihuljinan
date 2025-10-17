@@ -61,11 +61,14 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/hijri-date-event/update/{hijriEvent}', [HijriDateEventController::class, 'update'])->name('hijri.date.event.update');
     Route::delete('/hijri-date-event/delete/{hijriEvent}', [HijriDateEventController::class, 'destroy'])->name('hijri.date.event.delete');
 
+    Route::get('/showEventHijri', [HijriDateEventController::class, 'showEventHijri'])->name('showEventHijri');
+
     Route::get('menus', [MenuController::class, 'index'])->name('menus.index');
     Route::get('menus/create', [MenuController::class, 'create'])->name('menus.create');
     Route::post('menus', [MenuController::class, 'store'])->name('menus.store');
     Route::get('menus/{menu}/edit', [MenuController::class, 'edit'])->name('menus.edit');
     Route::put('menus/{menu}', [MenuController::class, 'update'])->name('menus.update');
+    Route::delete('menus/{menu}', [MenuController::class, 'destroy'])->name('menus.destroy');
 
     Route::get('/marquee', [MarqueeTextController::class, 'index'])->name('marquee.index');
     Route::post('/marquee/store', [MarqueeTextController::class, 'store'])->name('marquee.store');

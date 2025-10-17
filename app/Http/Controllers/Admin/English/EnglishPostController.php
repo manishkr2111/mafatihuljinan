@@ -9,43 +9,31 @@ use App\Models\EnglishCategory;
 class EnglishPostController extends Controller
 {
 
-    protected function getModel($postType)
-    {
-        $map = [
-            'sahifas-ahlulbayt' => \App\Models\EnglishSahifasAhlulbayt::class,
-            'surah' => \App\Models\EnglishSahifasAhlulbayt::class,
-            'dua' => \App\Models\EnglishSahifasAhlulbayt::class,
-
-        ];
-
-        return $map[$postType] ?? null;
-    }
-
     // Show all posts
     public function index(Request $request)
     {
         //dd($request->all());
         $postType = $request->post_type;
-        if(!$postType){
+        if (!$postType) {
             return redirect()->back()->withErrors(['post_type' => 'Post type is required.']);
         }
-        $modelClass = $this->getModel($postType);
-        if(!$modelClass) {
+        $modelClass = getEnglishModel($postType);
+        if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
         $posts = $modelClass::latest()->paginate(10);
-        return view('admin.english.posts.index', compact('posts','postType'));
+        return view('admin.english.posts.index', compact('posts', 'postType'));
     }
 
     // Show create form
     public function create(Request $request)
     {
         $postType = $request->query('post_type');
-        if(!$postType){
+        if (!$postType) {
             return redirect()->back()->withErrors(['post_type' => 'Post type is required.']);
         }
-        $modelClass = $this->getModel($postType);
-        if(!$modelClass) {
+        $modelClass = getEnglishModel($postType);
+        if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
         //$categories = EnglishCategory::where('post_type', 'sahifas-shlulbayt')->get();
@@ -108,8 +96,8 @@ class EnglishPostController extends Controller
         }*/
         $data['category_ids'] = $data['category_ids'] ?? [];
 
-        $modelClass = $this->getModel($data['post_type']);
-        if(!$modelClass) {
+        $modelClass = getEnglishModel($data['post_type']);
+        if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type selected.'])->withInput();
         }
         $modelClass::create($data);
@@ -120,13 +108,13 @@ class EnglishPostController extends Controller
     // Show edit form
     public function edit(Request $request, $id)
     {
-        if($request->has('post_type')){
+        if ($request->has('post_type')) {
             $postType = $request->query('post_type');
-        }else{
+        } else {
             return redirect()->back()->withErrors(['post_type' => 'Post type is required.']);
         }
-        $modelClass = $this->getModel($postType);
-        if(!$modelClass) {
+        $modelClass = getEnglishModel($postType);
+        if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
         $englishPost = $modelClass::findOrFail($id);
@@ -200,8 +188,8 @@ class EnglishPostController extends Controller
         $data['category_ids'] = $data['category_ids'] ?? [];
 
         $postType = $data['post_type'];
-        $modelClass = $this->getModel($postType);
-        if(!$modelClass) {
+        $modelClass = getEnglishModel($postType);
+        if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type selected.'])->withInput();
         }
         $englishPost = $modelClass::find($id);
@@ -213,13 +201,13 @@ class EnglishPostController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        if($request->has('post_type')){
+        if ($request->has('post_type')) {
             $postType = $request->query('post_type');
-        }else{
+        } else {
             return redirect()->back()->withErrors(['post_type' => 'Post type is required.']);
         }
-        $modelClass = $this->getModel($postType);
-        if(!$modelClass) {
+        $modelClass = getEnglishModel($postType);
+        if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
         $post = $modelClass::findOrFail($id);

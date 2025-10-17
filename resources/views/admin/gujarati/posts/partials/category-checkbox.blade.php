@@ -8,7 +8,7 @@
         </label>
 
         @if($category->allChildren && $category->allChildren->count())
-            @include('admin.english.posts.partials.category-checkbox', [
+            @include('admin.gujarati.posts.partials.category-checkbox', [
                 'categories' => $category->allChildren,
                 'level' => ($level ?? 0) + 4
             ])

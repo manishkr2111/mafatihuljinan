@@ -18,6 +18,6 @@
 
 @if($category->children)
 @foreach($category->children as $child)
-@include('admin.english.category.partials.category-row', ['category' => $child, 'level' => $level + 1])
+@include('admin.gujarati.category.partials.category-row', ['category' => $child, 'level' => $level + 1])
 @endforeach
 @endif

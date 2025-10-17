@@ -5,8 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MarqueTextController;
 use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Api\HijriDateEventController;
-use App\Http\Controllers\Api\EnglishCategoryController;
-use App\Http\Controllers\Api\EnglishPostController;
+use App\Http\Controllers\Api\English\EnglishCategoryController;
+use App\Http\Controllers\Api\English\EnglishPostController;
 
 
 Route::get('/user', function (Request $request) {
@@ -28,4 +28,12 @@ Route::middleware(['ApiTokenMiddleware'])->group(function () {
 
     Route::get('english/posts', [EnglishPostController::class, 'SahifasShlulbayt']);
     Route::get('english/posts/{id}', [EnglishPostController::class, 'show']);
+
+    Route::get('english/DuaData', [EnglishPostController::class, 'DuaData']);
+    Route::get('english/single-post/{id}', [EnglishPostController::class, 'singlePostDate']);
 });
+
+
+Route::get('/hijri-date', [HijriDateEventController::class, 'getCurrentHijriDate']);
+Route::any('/hijri-date-with-events', [HijriDateEventController::class, 'getHijriDateWithEvents']);
+Route::post('/ramadan-date', [HijriDateEventController::class, 'getRamadanDate']);

@@ -84,4 +84,11 @@ class MenuController extends Controller
             throw $e; // Rethrow other exceptions
         }
     }
+
+    public function destroy($id)
+    {
+        $menu = Menu::findOrFail($id);
+        $menu->delete();
+        return redirect()->back()->with('success', 'Menu deleted successfully!');
+    }
 }

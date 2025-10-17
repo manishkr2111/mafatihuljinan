@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
 
 class ApiTokenMiddleware
@@ -22,7 +23,7 @@ class ApiTokenMiddleware
         }
 
         // Check token against stored value (cache or config)
-        $validToken = Cache::get('api_access_token'); // stored token
+        $validToken = Setting::get('api_access_token');
 
         if (!$validToken || $token !== $validToken) {
             return response()->json(['success' => false, 'message' => 'Invalid API token'], 403);

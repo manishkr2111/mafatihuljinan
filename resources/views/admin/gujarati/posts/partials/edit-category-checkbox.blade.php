@@ -11,7 +11,7 @@
         </label>
 
         @if($children->count())
-            @include('admin.english.posts.partials.edit-category-checkbox', [
+            @include('admin.gujarati.posts.partials.edit-category-checkbox', [
                 'categories' => $children,
                 'level' => ($level ?? 0) + 4,
                 'selectedIds' => $selectedIds

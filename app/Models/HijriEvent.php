@@ -17,4 +17,11 @@ class HijriEvent extends Model
         'language',
         'text_color',
     ];
+
+    public static function getEventForDate($hijriDay, $hijriMonthName)
+    {
+        return self::where('date', $hijriDay)
+            ->where('month', $hijriMonthName)
+            ->first();
+    }
 }
