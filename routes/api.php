@@ -23,6 +23,10 @@ Route::middleware(['ApiTokenMiddleware'])->group(function () {
     Route::get('/hijri-events', [HijriDateEventController::class, 'index']);
     Route::post('/hijri-events', [HijriDateEventController::class, 'store']);
 
+    Route::get('/hijri-date', [HijriDateEventController::class, 'getCurrentHijriDate']);
+    Route::any('/hijri-date-with-events', [HijriDateEventController::class, 'getHijriDateWithEvents']);
+    Route::post('/ramadan-date', [HijriDateEventController::class, 'getRamadanDate']);
+
     Route::get('english/categories', [EnglishCategoryController::class, 'index']);
 
 
@@ -30,10 +34,5 @@ Route::middleware(['ApiTokenMiddleware'])->group(function () {
     Route::get('english/posts/{id}', [EnglishPostController::class, 'show']);
 
     Route::get('english/DuaData', [EnglishPostController::class, 'DuaData']);
-    Route::get('english/single-post/{id}', [EnglishPostController::class, 'singlePostDate']);
+    Route::get('english/single-post/{id}', [EnglishPostController::class, 'singlepostdata']);
 });
-
-
-Route::get('/hijri-date', [HijriDateEventController::class, 'getCurrentHijriDate']);
-Route::any('/hijri-date-with-events', [HijriDateEventController::class, 'getHijriDateWithEvents']);
-Route::post('/ramadan-date', [HijriDateEventController::class, 'getRamadanDate']);

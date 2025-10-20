@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\HijriEvent;
+use App\Models\Setting;
 use App\Services\HijriDateService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -29,8 +30,35 @@ class HijriDateEventController extends Controller
             "Dhul Qa'ada",
             "Dhul Hijja"
         ];
-        $languages = ['english', 'hindi', 'french', 'gujarati']; // Add more as needed
-        return view('admin.hijri-date-event.index', compact('events', 'months', 'languages'));
+        $languages = ['english', 'hindi', 'french', 'gujarati'];
+        $datediff = Setting::where('setting_key', 'hijri_date_diff')->value('setting_value') ?? 0;
+
+        $date = date('Y-m-d');
+        $datevar = new \DateTime($date);
+        $datevar->modify($datediff . ' day');
+        $datevar = $datevar->format('Y-m-d');
+        $hijri = new HijriDateService(strtotime($datevar));
+        $hijrimonth = $hijri->get_month();
+        $hijrimonthname = $hijri->get_month_name($hijri->get_month());
+        $hijriday = $hijri->get_day();
+        $hijriYear = $hijri->get_year();
+        $combined_date = $hijriday . ' ' . $hijrimonthname . ' ' . $hijriYear . 'H';
+        //dd($combined_date);
+
+        return view(
+            'admin.hijri-date-event.index',
+            compact(
+                'events',
+                'months',
+                'languages',
+                'datediff',
+                'hijrimonthname',
+                'hijrimonth',
+                'hijriday',
+                'hijriYear',
+                'combined_date'
+            )
+        );
     }
 
     public function store(Request $request)
@@ -105,7 +133,17 @@ class HijriDateEventController extends Controller
         return redirect()->route('admin.hijri.date.event')->with('success', 'Event deleted successfully!');
     }
 
-
+    /// set hijri date difference
+    public function dayDifference(Request $request)
+    {
+        // dd($request->all());
+        $request->validate([
+            'day-difference' => 'required|integer|min:0|max:5',
+        ]);
+        $datediff = $request->input('day-difference');
+        Setting::updateOrCreate(['setting_key' => 'hijri_date_diff'], ['setting_value' => $datediff]);
+        return redirect()->back()->with('success', 'Day difference is set to ' . $datediff);
+    }
     ////////////////////////////////////////////////////
     public function getCurrentHijriDate(Request $request)
     {
@@ -148,6 +186,10 @@ class HijriDateEventController extends Controller
 
         // Get date difference setting (default to 0)
         $datediff = 0; // In a real Laravel app, you would get this from settings: get_option('hijri_date_diff')
+        $setting = Setting::where('setting_key', 'hijri_date_diff')->first();
+        if ($setting) {
+            $datediff = (int)$setting->value;
+        }
 
         // Check if time is after maghrib
         if ($mgtfinaltime != '') {
@@ -222,7 +264,10 @@ class HijriDateEventController extends Controller
 
         // Get date difference setting (default to 0)
         $datediff = 0; // In a real Laravel app, you would get this from settings
-
+        $setting = Setting::where('setting_key', 'hijri_date_diff')->first();
+        if ($setting) {
+            $datediff = (int)$setting->value;
+        }
         // Check if time is after maghrib
         if ($mgtfinaltime != '') {
             if ($this->greaterDate(date("H:i", strtotime($time)), $mgtfinaltime)) {
@@ -244,14 +289,15 @@ class HijriDateEventController extends Controller
         $hijriday = $hijri->get_day(); // 3
         $hijrimonth = $hijri->get_month(); // Syawal
         $hijrimonthname = $hijri->get_month_name($hijrimonth);
-        $hijrimonthname = str_replace("'", "", $hijrimonthname);
+        //$hijrimonthname = str_replace("'", "", $hijrimonthname);
 
         // Fetch events from the database
         $event = HijriEvent::getEventForDate($hijriday, $hijrimonthname);
+        //dd($event,$hijriday,$hijrimonthname);
         $eventname = '';
         $eventcolor = '';
 
-        if ($event && $event->eventname) {
+        if ($event) {
             if ($event->textcolor == 'Black') {
                 $eventcolor = "#000";
             } elseif ($event->textcolor == 'White') {
@@ -261,7 +307,7 @@ class HijriDateEventController extends Controller
             } else {
                 $eventcolor = "#1b8415";
             }
-            $eventname = $event->eventname;
+            $eventname = $event->event;
         }
 
         return response()->json([
@@ -320,7 +366,10 @@ class HijriDateEventController extends Controller
 
         // Get date difference setting (default to 0)
         $datediff = 0; // In a real Laravel app, you would get this from settings
-
+        $setting = Setting::where('setting_key', 'hijri_date_diff')->first();
+        if ($setting) {
+            $datediff = (int)$setting->value;
+        }
         // Check if time is after maghrib
         if ($mgtfinaltime != '') {
             if ($this->greaterDate(date("H:i"), $mgtfinaltime)) {

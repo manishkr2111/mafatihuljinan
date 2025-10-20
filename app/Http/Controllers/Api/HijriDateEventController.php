@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\HijriEvent;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use App\Services\HijriDateService;
@@ -101,7 +102,11 @@ class HijriDateEventController extends Controller
         }
 
         // Get date difference setting (default to 0)
-        $datediff = 0; // In a real Laravel app, you would get this from settings: get_option('hijri_date_diff')
+        $datediff = 0;
+        $setting =  Setting::where('setting_key', 'hijri_date_diff')->first();
+        if ($setting) {
+            $datediff = (int)$setting->setting_value;
+        }
 
         // Check if time is after maghrib
         if ($mgtfinaltime != '') {
@@ -140,6 +145,7 @@ class HijriDateEventController extends Controller
         $date = $request->input('date', date('Y-m-d'));
         $time = $request->input('time', date("h:i:sa"));
         $ip = $request->input('ip', $request->ip());
+        $language = $request->input('language', 'english');
 
         // Get user location based on IP
         $location = $this->getLocationFromIP($ip);
@@ -175,8 +181,11 @@ class HijriDateEventController extends Controller
         }
 
         // Get date difference setting (default to 0)
-        $datediff = 0; // In a real Laravel app, you would get this from settings
-
+        $datediff = 0;
+        $setting =  Setting::where('setting_key', 'hijri_date_diff')->first();
+        if ($setting) {
+            $datediff = (int)$setting->setting_value;
+        }
         // Check if time is after maghrib
         if ($mgtfinaltime != '') {
             if ($this->greaterDate(date("H:i", strtotime($time)), $mgtfinaltime)) {
@@ -198,14 +207,15 @@ class HijriDateEventController extends Controller
         $hijriday = $hijri->get_day(); // 3
         $hijrimonth = $hijri->get_month(); // Syawal
         $hijrimonthname = $hijri->get_month_name($hijrimonth);
-        $hijrimonthname = str_replace("'", "", $hijrimonthname);
+        //$hijrimonthname = str_replace("'", "", $hijrimonthname);
 
         // Fetch events from the database
-        $event = HijriEvent::getEventForDate($hijriday, $hijrimonthname);
+        $event = HijriEvent::getEventForDate($hijriday, $hijrimonthname, $language);
+        //dd($event,$hijriday,$hijrimonthname);
         $eventname = '';
         $eventcolor = '';
 
-        if ($event && $event->eventname) {
+        if ($event) {
             if ($event->textcolor == 'Black') {
                 $eventcolor = "#000";
             } elseif ($event->textcolor == 'White') {
@@ -215,7 +225,7 @@ class HijriDateEventController extends Controller
             } else {
                 $eventcolor = "#1b8415";
             }
-            $eventname = $event->eventname;
+            $eventname = $event->event;
         }
 
         return response()->json([
@@ -273,7 +283,11 @@ class HijriDateEventController extends Controller
         }
 
         // Get date difference setting (default to 0)
-        $datediff = 0; // In a real Laravel app, you would get this from settings
+        $datediff = 0;
+        $setting =  Setting::where('setting_key', 'hijri_date_diff')->first();
+        if ($setting) {
+            $datediff = (int)$setting->setting_value;   
+        }
 
         // Check if time is after maghrib
         if ($mgtfinaltime != '') {

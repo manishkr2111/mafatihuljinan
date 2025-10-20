@@ -55,6 +55,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::post('/regenerateToken', [DashboardController::class, 'GenerateAPItoken'])->name('regenerateToken');
 
+    Route::post('/day-difference', [HijriDateEventController::class, 'dayDifference'])->name('hijri.date.difference.store');
+
     Route::get('/hijri-date-event', [HijriDateEventController::class, 'index'])->name('hijri.date.event');
     Route::post('/hijri-date-event/store', [HijriDateEventController::class, 'store'])->name('hijri.date.event.store');
     Route::get('/hijri-date-event/edit/{hijriEvent}', [HijriDateEventController::class, 'edit'])->name('hijri.date.event.edit');
