@@ -113,6 +113,23 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        // config/database.php
+        'wordpress' => [
+            'driver' => 'mysql',
+            'host' => env('WP_DB_HOST'),
+            'port' => env('WP_DB_PORT'),
+            'database' => env('WP_DB_DATABASE'),
+            'username' => env('WP_DB_USERNAME'),
+            'password' => env('WP_DB_PASSWORD'),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => env('WP_DB_PREFIX', ''),
+            'strict' => false,
+        ],
+
+
+
+
     ],
 
     /*
@@ -148,7 +165,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')).'-database-'),
+            'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')) . '-database-'),
             'persistent' => env('REDIS_PERSISTENT', false),
         ],
 
