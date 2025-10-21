@@ -21,14 +21,15 @@ class HijriDateEventController extends Controller
 
             $events = Cache::rememberForever($cacheKey, function () use ($language) {
                 return HijriEvent::where('language', $language)
-                    ->select('id', 'date', 'month', 'event', 'language', 'text_color')
+                    ->select('id', 'date', 'month', 'event', 'text_color')
                     ->get();
             });
 
             return response()->json([
                 'success' => true,
+                'message' => 'Events fetched successfully',
                 'language' => $language,
-                'events' => $events
+                'data' => $events
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -132,11 +133,15 @@ class HijriDateEventController extends Controller
         $hijrimonthname = str_replace("'", "", $hijrimonthname);
 
         return response()->json([
-            'hijri_date' => $hijridate,
-            'hijri_day' => $hijriday,
-            'hijri_month' => $hijrimonth,
-            'hijri_monthname' => $hijrimonthname,
-            'hijri_year' => $hijri->get_year()
+            'status' => true,
+            'message' => 'Current Hijri date fetched successfully',
+            'data' => [
+                'hijri_date' => $hijridate,
+                'hijri_day' => $hijriday,
+                'hijri_month' => $hijrimonth,
+                'hijri_monthname' => $hijrimonthname,
+                'hijri_year' => $hijri->get_year()
+            ]
         ]);
     }
 
@@ -229,9 +234,13 @@ class HijriDateEventController extends Controller
         }
 
         return response()->json([
-            'hijri_date' => $hijridate,
-            'event' => $eventname,
-            'event_color' => $eventcolor
+            'status' => true,
+            'message' => 'Hijri date with event fetched successfully',
+            'data' => [
+                'hijri_date' => $hijridate,
+                'event' => $eventname,
+                'event_color' => $eventcolor
+            ]
         ]);
     }
 
@@ -286,7 +295,7 @@ class HijriDateEventController extends Controller
         $datediff = 0;
         $setting =  Setting::where('setting_key', 'hijri_date_diff')->first();
         if ($setting) {
-            $datediff = (int)$setting->setting_value;   
+            $datediff = (int)$setting->setting_value;
         }
 
         // Check if time is after maghrib

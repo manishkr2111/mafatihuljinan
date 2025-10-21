@@ -129,7 +129,7 @@ class GujaratiPostController extends Controller
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
         $Post = $modelClass::findOrFail($id);
-        $categories = Category::where('post_type', 'sahifas-ahlulbayt')
+        $categories = Category::where('post_type', $postType)
             ->whereNull('parent_id') // only top-level parents
             ->with('allChildren')    // eager load children recursively
             ->orderBy('sort_number')

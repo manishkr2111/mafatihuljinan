@@ -13,7 +13,7 @@ class MarqueTextController extends Controller
         $language = $request->get('language', 'english'); // default to English
         try {
             $marqueeTexts = MarqueeText::where('language', $language)
-                ->select('language', 'text')
+                ->select('text')
                 ->get();
             return response()->json([
                 'status' => true,

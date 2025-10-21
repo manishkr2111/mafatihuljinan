@@ -1,134 +1,97 @@
 @extends('layouts.admin')
 
+@section('title', 'Edit User')
+
 @section('content')
-<div class="container-fluid py-3">
-    <div class="card shadow-sm rounded-4">
-        <div class="card-header bg-primary text-white rounded-top">
-            <h5 class="mb-0">User Details</h5>
-        </div>
-        <div class="card-body">
+<div class="h-screen bg-gray-100 flex items-start">
+    <div class="bg-white rounded-xl shadow-lg w-full max-w-4xl p-6 space-y-6">
 
-            @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <a href="{{ route('admin.users.show', $user->id) }}" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 font-semibold"><i class="fas fa-arrow-left"></i> Back</a>
+        </div>
+
+        <!-- Edit Form -->
+        <form action="{{ route('admin.users.update', $user->id) }}" method="POST" class="space-y-4">
+            @csrf
+            @method('PUT')
+
+            <div class="grid grid-cols-2 gap-6">
+
+                <!-- Name -->
+                <div>
+                    <label class="block text-gray-500 font-semibold mb-1" for="name">Name</label>
+                    <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}"
+                           class="w-full px-4 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    @error('name')
+                        <span class="text-red-600 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="block text-gray-500 font-semibold mb-1" for="email">Email</label>
+                    <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}"
+                           class="w-full px-4 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    @error('email')
+                        <span class="text-red-600 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="block text-gray-500 font-semibold mb-1" for="password">Password (leave blank to keep current)</label>
+                    <input type="password" name="password" id="password"
+                           class="w-full px-4 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    @error('password')
+                        <span class="text-red-600 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Email Verified -->
+                <div class="flex items-center mt-6">
+                    <input type="checkbox" name="email_verified" id="email_verified" value="1"
+                        {{ $user->email_verified_at ? 'checked' : '' }}
+                        class="h-4 w-4 text-blue-600 border-gray-300 rounded">
+                    <label for="email_verified" class="ml-2 text-gray-700 font-medium">Email Verified</label>
+                </div>
+
+                <!-- Role -->
+                <div>
+                    <label class="block text-gray-500 font-semibold mb-1" for="role">Role</label>
+                    <select name="role" id="role"
+                            class="w-full px-4 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
+                        <option value="editor" {{ old('role', $user->role) == 'editor' ? 'selected' : '' }}>Editor</option>
+                        <option value="subscriber" {{ old('role', $user->role) == 'subscriber' ? 'selected' : '' }}>Subscriber</option>
+                    </select>
+                    @error('role')
+                        <span class="text-red-600 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+
             </div>
-            @endif
 
-            <form method="POST" action="{{ route('users.editOrUpdate', $user) }}">
-                @csrf
-                @method('PUT')
-
-                <div style="max-height: 85vh; overflow-y: auto; overflow-x: hidden;">
-                    <!-- Profile Image -->
-                    <div class="text-center mb-4">
-                        <img src="{{ $user->detail?->profile_image ? asset('storage/' . $user->detail->profile_image) : asset('storage/profile_images/default_image.jpg') }}"
-                            alt="Profile Image" class="img-fluid rounded-circle border border-2 border-secondary mb-2" style="max-width:150px;">
-                    </div>
-
-                    <!-- Main User Info -->
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Name</label>
-                            <input type="text" class="form-control" value="{{ $user->name }}" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Email</label>
-                            <input type="email" class="form-control" value="{{ $user->email }}" readonly>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Email Verified</label>
-                            <input type="text" class="form-control" value="{{ $user->email_verified_at ? 'Yes' : 'No' }}" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">ID Verified</label>
-                            <input type="text" class="form-control" value="{{ $user->id_verified ? 'Yes' : 'No' }}" readonly>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Created At</label>
-                            <input type="text" class="form-control" value="{{ $user->created_at->format('Y-m-d H:i') }}" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Updated At</label>
-                            <input type="text" class="form-control" value="{{ $user->updated_at->format('Y-m-d H:i') }}" readonly>
-                        </div>
-                    </div>
-
-                    <!-- Profile Details -->
-                    @if($user->detail)
-                    <h5 class="mt-4 mb-3">Profile Details</h5>
-
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Username</label>
-                            <input type="text" class="form-control" value="{{ $user->detail->user_name }}" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Phone</label>
-                            <input type="text" class="form-control" value="{{ $user->detail->phone }}" readonly>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">DOB</label>
-                            <input type="text" class="form-control" value="{{ $user->detail->dob }}" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Gender</label>
-                            <input type="text" class="form-control" value="{{ $user->detail->gender }}" readonly>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Pronouns</label>
-                            <input type="text" class="form-control" value="{{ $user->detail->pronouns }}" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Bio</label>
-                            <textarea class="form-control" rows="2" readonly>{{ $user->detail->bio }}</textarea>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Subscription Status</label>
-                            <input type="text" class="form-control" value="{{ ucfirst($user->detail->subscription_status) }}" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Subscription Period</label>
-                            <div class="d-flex gap-2 align-items-center">
-                                <input type="text" class="form-control" value="{{ $user->detail->subscription_start_date }}" readonly>
-                                <span>to</span>
-                                <input type="text" class="form-control" value="{{ $user->detail->subscription_end_date }}" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
-
-                    <!-- Editable Status -->
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Status</label>
-                        <select name="status" class="form-select">
-                            <option value="active" {{ $user->status === 'active' ? 'selected' : '' }}>Active</option>
-                            <option value="blocked" {{ $user->status === 'blocked' ? 'selected' : '' }}>Blocked</option>
-                        </select>
-                    </div>
+            <!-- Created / Updated Info -->
+            <div class="grid grid-cols-2 gap-6 mt-4">
+                <div>
+                    <label class="block text-gray-500 font-semibold mb-1">Created At</label>
+                    <p class="text-gray-800">{{ $user->created_at ? $user->created_at->format('Y-m-d H:i') : '-' }}</p>
                 </div>
-
-                <div class="d-flex gap-2 mt-3">
-                    <button type="submit" class="btn btn-primary rounded-pill px-4">Update Status</button>
-                    <a href="{{ route('users') }}" class="btn btn-secondary rounded-pill px-4">Back to Users</a>
+                <div>
+                    <label class="block text-gray-500 font-semibold mb-1">Updated At</label>
+                    <p class="text-gray-800">{{ $user->updated_at ? $user->updated_at->format('Y-m-d H:i') : '-' }}</p>
                 </div>
-            </form>
-        </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end space-x-2 mt-4">
+                <a href="{{ route('admin.users.show', $user->id) }}" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Cancel</a>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Update User</button>
+            </div>
+
+        </form>
+
     </div>
 </div>
 @endsection

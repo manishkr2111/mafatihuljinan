@@ -12,7 +12,7 @@ if (!function_exists('getEnglishModel')) {
     {
         $map = [
             'sahifas-ahlulbayt' => \App\Models\EnglishSahifasAhlulbayt::class,
-            'surah' => \App\Models\EnglishSahifasAhlulbayt::class,
+            'surah' => \App\Models\English\Surah::class,
             'dua' => \App\Models\EnglishSahifasAhlulbayt::class,
 
         ];

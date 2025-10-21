@@ -19,7 +19,7 @@ class MigrateWordpressUsers extends Command
         $wpUsers = DB::connection('wordpress')->table('users')->get();
 
         $total = $wpUsers->count();
-        dd($wpUsers);
+        //dd($wpUsers);
 
         if ($total === 0) {
             $this->info('No WordPress users found.');
@@ -38,6 +38,7 @@ class MigrateWordpressUsers extends Command
                     'name' => $wpUser->display_name,
                     'email' => $wpUser->user_email,
                     'password' => Hash::make('password'),
+                    'language' => 'english',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]

@@ -64,8 +64,16 @@
                             </li>
                             <li>
                                 <a href="{{ route('admin.english.post.index', ['post_type' => 'sahifas-ahlulbayt']) }}"
-                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] {{ Route::is('admin.english.post.*') ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff]  
+                                    {{ Route::is('admin.english.post.index') && request('post_type') === 'sahifas-ahlulbayt' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
                                     <i class="fa fa-pencil-alt mr-2"></i> Sahifas Ahlulbayt
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.english.post.index', ['post_type' => 'surah']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] 
+                                    {{ Route::is('admin.english.post.index') && request('post_type') === 'surah' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Surah (Holy Quran)
                                 </a>
                             </li>
                         </ul>
@@ -73,7 +81,7 @@
                 </li>
 
 
-                <!-- Hindi -->
+                <!-- Gujarati -->
                 <li>
                     <details class="group">
                         <summary class="flex justify-between items-center px-2 py-2 cursor-pointer rounded hover:bg-gray-100">
