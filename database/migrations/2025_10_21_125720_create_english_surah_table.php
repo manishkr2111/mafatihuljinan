@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('english_surah', function (Blueprint $table) {
             $table->id();
+            $table->integer('wordpress_id')->nullable();
             $table->string('title');
             $table->string('slug')->nullable();
             $table->text('search_text')->nullable();

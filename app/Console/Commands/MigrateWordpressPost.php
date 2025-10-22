@@ -3,29 +3,14 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class MigrateWordpressPost extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'app:migrate-wordpress-post';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Migrate Surah posts from WordPress to Laravel';
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
         $this->info('Starting migration for WordPress "surah" posts...');
@@ -42,12 +27,8 @@ class MigrateWordpressPost extends Command
             $this->warn('No Surah posts found in WordPress.');
             return 0;
         }
+
         $this->info("Total Surah posts found: {$total}");
-
-        // Stop execution here
-        dd('Stopped for testing after counting total posts.');
-
-        $this->info("Found {$total} Surah posts. Migrating...");
         $bar = $this->output->createProgressBar($total);
         $bar->start();
 
@@ -58,8 +39,24 @@ class MigrateWordpressPost extends Command
                 ->pluck('meta_value', 'meta_key')
                 ->toArray();
 
+            // Fetch WordPress categories for this post
+            $wpCategoryIds = DB::connection('wordpress')->table('term_relationships as tr')
+                ->join('term_taxonomy as tt', 'tr.term_taxonomy_id', '=', 'tt.term_taxonomy_id')
+                ->where('tr.object_id', $wpSurah->ID)
+                ->where('tt.taxonomy', 'surah-english-category')
+                ->pluck('tt.term_id')
+                ->toArray();
 
-            // Insert into your Laravel posts (or surahs) table
+            // Map WordPress category IDs to Laravel category IDs
+            $laravelCategoryIds = [];
+            if (!empty($wpCategoryIds)) {
+                $laravelCategoryIds = DB::table('english_categories')
+                    ->whereIn('wordpress_id', $wpCategoryIds)
+                    ->pluck('id')
+                    ->toArray();
+            }
+
+            // Insert/update post in Laravel
             DB::table('english_surah')->updateOrInsert(
                 ['wordpress_id' => $wpSurah->ID],
                 [
@@ -86,7 +83,7 @@ class MigrateWordpressPost extends Command
                     'next_post_title' => $meta['next_post_title'] ?? null,
                     'next_post_url' => $meta['next_post_url'] ?? null,
                     'internal_link' => $meta['internal_link'] ?? null,
-                    'category_ids' => $meta['category_ids'] ?? null,
+                    'category_ids' => !empty($laravelCategoryIds) ? json_encode($laravelCategoryIds) : null,
                     'status' => 'published',
                 ]
             );

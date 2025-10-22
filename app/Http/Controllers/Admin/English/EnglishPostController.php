@@ -37,7 +37,7 @@ class EnglishPostController extends Controller
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
         //$categories = EnglishCategory::where('post_type', 'sahifas-shlulbayt')->get();
-        $categories = EnglishCategory::where('post_type', 'english-sahifas-ahlulbayt')
+        $categories = EnglishCategory::where('post_type', $postType)
             ->whereNull('parent_id') // only top-level
             ->with('allChildren')    // load children recursively
             ->orderBy('sort_number')

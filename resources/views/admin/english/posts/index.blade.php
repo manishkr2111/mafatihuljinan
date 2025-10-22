@@ -6,13 +6,13 @@
 
 @section('content')
 @if ($errors->any())
-    <div class="bg-red-100 text-red-700 p-2 rounded mb-4">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+<div class="bg-red-100 text-red-700 p-2 rounded mb-4">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
 @endif
 
 <div class="max-w-6xl mt-6 bg-white p-6 rounded shadow">
@@ -73,7 +73,7 @@
     </div>
 
     <div class="mt-4">
-        {{ $posts->links() }} <!-- Pagination links -->
+        {{ $posts->appends(['post_type' => $postType])->links() }}
     </div>
 </div>
 @endsection

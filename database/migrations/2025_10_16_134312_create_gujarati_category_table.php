@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('gujarati_categories', function (Blueprint $table) {
             $table->id();
+            $table->integer('wordpress_id')->nullable();
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('post_type')->nullable();
