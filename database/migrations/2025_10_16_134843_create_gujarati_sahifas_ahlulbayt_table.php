@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('gujarati_sahifas_ahlulbayt', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('slug')->nullable();
             $table->text('search_text')->nullable();
             $table->string('redirect_deep_link')->nullable();
             $table->text('roman_data')->nullable();

@@ -32,17 +32,32 @@ class MigrateWordpressUsers extends Command
         $bar->start();
 
         foreach ($wpUsers as $wpUser) {
-            DB::table('users')->updateOrInsert(
-                ['email' => $wpUser->user_email],
-                [
-                    'name' => $wpUser->display_name,
-                    'email' => $wpUser->user_email,
-                    'password' => Hash::make('password'),
-                    'language' => 'english',
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]
-            );
+            if ($wpUser->user_email === 'manishkumar@ibarts.in') {
+                DB::table('users')->updateOrInsert(
+                    ['email' => $wpUser->user_email],
+                    [
+                        'name' => $wpUser->display_name,
+                        'email' => $wpUser->user_email,
+                        'password' => Hash::make('manishkumar@ibarts.in'),
+                        'language' => 'english',
+                        'role' => 'admin',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
+            } else {
+                DB::table('users')->updateOrInsert(
+                    ['email' => $wpUser->user_email],
+                    [
+                        'name' => $wpUser->display_name,
+                        'email' => $wpUser->user_email,
+                        'password' => Hash::make('password'),
+                        'language' => 'english',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
+            }
             $bar->advance();
         }
 
