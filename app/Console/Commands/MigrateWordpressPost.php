@@ -61,6 +61,7 @@ class MigrateWordpressPost extends Command
                 ['wordpress_id' => $wpSurah->ID],
                 [
                     'title' => $wpSurah->post_title,
+                    'slug' => $wpSurah->post_name,
                     'search_text' => $meta['search_text'] ?? null,
                     'redirect_deep_link' => $meta['redirect_url'] ?? null,
                     'roman_data' => $meta['roman_data'] ?? null,

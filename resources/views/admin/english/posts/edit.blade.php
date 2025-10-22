@@ -80,209 +80,219 @@
                         </div>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Roman Data</label>
-                        <textarea name="roman_data" rows="2"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('roman_data', $englishPost->roman_data) }}</textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Categories Card -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">
-                    <h2 class="text-xl font-semibold text-white flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                        </svg>
-                        Categories
-                    </h2>
-                </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 border p-4 rounded">
-                        @include('admin.english.posts.partials.edit-category-checkbox', [
-                        'categories' => $categories,
-                        'level' => 0,
-                        'englishPost' => $englishPost,
-                        'selectedIds' => $selectedIds
-                        ])
-                    </div>
-
-
-                </div>
-            </div>
-
-            <!-- Arabic Section Card -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">
-                    <h2 class="text-xl font-semibold text-white flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-                        </svg>
-                        Arabic
-                    </h2>
-                </div>
-                <div class="p-6 space-y-6">
-                    <div class="flex flex-wrap gap-6">
-                        <label class="flex items-center gap-3 px-4 py-3 bg-blue-50 border-2 border-blue-200 rounded-lg hover:bg-blue-100 cursor-pointer transition">
-                            <input type="checkbox" name="arabic_islrc" value="1" {{ old('arabic_islrc', $englishPost->arabic_islrc) ? 'checked' : '' }}
-                                class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
-                            <span class="text-sm font-semibold text-gray-700">Enable ISLRC</span>
-                        </label>
-                        <label class="flex items-center gap-3 px-4 py-3 bg-blue-50 border-2 border-blue-200 rounded-lg hover:bg-blue-100 cursor-pointer transition">
-                            <input type="checkbox" name="arabic_4line" value="1" {{ old('arabic_4line', $englishPost->arabic_4line) ? 'checked' : '' }}
-                                class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
-                            <span class="text-sm font-semibold text-gray-700">4-line format</span>
-                        </label>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Arabic Audio URL</label>
-                        <input type="url" name="arabic_audio_url" value="{{ old('arabic_audio_url', $englishPost->arabic_audio_url) }}"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Arabic Content</label>
-                        <textarea name="arabic_content" rows="5" dir=""
-                            class="w-full text-left min-h-80 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition font-arabic">{{ old('arabic_content', $englishPost->arabic_content) }}</textarea>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Simple Arabic</label>
-                        <textarea id="simple_arabic" class="tinymce-editor" name="simple_arabic" rows="4"
-                            class="w-full min-h-80 text-left border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('simple_arabic', $englishPost->simple_arabic) }}</textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Transliteration Section Card -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">
-                    <h2 class="text-xl font-semibold text-white flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        Transliteration
-                    </h2>
-                </div>
-                <div class="p-6 space-y-6">
-                    <div class="flex flex-wrap gap-6">
-                        <label class="flex items-center gap-3 px-4 py-3 bg-green-50 border-2 border-green-200 rounded-lg hover:bg-green-100 cursor-pointer transition">
-                            <input type="checkbox" name="transliteration_islrc" value="1" {{ old('transliteration_islrc', $englishPost->transliteration_islrc) ? 'checked' : '' }}
-                                class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
-                            <span class="text-sm font-semibold text-gray-700">Enable ISLRC</span>
-                        </label>
-                        <label class="flex items-center gap-3 px-4 py-3 bg-green-50 border-2 border-green-200 rounded-lg hover:bg-green-100 cursor-pointer transition">
-                            <input type="checkbox" name="transliteration_4line" value="1" {{ old('transliteration_4line', $englishPost->transliteration_4line) ? 'checked' : '' }}
-                                class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
-                            <span class="text-sm font-semibold text-gray-700">4-line format</span>
-                        </label>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Transliteration Audio URL</label>
-                        <input type="url" name="transliteration_audio_url" value="{{ old('transliteration_audio_url', $englishPost->transliteration_audio_url) }}"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Transliteration Content</label>
-                        <textarea name="transliteration_content" rows="5"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('transliteration_content', $englishPost->transliteration_content) }}</textarea>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Simple Transliteration</label>
-                        <textarea id="simple_transliteration" class="tinymce-editor" name="simple_transliteration" rows="4"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('simple_transliteration', $englishPost->simple_transliteration) }}</textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Translation Section Card -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">
-                    <h2 class="text-xl font-semibold text-white flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-                        </svg>
-                        Translation
-                    </h2>
-                </div>
-                <div class="p-6 space-y-6">
-                    <div class="flex flex-wrap gap-6">
-                        <label class="flex items-center gap-3 px-4 py-3 bg-purple-50 border-2 border-purple-200 rounded-lg hover:bg-purple-100 cursor-pointer transition">
-                            <input type="checkbox" name="translation_islrc" value="1" {{ old('translation_islrc', $englishPost->translation_islrc) ? 'checked' : '' }}
-                                class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
-                            <span class="text-sm font-semibold text-gray-700">Enable ISLRC</span>
-                        </label>
-                        <label class="flex items-center gap-3 px-4 py-3 bg-purple-50 border-2 border-purple-200 rounded-lg hover:bg-purple-100 cursor-pointer transition">
-                            <input type="checkbox" name="translation_4line" value="1" {{ old('translation_4line', $englishPost->translation_4line) ? 'checked' : '' }}
-                                class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
-                            <span class="text-sm font-semibold text-gray-700">4-line format</span>
-                        </label>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Translation Audio URL</label>
-                        <input type="url" name="translation_audio_url" value="{{ old('translation_audio_url', $englishPost->translation_audio_url) }}"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Translation Content</label>
-                        <textarea name="translation_content" rows="5"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('translation_content', $englishPost->translation_content) }}</textarea>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Simple Translation</label>
-                        <textarea id="simple_translation" class="tinymce-editor" name="simple_translation" rows="5"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('simple_translation', $englishPost->simple_translation) }}</textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Next Post & Internal Links Card -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">
-                    <h2 class="text-xl font-semibold text-white flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                        </svg>
-                        Links & Navigation
-                    </h2>
-                </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Next Post Title</label>
-                            <input type="text" name="next_post_title" value="{{ old('next_post_title', $englishPost->next_post_title) }}"
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Roman Data</label>
+                            <input type="url" placeholder="https://example.com" name="roman_data" value="{{ old('roman_data', $englishPost->roman_data) }}"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Slug</label>
+                            <div class="flex items-center border border-gray-300 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-[#034E7A]">
+                                <span class="text-gray-500">https://dev.mafatihuljinan.org/</span>
+                                <input type="text" name="slug" value="{{ old('slug', $englishPost->slug) }}"
+                                    class="flex-1 bg-transparent focus:outline-none text-blue-600 font-medium ml-1" disabled>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Categories Card -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">
+                        <h2 class="text-xl font-semibold text-white flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                            </svg>
+                            Categories
+                        </h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 border p-4 rounded">
+                            @include('admin.english.posts.partials.edit-category-checkbox', [
+                            'categories' => $categories,
+                            'level' => 0,
+                            'englishPost' => $englishPost,
+                            'selectedIds' => $selectedIds
+                            ])
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!-- Arabic Section Card -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">
+                        <h2 class="text-xl font-semibold text-white flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                            </svg>
+                            Arabic
+                        </h2>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div class="flex flex-wrap gap-6">
+                            <label class="flex items-center gap-3 px-4 py-3 bg-blue-50 border-2 border-blue-200 rounded-lg hover:bg-blue-100 cursor-pointer transition">
+                                <input type="checkbox" name="arabic_islrc" value="1" {{ old('arabic_islrc', $englishPost->arabic_islrc) ? 'checked' : '' }}
+                                    class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
+                                <span class="text-sm font-semibold text-gray-700">Enable ISLRC</span>
+                            </label>
+                            <label class="flex items-center gap-3 px-4 py-3 bg-blue-50 border-2 border-blue-200 rounded-lg hover:bg-blue-100 cursor-pointer transition">
+                                <input type="checkbox" name="arabic_4line" value="1" {{ old('arabic_4line', $englishPost->arabic_4line) ? 'checked' : '' }}
+                                    class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
+                                <span class="text-sm font-semibold text-gray-700">4-line format</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Arabic Audio URL</label>
+                            <input type="url" name="arabic_audio_url" value="{{ old('arabic_audio_url', $englishPost->arabic_audio_url) }}"
                                 class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Next Post URL</label>
-                            <input type="text" name="next_post_url" value="{{ old('next_post_url', $englishPost->next_post_url) }}"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Arabic Content</label>
+                            <textarea name="arabic_content" rows="5" dir=""
+                                class="w-full text-left min-h-80 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition font-arabic">{{ old('arabic_content', $englishPost->arabic_content) }}</textarea>
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Internal Link</label>
-                            <input type="text" name="internal_link" value="{{ old('internal_link', $englishPost->internal_link) }}"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Simple Arabic</label>
+                            <textarea id="simple_arabic" class="tinymce-editor" name="simple_arabic" rows="4"
+                                class="w-full min-h-80 text-left border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('simple_arabic', $englishPost->simple_arabic) }}</textarea>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Action Buttons -->
-            <div class="flex flex-wrap gap-4 justify-end bg-white rounded-xl shadow-md p-6">
-                <a href="{{ route('admin.english.post.index') }}"
-                    class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-semibold flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    Cancel
-                </a>
-                <button type="submit"
-                    class="px-8 py-3 bg-gradient-to-r from-[#034E7A] to-[#02629B] text-white rounded-lg hover:from-[#02629B] hover:to-[#034E7A] transition font-semibold shadow-lg hover:shadow-xl flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                    Update Post
-                </button>
-            </div>
+                <!-- Transliteration Section Card -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">
+                        <h2 class="text-xl font-semibold text-white flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Transliteration
+                        </h2>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div class="flex flex-wrap gap-6">
+                            <label class="flex items-center gap-3 px-4 py-3 bg-green-50 border-2 border-green-200 rounded-lg hover:bg-green-100 cursor-pointer transition">
+                                <input type="checkbox" name="transliteration_islrc" value="1" {{ old('transliteration_islrc', $englishPost->transliteration_islrc) ? 'checked' : '' }}
+                                    class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
+                                <span class="text-sm font-semibold text-gray-700">Enable ISLRC</span>
+                            </label>
+                            <label class="flex items-center gap-3 px-4 py-3 bg-green-50 border-2 border-green-200 rounded-lg hover:bg-green-100 cursor-pointer transition">
+                                <input type="checkbox" name="transliteration_4line" value="1" {{ old('transliteration_4line', $englishPost->transliteration_4line) ? 'checked' : '' }}
+                                    class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
+                                <span class="text-sm font-semibold text-gray-700">4-line format</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Transliteration Audio URL</label>
+                            <input type="url" name="transliteration_audio_url" value="{{ old('transliteration_audio_url', $englishPost->transliteration_audio_url) }}"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Transliteration Content</label>
+                            <textarea name="transliteration_content" rows="5"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('transliteration_content', $englishPost->transliteration_content) }}</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Simple Transliteration</label>
+                            <textarea id="simple_transliteration" class="tinymce-editor" name="simple_transliteration" rows="4"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('simple_transliteration', $englishPost->simple_transliteration) }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Translation Section Card -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">
+                        <h2 class="text-xl font-semibold text-white flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                            </svg>
+                            Translation
+                        </h2>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div class="flex flex-wrap gap-6">
+                            <label class="flex items-center gap-3 px-4 py-3 bg-purple-50 border-2 border-purple-200 rounded-lg hover:bg-purple-100 cursor-pointer transition">
+                                <input type="checkbox" name="translation_islrc" value="1" {{ old('translation_islrc', $englishPost->translation_islrc) ? 'checked' : '' }}
+                                    class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
+                                <span class="text-sm font-semibold text-gray-700">Enable ISLRC</span>
+                            </label>
+                            <label class="flex items-center gap-3 px-4 py-3 bg-purple-50 border-2 border-purple-200 rounded-lg hover:bg-purple-100 cursor-pointer transition">
+                                <input type="checkbox" name="translation_4line" value="1" {{ old('translation_4line', $englishPost->translation_4line) ? 'checked' : '' }}
+                                    class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
+                                <span class="text-sm font-semibold text-gray-700">4-line format</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Translation Audio URL</label>
+                            <input type="url" name="translation_audio_url" value="{{ old('translation_audio_url', $englishPost->translation_audio_url) }}"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Translation Content</label>
+                            <textarea name="translation_content" rows="5"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('translation_content', $englishPost->translation_content) }}</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Simple Translation</label>
+                            <textarea id="simple_translation" class="tinymce-editor" name="simple_translation" rows="5"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('simple_translation', $englishPost->simple_translation) }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next Post & Internal Links Card -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">
+                        <h2 class="text-xl font-semibold text-white flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                            </svg>
+                            Links & Navigation
+                        </h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Next Post Title</label>
+                                <input type="text" name="next_post_title" value="{{ old('next_post_title', $englishPost->next_post_title) }}"
+                                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Next Post URL</label>
+                                <input type="text" name="next_post_url" value="{{ old('next_post_url', $englishPost->next_post_url) }}"
+                                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Internal Link</label>
+                                <input type="text" name="internal_link" value="{{ old('internal_link', $englishPost->internal_link) }}"
+                                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap gap-4 justify-end bg-white rounded-xl shadow-md p-6">
+                    <a href="{{ route('admin.english.post.index') }}"
+                        class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-semibold flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Cancel
+                    </a>
+                    <button type="submit"
+                        class="px-8 py-3 bg-gradient-to-r from-[#034E7A] to-[#02629B] text-white rounded-lg hover:from-[#02629B] hover:to-[#034E7A] transition font-semibold shadow-lg hover:shadow-xl flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Update Post
+                    </button>
+                </div>
         </form>
     </div>
 </div>

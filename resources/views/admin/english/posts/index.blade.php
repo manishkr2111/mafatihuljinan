@@ -23,6 +23,50 @@
         </a>
     </div>
 
+    <div class="mb-4 flex flex-col md:flex-row gap-4">
+        <!-- Search by title -->
+        <input
+            type="text"
+            id="postSearch"
+            placeholder="Search by Title or Category..."
+            class="border p-2 rounded w-full md:w-1/2">
+
+        <!-- Filter by category -->
+        <select id="categoryFilter" class="border p-2 rounded w-full md:w-1/2">
+            <option value="">All Categories</option>
+            @foreach($allCategories as $category)
+            <option value="{{ strtolower($category->name) }}">{{ $category->name }}</option>
+            @endforeach
+        </select>
+    </div>
+    <script>
+        const searchInput = document.getElementById('postSearch');
+        const categorySelect = document.getElementById('categoryFilter');
+
+        function filterPosts() {
+            const query = searchInput.value.toLowerCase();
+            const selectedCategory = categorySelect.value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const title = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                const categories = Array.from(row.querySelectorAll('td:nth-child(3) span'))
+                    .map(span => span.textContent.toLowerCase())
+                    .join(' ');
+
+                const matchesSearch = title.includes(query) || categories.includes(query);
+                const matchesCategory = selectedCategory === '' || categories.includes(selectedCategory);
+
+                row.style.display = (matchesSearch && matchesCategory) ? '' : 'none';
+            });
+        }
+
+        searchInput.addEventListener('input', filterPosts);
+        categorySelect.addEventListener('change', filterPosts);
+    </script>
+
+
+
     <div class="overflow-x-auto">
         <table class="w-full border border-gray-200">
             <thead class="bg-gray-100 text-left">

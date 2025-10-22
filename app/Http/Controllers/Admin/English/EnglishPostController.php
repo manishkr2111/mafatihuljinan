@@ -21,8 +21,9 @@ class EnglishPostController extends Controller
         if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
-        $posts = $modelClass::latest()->paginate(10);
-        return view('admin.english.posts.index', compact('posts', 'postType'));
+        $posts = $modelClass::latest()->paginate(50);
+        $allCategories = EnglishCategory::all();
+        return view('admin.english.posts.index', compact('posts', 'postType', 'allCategories'));
     }
 
     // Show create form
