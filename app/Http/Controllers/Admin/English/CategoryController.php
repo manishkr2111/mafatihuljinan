@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin\English;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\EnglishCategory;
+use App\Models\English\EnglishCategory;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -56,15 +57,21 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $post_type = $request->input('post_type', $request->post_type);
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|unique:english_categories,slug',
             'description' => 'nullable|string',
             'sort_number' => 'nullable|integer',
             'parent_id' => 'nullable|exists:english_categories,id',
         ]);
-
-        EnglishCategory::create($request->all());
+        $model = getEnglishModel($post_type);
+        if(!$model){
+            return redirect()->back()->with('error','Invalid Post Type');
+        }
+        $validated['slug'] = Str::slug($validated['slug'], '-');
+        $Category = EnglishCategory::create($validated);
+        $Category->post_type = $post_type;
+        $Category->save();
         Cache::forget('english_categories_' . $post_type);
 
         return redirect()->route('admin.english.category.index')->with('success', 'Category created successfully.');
@@ -90,15 +97,22 @@ class CategoryController extends Controller
         $category = EnglishCategory::findOrFail($id);
         $post_type = $request->input('post_type', $request->post_type);
         Cache::forget('english_categories_' . $post_type);
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|unique:english_categories,slug,' . $category->id,
             'description' => 'nullable|string',
             'sort_number' => 'nullable|integer',
             'parent_id' => 'nullable|exists:english_categories,id',
         ]);
+        $model = getEnglishModel($post_type);
+        if(!$model){
+            return redirect()->back()->with('error','Invalid Post Type');
+        }
+        $validated['slug'] = Str::slug($validated['slug'], '-');     
 
-        $category->update($request->all());
+        $category->update($validated);
+        $category->post_type = $post_type;
+        $category->save();
 
         return redirect()->route('admin.english.category.index')->with('success', 'Category updated successfully.');
     }

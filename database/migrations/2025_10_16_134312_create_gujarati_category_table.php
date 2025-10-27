@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('post_type')->nullable();
             $table->text('description')->nullable();
             $table->integer('sort_number')->default(0);
-            $table->foreignId('parent_id')->nullable()->constrained('english_categories')->onDelete('cascade');
+            $table->foreignId('parent_id')->nullable()->constrained('gujarati_categories')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('gujarati_category');
+        Schema::dropIfExists('gujarati_categories');
     }
 };

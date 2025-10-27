@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\English;
 
 use App\Http\Controllers\Controller;
-use App\Models\EnglishCategory;
+use App\Models\English\EnglishCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Models;
+
+namespace App\Models\English;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EnglishSahifasAhlulbayt extends Model
+class SalaatNamaz extends Model
 {
-    protected $table = 'english_sahifas_ahlulbayt';
+    protected $table = 'english_salaat_namaz';
 
     protected $fillable = [
         'title',
@@ -43,7 +44,7 @@ class EnglishSahifasAhlulbayt extends Model
     // Helper to get assigned categories
     public function old_categories()
     {
-        return \App\Models\EnglishCategory::whereIn('id', $this->category_ids ?? [])->get();
+        return \App\Models\English\EnglishCategory::whereIn('id', $this->category_ids ?? [])->get();
     }
     public function categories()
     {
@@ -58,6 +59,6 @@ class EnglishSahifasAhlulbayt extends Model
             $ids = [];
         }
 
-        return \App\Models\EnglishCategory::whereIn('id', $ids)->get();
+        return \App\Models\English\EnglishCategory::whereIn('id', $ids)->get();
     }
 }

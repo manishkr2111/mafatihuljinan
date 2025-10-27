@@ -4,9 +4,9 @@ namespace App\Models\English;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Surah extends Model
+class EnglishSahifasAhlulbayt extends Model
 {
-    protected $table = 'english_surah';
+    protected $table = 'english_sahifas_ahlulbayt';
 
     protected $fillable = [
         'title',

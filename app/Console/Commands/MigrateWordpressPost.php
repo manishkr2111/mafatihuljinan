@@ -55,6 +55,10 @@ class MigrateWordpressPost extends Command
                     ->pluck('id')
                     ->toArray();
             }
+			
+			$categoryIdsJson = !empty($laravelCategoryIds)
+                ? json_encode(array_map('strval', $laravelCategoryIds))
+                : null;
 
             // Insert/update post in Laravel
             DB::table('english_surah')->updateOrInsert(
@@ -84,7 +88,7 @@ class MigrateWordpressPost extends Command
                     'next_post_title' => $meta['next_post_title'] ?? null,
                     'next_post_url' => $meta['next_post_url'] ?? null,
                     'internal_link' => $meta['internal_link'] ?? null,
-                    'category_ids' => !empty($laravelCategoryIds) ? json_encode($laravelCategoryIds) : null,
+                    'category_ids' => $categoryIdsJson,
                     'status' => 'published',
                 ]
             );

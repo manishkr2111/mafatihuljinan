@@ -23,47 +23,40 @@
         </a>
     </div>
 
-    <div class="mb-4 flex flex-col md:flex-row gap-4">
-        <!-- Search by title -->
-        <input
-            type="text"
-            id="postSearch"
-            placeholder="Search by Title or Category..."
-            class="border p-2 rounded w-full md:w-1/2">
+    <div class="mb-4">
+        <form method="GET" action="{{ route('admin.english.post.index') }}" class="flex flex-col md:flex-row gap-4">
+            <input type="hidden" name="post_type" value="{{ $postType }}">
 
-        <!-- Filter by category -->
-        <select id="categoryFilter" class="border p-2 rounded w-full md:w-1/2">
-            <option value="">All Categories</option>
-            @foreach($allCategories as $category)
-            <option value="{{ strtolower($category->name) }}">{{ $category->name }}</option>
-            @endforeach
-        </select>
+            <!-- Search by title -->
+            <input
+                type="text"
+                name="search"
+                value="{{ request('search') }}"
+                placeholder="Search by Title or Category..."
+                class="border p-2 rounded w-full md:w-1/2">
+
+            <!-- Filter by category -->
+            <select name="category" class="border p-2 rounded w-full md:w-1/2">
+                <option value="">All Categories</option>
+                @foreach($allCategories as $category)
+                <option value="{{ strtolower($category->name) }}"
+                    {{ request('category') == strtolower($category->name) ? 'selected' : '' }}>
+                    {{ $category->name }}
+                </option>
+                @endforeach
+            </select>
+            <!-- Sort Order -->
+            <select name="sort_order" class="border p-2 rounded w-full md:w-1/3">
+                <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>Sort : Ascending</option>
+                <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>Sort : Descending</option>
+            </select>
+
+            <button type="submit" class="bg-[#034E7A] text-white px-4 py-2 rounded hover:bg-[#02629B] transition">
+                Filter
+            </button>
+        </form>
     </div>
-    <script>
-        const searchInput = document.getElementById('postSearch');
-        const categorySelect = document.getElementById('categoryFilter');
 
-        function filterPosts() {
-            const query = searchInput.value.toLowerCase();
-            const selectedCategory = categorySelect.value.toLowerCase();
-            const rows = document.querySelectorAll('tbody tr');
-
-            rows.forEach(row => {
-                const title = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                const categories = Array.from(row.querySelectorAll('td:nth-child(3) span'))
-                    .map(span => span.textContent.toLowerCase())
-                    .join(' ');
-
-                const matchesSearch = title.includes(query) || categories.includes(query);
-                const matchesCategory = selectedCategory === '' || categories.includes(selectedCategory);
-
-                row.style.display = (matchesSearch && matchesCategory) ? '' : 'none';
-            });
-        }
-
-        searchInput.addEventListener('input', filterPosts);
-        categorySelect.addEventListener('change', filterPosts);
-    </script>
 
 
 
@@ -71,7 +64,8 @@
         <table class="w-full border border-gray-200">
             <thead class="bg-gray-100 text-left">
                 <tr>
-                    <th class="p-3 border">ID</th>
+                    <th class="p-3 border max-w-[80px]">#Sr. (ID)</th>
+                    <th class="p-3 border max-w-[50px]">Sort</th>
                     <th class="p-3 border">Title</th>
                     <th class="p-3 border">Categories</th>
                     <th class="p-3 border">Status</th>
@@ -81,14 +75,17 @@
             <tbody>
                 @foreach($posts as $post)
                 <tr class="hover:bg-gray-50">
-                    <td class="p-3 border">{{ $post->id }}</td>
-                    <td class="p-3 border font-medium text-gray-800">{{ $post->title }}</td>
-                    <td class="p-3 border max-w-20">
-                        @foreach($post->categories() as $category)
-                        <span class="inline-block bg-[#034E7A] text-white text-xs px-2 py-1 rounded mr-1 mb-1">
-                            {{ $category->name }}
-                        </span>
-                        @endforeach
+                    <td class="p-3 border max-w-[30px]">{{ $posts->firstItem() + $loop->index }} ({{$post->id}})</td>
+                    <td class="p-3 border max-w-[30px]">{{$post->sort_number}}</td>
+                    <td class="p-3 border font-medium text-gray-800 max-w-[250px]">{{ $post->title }}</td>
+                    <td class="p-3 border min-w-[200px] max-w-[300px] max-h-[80px] overflow-y-auto">
+                        <div class="relative max-h-[200px] overflow-y-auto">
+                            @foreach($post->categories() as $category)
+                            <span class="inline-block bg-[#034E7A] text-white text-xs px-2 py-1 rounded mr-1 mb-1">
+                                {{ $category->name }}
+                            </span>
+                            @endforeach
+                        </div>
                     </td>
                     <td class="p-3 border">
                         <span class="px-2 py-1 rounded 
@@ -115,9 +112,9 @@
             </tbody>
         </table>
     </div>
-
     <div class="mt-4">
-        {{ $posts->appends(['post_type' => $postType])->links() }}
+        {{ $posts->appends(request()->except('page'))->links() }}
     </div>
+
 </div>
 @endsection

@@ -109,7 +109,7 @@
                         </h2>
                     </div>
                     <div class="p-6">
-                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 border p-4 rounded">
+                        <div class="grid grid-cols-2 md:grid-cols-2 gap-3 border p-4 rounded max-h-[300px] overflow-y-auto" >
                             @include('admin.english.posts.partials.edit-category-checkbox', [
                             'categories' => $categories,
                             'level' => 0,

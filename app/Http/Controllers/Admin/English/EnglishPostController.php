@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Admin\English;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\EnglishCategory;
+use App\Models\English\EnglishCategory;
 
 class EnglishPostController extends Controller
 {
 
     // Show all posts
-    public function index(Request $request)
+    public function index_(Request $request)
     {
         //dd($request->all());
         $postType = $request->post_type;
@@ -21,8 +21,65 @@ class EnglishPostController extends Controller
         if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
-        $posts = $modelClass::latest()->paginate(50);
+        $posts = $modelClass::orderBy('sort_number', 'asc')->paginate(50);
         $allCategories = EnglishCategory::all();
+        return view('admin.english.posts.index', compact('posts', 'postType', 'allCategories'));
+    }
+
+    public function index(Request $request)
+    {
+        $postType = $request->post_type;
+        if (!$postType) {
+            return redirect()->back()->withErrors(['post_type' => 'Post type is required.']);
+        }
+
+        $modelClass = getEnglishModel($postType);
+        if (!$modelClass) {
+            return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
+        }
+        $query = $modelClass::query();
+        // ✅ Search by title or category name
+        if ($request->filled('search')) {
+            $search = trim($request->search);
+            // Find matching category IDs based on name
+            $matchedCategoryIds = EnglishCategory::where('name', 'like', "%{$search}%")
+                ->where('post_type', $postType)
+                ->pluck('id')
+                ->map(fn($id) => (string) $id) // convert to string for JSON match
+                ->toArray();
+
+            $query->where(function ($q) use ($search, $matchedCategoryIds) {
+                $q->where('title', 'like', "%{$search}%");
+
+                if (!empty($matchedCategoryIds)) {
+                    foreach ($matchedCategoryIds as $id) {
+                        $q->orWhereJsonContains('category_ids', $id);
+                    }
+                }
+            });
+        }
+        // ✅ Filter by category dropdown
+        if ($request->filled('category')) {
+            $categoryName = strtolower($request->category);
+            // Find the matching category ID
+            $matchedCategoryIds = EnglishCategory::whereRaw('LOWER(name) = ?', [$categoryName])
+                ->where('post_type', $postType)
+                ->pluck('id')
+                ->map(fn($id) => (string) $id) // important: make it string
+                ->toArray();
+
+            if (!empty($matchedCategoryIds)) {
+                $query->where(function ($q) use ($matchedCategoryIds) {
+                    foreach ($matchedCategoryIds as $id) {
+                        $q->orWhereJsonContains('category_ids', $id);
+                    }
+                });
+            }
+        }
+        $sortOrder = $request->get('sort_order', 'asc'); // default asc
+        $query->orderBy('sort_number', $sortOrder);
+        $posts = $query->orderBy('sort_number', 'asc')->paginate(50);
+        $allCategories = EnglishCategory::where('post_type', $postType)->get();
         return view('admin.english.posts.index', compact('posts', 'postType', 'allCategories'));
     }
 

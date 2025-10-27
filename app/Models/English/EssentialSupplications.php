@@ -1,12 +1,13 @@
 <?php
 
+
 namespace App\Models\English;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Surah extends Model
+class EssentialSupplications extends Model
 {
-    protected $table = 'english_surah';
+    protected $table = 'english_essential_supplications';
 
     protected $fillable = [
         'title',

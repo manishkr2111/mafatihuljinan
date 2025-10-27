@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\English;
 
 use App\Http\Controllers\Controller;
-use App\Models\EnglishCategory;
+use App\Models\English\EnglishCategory;
 use Illuminate\Http\Request;
-use App\Models\EnglishSahifasAhlulbayt;
+use App\Models\English\EnglishSahifasAhlulbayt;
 use Illuminate\Support\Facades\Cache;
 
 class EnglishPostController extends Controller
