@@ -3,37 +3,84 @@
 namespace App\Http\Controllers\Admin\Gujarati;
 
 use App\Http\Controllers\Controller;
-use App\Models\Gujarati\Category;
 use Illuminate\Http\Request;
+use App\Models\Gujarati\Category;
 
 class GujaratiPostController extends Controller
 {
-    protected function getModel($postType)
-    {
-        $map = [
-            'sahifas-ahlulbayt' => \App\Models\Gujarati\SahifasAhlulbayt::class,
-            'surah' => \App\Models\Gujarati\SahifasAhlulbayt::class,
-            'dua' => \App\Models\Gujarati\SahifasAhlulbayt::class,
-
-        ];
-
-        return $map[$postType] ?? null;
-    }
 
     // Show all posts
-    public function index(Request $request)
+    public function index_(Request $request)
     {
         //dd($request->all());
         $postType = $request->post_type;
         if (!$postType) {
             return redirect()->back()->withErrors(['post_type' => 'Post type is required.']);
         }
-        $modelClass = $this->getModel($postType);
+        $modelClass = getGujaratiModel($postType);
         if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
-        $posts = $modelClass::latest()->paginate(10);
-        return view('admin.gujarati.posts.index', compact('posts', 'postType'));
+        $posts = $modelClass::orderBy('sort_number', 'asc')->paginate(50);
+        $allCategories = Category::all();
+        return view('admin.gujarati.posts.index', compact('posts', 'postType', 'allCategories'));
+    }
+
+    public function index(Request $request)
+    {
+        $postType = $request->post_type;
+        if (!$postType) {
+            return redirect()->back()->withErrors(['post_type' => 'Post type is required.']);
+        }
+
+        $modelClass = getGujaratiModel($postType);
+        if (!$modelClass) {
+            return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
+        }
+        $query = $modelClass::query();
+        // ✅ Search by title or category name
+        if ($request->filled('search')) {
+            $search = trim($request->search);
+            // Find matching category IDs based on name
+            $matchedCategoryIds = Category::where('name', 'like', "%{$search}%")
+                ->where('post_type', $postType)
+                ->pluck('id')
+                ->map(fn($id) => (string) $id) // convert to string for JSON match
+                ->toArray();
+
+            $query->where(function ($q) use ($search, $matchedCategoryIds) {
+                $q->where('title', 'like', "%{$search}%");
+
+                if (!empty($matchedCategoryIds)) {
+                    foreach ($matchedCategoryIds as $id) {
+                        $q->orWhereJsonContains('category_ids', $id);
+                    }
+                }
+            });
+        }
+        // ✅ Filter by category dropdown
+        if ($request->filled('category')) {
+            $categoryName = strtolower($request->category);
+            // Find the matching category ID
+            $matchedCategoryIds = Category::whereRaw('LOWER(name) = ?', [$categoryName])
+                ->where('post_type', $postType)
+                ->pluck('id')
+                ->map(fn($id) => (string) $id) // important: make it string
+                ->toArray();
+
+            if (!empty($matchedCategoryIds)) {
+                $query->where(function ($q) use ($matchedCategoryIds) {
+                    foreach ($matchedCategoryIds as $id) {
+                        $q->orWhereJsonContains('category_ids', $id);
+                    }
+                });
+            }
+        }
+        $sortOrder = $request->get('sort_order', 'asc'); // default asc
+        $query->orderBy('sort_number', $sortOrder);
+        $posts = $query->orderBy('sort_number', 'asc')->paginate(50);
+        $allCategories = Category::where('post_type', $postType)->get();
+        return view('admin.gujarati.posts.index', compact('posts', 'postType', 'allCategories'));
     }
 
     // Show create form
@@ -43,12 +90,11 @@ class GujaratiPostController extends Controller
         if (!$postType) {
             return redirect()->back()->withErrors(['post_type' => 'Post type is required.']);
         }
-        $modelClass = $this->getModel($postType);
+        $modelClass = getGujaratiModel($postType);
         if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
-        //$categories = Category::where('post_type', 'sahifas-shlulbayt')->get();
-        $categories = Category::where('post_type', 'sahifas-ahlulbayt')
+        $categories = Category::where('post_type', $postType)
             ->whereNull('parent_id') // only top-level
             ->with('allChildren')    // load children recursively
             ->orderBy('sort_number')
@@ -107,7 +153,7 @@ class GujaratiPostController extends Controller
         }*/
         $data['category_ids'] = $data['category_ids'] ?? [];
 
-        $modelClass = $this->getModel($data['post_type']);
+        $modelClass = getGujaratiModel($data['post_type']);
         if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type selected.'])->withInput();
         }
@@ -124,7 +170,7 @@ class GujaratiPostController extends Controller
         } else {
             return redirect()->back()->withErrors(['post_type' => 'Post type is required.']);
         }
-        $modelClass = $this->getModel($postType);
+        $modelClass = getGujaratiModel($postType);
         if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
@@ -199,12 +245,12 @@ class GujaratiPostController extends Controller
         $data['category_ids'] = $data['category_ids'] ?? [];
 
         $postType = $data['post_type'];
-        $modelClass = $this->getModel($postType);
+        $modelClass = getGujaratiModel($postType);
         if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type selected.'])->withInput();
         }
-        $Post = $modelClass::find($id);
-        $Post->update($data);
+        $gujaratiPost = $modelClass::find($id);
+        $gujaratiPost->update($data);
 
         return redirect()->back()->with('success', 'Post updated successfully.');
         return redirect()->route('admin.gujarati.post.index')->with('success', 'Post updated successfully.');
@@ -217,7 +263,7 @@ class GujaratiPostController extends Controller
         } else {
             return redirect()->back()->withErrors(['post_type' => 'Post type is required.']);
         }
-        $modelClass = $this->getModel($postType);
+        $modelClass = getGujaratiModel($postType);
         if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }

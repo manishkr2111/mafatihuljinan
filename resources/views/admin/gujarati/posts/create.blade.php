@@ -79,11 +79,20 @@
                             </select>
                         </div>
                     </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Roman Data</label>
-                        <textarea name="roman_data" rows="2"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('roman_data') }}</textarea>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Roman Data</label>
+                            <input type="url" placeholder="https://example.com" name="roman_data" value=""
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Slug</label>
+                            <div class="flex items-center border border-gray-300 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-[#034E7A]">
+                                <span class="text-gray-500">Will get generated automatically</span>
+                                <input type="text" name="slug" value="{{ old('slug') }}"
+                                    class="flex-1 bg-transparent focus:outline-none text-blue-600 font-medium ml-1" disabled>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -99,7 +108,7 @@
                     </h2>
                 </div>
                 <div class="p-6">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 ">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-h-[300px] overflow-y-auto">
                         <div>
                             @include('admin.gujarati.posts.partials.category-checkbox', ['categories' => $categories->take(ceil($categories->count()/2))])
                         </div>

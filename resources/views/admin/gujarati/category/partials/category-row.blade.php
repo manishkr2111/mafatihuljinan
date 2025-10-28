@@ -6,8 +6,8 @@
     <td class="p-3">{{ $category->parent ? $category->parent->name : '-' }}</td>
     <td class="p-3">{{ $category->sort_number ?? '-' }}</td>
     <td class="p-3 space-x-2">
-        <a href="{{ route('admin.english.category.edit', $category->id) }}" class="text-blue-600 hover:underline">Edit</a>
-        <form action="{{ route('admin.english.category.destroy', $category->id) }}" method="POST" class="inline-block"
+        <a href="{{ route('admin.gujarati.category.edit', $category->id) }}" class="text-blue-600 hover:underline">Edit</a>
+        <form action="{{ route('admin.gujarati.category.destroy', $category->id) }}" method="POST" class="inline-block"
             onsubmit="return confirm('Are you sure you want to delete this category?');">
             @csrf
             @method('DELETE')

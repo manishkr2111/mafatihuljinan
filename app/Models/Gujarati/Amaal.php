@@ -1,13 +1,11 @@
 <?php
-
-
-namespace App\Models\English;
+namespace App\Models\Gujarati;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Salwaat extends Model
+class Amaal extends Model
 {
-    protected $table = 'english_salwaat';
+    protected $table = 'gujarati_amaal';
 
     protected $fillable = [
         'title',

@@ -108,7 +108,7 @@
                     </h2>
                 </div>
                 <div class="p-6">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 ">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-h-[300px] overflow-y-auto">
                         <div>
                             @include('admin.english.posts.partials.category-checkbox', ['categories' => $categories->take(ceil($categories->count()/2))])
                         </div>

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Gujarati Categories')
+@section('title', 'Fujarati Categories')
 
 @section('content')
 <div class="max-w-5xl mt-10 bg-white p-6 rounded shadow">
@@ -38,7 +38,7 @@
         </thead>
         <tbody>
             @forelse($categories as $category)
-            @include('admin.english.category.partials.category-row', ['category' => $category, 'level' => 0])
+            @include('admin.gujarati.category.partials.category-row', ['category' => $category, 'level' => 0])
             @empty
             <tr>
                 <td colspan="7" class="text-center p-4 text-gray-500">No categories found.</td>

@@ -20,7 +20,7 @@ if (!function_exists('getEnglishModel')) {
             'amaal'                 => \App\Models\English\Amaal::class,
             'munajat'               => \App\Models\English\Munajat::class,
             'salaat-namaz'          => \App\Models\English\SalaatNamaz::class,
-            'salwaat'               => \App\Models\English\SalaatNamaz::class,
+            'salwaat'               => \App\Models\English\Salwaat::class,
             'tasbih'                => \App\Models\English\Tasbih::class,
             'travel-ziyarat'        => \App\Models\English\TravelZiyarat::class,
             'ziyarat'               => \App\Models\English\Ziyarat::class,
@@ -80,6 +80,29 @@ if (!function_exists('isfavoritePost')) {
 }
 
 
+if (!function_exists('getGujaratiModel')) {
+    function getGujaratiModel($postType)
+    {
+        $map = [
+            'sahifas-ahlulbayt'     => \App\Models\Gujarati\SahifasAhlulbayt::class,
+            'surah'                 => \App\Models\Gujarati\Surah::class,
+            'dua'                   => \App\Models\Gujarati\Dua::class,
+            'daily-dua'             => \App\Models\Gujarati\DailyDua::class,
+            'amaal-namaz'           => \App\Models\Gujarati\AmaalNamaz::class,
+            'burial-acts-prayers'   => \App\Models\Gujarati\BurialActsPrayers::class,
+            'amaal'                 => \App\Models\Gujarati\Amaal::class,
+            'munajat'               => \App\Models\Gujarati\Munajat::class,
+            'salaat-namaz'          => \App\Models\Gujarati\SalaatNamaz::class,
+            'salwaat'               => \App\Models\Gujarati\Salwaat::class,
+            'tasbih'                => \App\Models\Gujarati\Tasbih::class,
+            'travel-ziyarat'        => \App\Models\Gujarati\TravelZiyarat::class,
+            'ziyarat'               => \App\Models\Gujarati\Ziyarat::class,
+            'essential-supplications' => \App\Models\Gujarati\EssentialSupplications::class,
+        ];
+
+        return $map[$postType] ?? null;
+    }
+}
 if (!function_exists('GujaratiPostTypeOptions')) {
     /**
      * Return all post type options as [value => label]
@@ -88,15 +111,21 @@ if (!function_exists('GujaratiPostTypeOptions')) {
      */
     function GujaratiPostTypeOptions()
     {
-        return [
+         return [
             'sahifas-ahlulbayt' => 'Sahifas Ahlulbayt',
             'surah' => 'Surah',
             'daily-dua' => 'Daily Dua',
             'dua' => 'Dua',
             'amaal' => 'Amaal',
             'travel-ziyarat' => 'Travel Ziyarat',
-            'gujarati-ziyarat' => 'Ziyarat',
-            // add more post types here in future
+            'ziyarat' => 'Ziyarat',
+            'essential-supplications' => 'Essential Supplications',
+            'amaal-namaz'=>'Amaal Namaz',
+            'burial-acts-prayers'=> 'Burial Acts Prayers',
+            'munajat'=>'Munajat',
+            'salaat-namaz'=>'Salaat Namaz',
+            'salwaat'=>'Salwaat',
+            'tasbih'=>'Tasbih',
         ];
     }
 }

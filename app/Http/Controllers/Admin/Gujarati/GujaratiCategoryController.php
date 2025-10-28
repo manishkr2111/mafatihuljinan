@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Gujarati\Category;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class GujaratiCategoryController extends Controller
 {
@@ -28,21 +29,16 @@ class GujaratiCategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $postType = $request->input('post_type', 'sahifas-shlulbayt');
-
-        $query = Category::whereNull('parent_id')->with('allChildren')->orderBy('sort_number');
-        //dd($query);
-        if (!empty($postType)) {
+        $postType = $request->input('post_type');
+        $query = Category::whereNull('parent_id')
+            ->with('allChildren')
+            ->orderBy('sort_number');
+        if ($postType) {
             $query->where('post_type', $postType);
         }
-
         $categories = $query->get();
-        //dd( $categories );
-
         return view('admin.gujarati.category.index', compact('categories', 'postType'));
     }
-
-
 
     /**
      * Show the form for creating a new category.
@@ -61,15 +57,21 @@ class GujaratiCategoryController extends Controller
     public function store(Request $request)
     {
         $post_type = $request->input('post_type', $request->post_type);
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|unique:gujarati_categories,slug',
             'description' => 'nullable|string',
             'sort_number' => 'nullable|integer',
             'parent_id' => 'nullable|exists:gujarati_categories,id',
         ]);
-
-        Category::create($request->all());
+        $model = getGujaratiModel($post_type);
+        if(!$model){
+            return redirect()->back()->with('error','Invalid Post Type');
+        }
+        $validated['slug'] = Str::slug($validated['slug'], '-');
+        $Category = Category::create($validated);
+        $Category->post_type = $post_type;
+        $Category->save();
         Cache::forget('gujarati_categories_' . $post_type);
 
         return redirect()->route('admin.gujarati.category.index')->with('success', 'Category created successfully.');
@@ -95,15 +97,22 @@ class GujaratiCategoryController extends Controller
         $category = Category::findOrFail($id);
         $post_type = $request->input('post_type', $request->post_type);
         Cache::forget('gujarati_categories_' . $post_type);
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|unique:gujarati_categories,slug,' . $category->id,
             'description' => 'nullable|string',
             'sort_number' => 'nullable|integer',
             'parent_id' => 'nullable|exists:gujarati_categories,id',
         ]);
+        $model = getGujaratiModel($post_type);
+        if(!$model){
+            return redirect()->back()->with('error','Invalid Post Type');
+        }
+        $validated['slug'] = Str::slug($validated['slug'], '-');     
 
-        $category->update($request->all());
+        $category->update($validated);
+        $category->post_type = $post_type;
+        $category->save();
 
         return redirect()->route('admin.gujarati.category.index')->with('success', 'Category updated successfully.');
     }
