@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use App\Models\Menu;
+use Illuminate\Validation\Rule;
 
 class MenuController extends Controller
 {
@@ -29,6 +30,11 @@ class MenuController extends Controller
             'menu_name' => 'required|string|max:255',
             'language'  => 'required|string|max:10',
             'sort_number' => 'required|integer',
+            'post_type'   => [
+                'required',
+                'string',
+                Rule::in(array_keys(commonPostTypeOptions())),
+            ],
         ]);
 
         try {
@@ -36,6 +42,7 @@ class MenuController extends Controller
                 'menu_name' => $request->menu_name,
                 'language'  => $request->language,
                 'sort_number' => $request->sort_number,
+                'post_type' => $request->post_type
             ]);
 
             return redirect()->route('admin.menus.index')->with('success', 'Menu created successfully!');
@@ -63,6 +70,11 @@ class MenuController extends Controller
             'menu_name' => 'required|string|max:255',
             'language'  => 'required|string|max:10',
             'sort_number' => 'required|integer',
+            'post_type'   => [
+                'required',
+                'string',
+                Rule::in(array_keys(commonPostTypeOptions())),
+            ],
         ]);
         //dd($request->sort_number);
         try {
@@ -70,6 +82,7 @@ class MenuController extends Controller
                 'menu_name' => $request->menu_name,
                 'language'  => $request->language,
                 'sort_number' => (int)$request->sort_number,
+                'post_type' => $request->post_type
             ]);
 
             return redirect()->route('admin.menus.index')->with('success', 'Menu updated successfully!');

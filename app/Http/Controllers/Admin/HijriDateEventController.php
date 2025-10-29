@@ -150,7 +150,7 @@ class HijriDateEventController extends Controller
         $date = $request->input('date', date('Y-m-d'));
         $time = $request->input('time', date("h:i:sa"));
         $ip = $request->input('ip', $request->ip());
-
+        $dayDifference = $request->day_diff;
         // Get user location based on IP
         $location = $this->getLocationFromIP($ip);
 
@@ -201,7 +201,9 @@ class HijriDateEventController extends Controller
                 $datediff = $datediff + 1;
             }
         }
-
+        if($dayDifference){
+            $datediff = $dayDifference;
+        }
         $datevar = new \DateTime($date);
         $datevar->modify($datediff . ' day');
         $datevar = $datevar->format('Y-m-d');
@@ -228,7 +230,7 @@ class HijriDateEventController extends Controller
         $date = $request->input('date', date('Y-m-d'));
         $time = $request->input('time', date("h:i:sa"));
         $ip = $request->input('ip', $request->ip());
-
+        $dayDifference = $request->day_diff;
         // Get user location based on IP
         $location = $this->getLocationFromIP($ip);
 
@@ -278,7 +280,9 @@ class HijriDateEventController extends Controller
                 $datediff = $datediff + 1;
             }
         }
-
+        if($dayDifference){
+            $datediff = $dayDifference;
+        }
         $datevar = new \DateTime($date);
         $datevar->modify($datediff . ' day');
         $datevar = $datevar->format('Y-m-d');
@@ -320,7 +324,7 @@ class HijriDateEventController extends Controller
     public function getRamadanDate(Request $request)
     {
         $dateParam = $request->input('date', date('Y-m-d'));
-
+        $dayDifference = $request->day_diff;
         $timezone = date_default_timezone_get();
         $date = new \DateTime("now", new \DateTimeZone($timezone));
         $currenttime = $date->format('h:i:s A');
@@ -380,7 +384,9 @@ class HijriDateEventController extends Controller
                 $datediff = $datediff + 1;
             }
         }
-
+        if($dayDifference){
+            $datediff = $dayDifference;
+        }
         $date->modify($datediff . ' day');
         $date = $date->format('Y-m-d');
 

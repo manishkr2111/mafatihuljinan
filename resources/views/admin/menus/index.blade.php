@@ -38,6 +38,7 @@
                     <th class="px-5 py-1 border-b border-gray-151">#</th>
                     <th class="px-2 py-1 border-b border-gray-151">Sort Number</th>
                     <th class="px-2 py-1 border-b border-gray-151">Menu Name</th>
+                    <th class="px-2 py-1 border-b border-gray-151">Post Type</th>
                     <th class="px-2 py-1 border-b border-gray-151">Language</th>
                     <th class="px-2 py-1 border-b border-gray-151">Action</th>
                 </tr>
@@ -51,6 +52,9 @@
 
                     <td class="px-6 py-3 text-[#034E7A]">{{ $menu->sort_number }}</td>
                     <td class="px-6 py-3 text-[#034E7A]">{{ $menu->menu_name }}</td>
+                    <td class="px-6 py-3 text-[#034E7A]">
+                        {{ commonPostTypeOptions()[$menu->post_type] ?? '-' }}
+                    </td>
                     <td class="px-6 py-3 text-[#034E7A] menu-language">{{ $menu->language }}</td>
                     <td class="px-6 py-3">
                         <a href="{{ route('admin.menus.edit', $menu->id) }}"

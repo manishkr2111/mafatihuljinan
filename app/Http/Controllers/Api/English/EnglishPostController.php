@@ -155,8 +155,10 @@ class EnglishPostController extends Controller
                 return response()->json([
                     'status' => true,
                     'message' => 'Data fetched successfully',
-                    'categories' => $parent_category,
-                    'posts' => $posts,
+                    'data' => [
+                        'categories' => $parent_category,
+                        'posts' => $posts,
+                    ]
                 ]);
             }
             $posts = $model::where('status', 'published')
@@ -175,8 +177,10 @@ class EnglishPostController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Data fetched successfully',
-                'categories' => $parent_category,
-                'posts' => $posts,
+                'data' => [
+                    'categories' => $parent_category,
+                    'posts' => $posts,
+                ]
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -238,7 +242,17 @@ class EnglishPostController extends Controller
         }
         $post = $model::where('id', $request->id)
             ->where('status', 'published')
-            ->first()->makeHidden(['created_at', 'updated_at', 'category_ids']);
+            ->first();
+        if ($post) {
+            $post->makeHidden(['created_at', 'updated_at', 'category_ids']);
+        } else {
+            // handle the case where the post is not found
+            return response()->json([
+                'status' => false,
+                'message' => 'Post not found or not published',
+                'data' => []
+            ], 404);
+        }
         $result = [
             'status' => true,
             'post_type' => 'Sahifas Ahlulbayt',

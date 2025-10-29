@@ -247,6 +247,107 @@
                 </div>
             </div>
 
+            <!-- word meanning for surah only -->
+            @if($postType == 'surah')
+            <!-- Word Meaning Section -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">
+                    <h2 class="text-xl font-semibold text-white flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Word Meanings
+                    </h2>
+                </div>
+
+                <div class="p-6 space-y-6">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full border border-gray-200 rounded-lg" id="wordMeaningTable">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-gray-700 font-semibold border">Word</th>
+                                    <th class="px-4 py-2 text-left text-gray-700 font-semibold border">Transliteration</th>
+                                    <th class="px-4 py-2 text-left text-gray-700 font-semibold border">Translation</th>
+                                    <th class="px-4 py-2 text-center text-gray-700 font-semibold border">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="wordMeaningBody">
+                                <tr>
+                                    <td class="border px-4 py-2">
+                                        <input type="text" name="word_meanings[0][word]" class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Word">
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <input type="text" name="word_meanings[0][transliteration]" class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Transliteration">
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <input type="text" name="word_meanings[0][translation]" class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Translation">
+                                    </td>
+                                    <td class="border px-4 py-2 text-center">
+                                        <button type="button" class="text-red-600 hover:text-red-800 remove-row"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <button type="button" id="addWordRow"
+                        class="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2">
+                        <i class="fa fa-plus"></i> Add Row
+                    </button>
+                </div>
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    // TinyMCE initialization (keep your existing code)
+                    tinymce.init({
+                        selector: 'textarea.tinymce-editor',
+                        height: 400,
+                        plugins: 'link image code lists table',
+                        toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright | bullist numlist | link image | code',
+                        license_key: 'gpl',
+                        menubar: true,
+                        branding: false
+                    });
+
+                    // Word meaning dynamic row logic
+                    let rowIndex = 1;
+                    const addBtn = document.getElementById('addWordRow');
+                    const tableBody = document.getElementById('wordMeaningBody');
+
+                    if (addBtn) {
+                        addBtn.addEventListener('click', function() {
+                            const newRow = document.createElement('tr');
+                            newRow.innerHTML = `
+                    <td class="border px-4 py-2">
+                        <input type="text" name="word_meanings[${rowIndex}][word]" class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Word">
+                    </td>
+                    <td class="border px-4 py-2">
+                        <input type="text" name="word_meanings[${rowIndex}][transliteration]" class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Transliteration">
+                    </td>
+                    <td class="border px-4 py-2">
+                        <input type="text" name="word_meanings[${rowIndex}][translation]" class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Translation">
+                    </td>
+                    <td class="border px-4 py-2 text-center">
+                        <button type="button" class="text-red-600 hover:text-red-800 remove-row"><i class="fa fa-trash"></i></button>
+                    </td>
+                `;
+                            tableBody.appendChild(newRow);
+                            rowIndex++;
+                        });
+
+                        // Handle row removal
+                        tableBody.addEventListener('click', function(e) {
+                            if (e.target.closest('.remove-row')) {
+                                e.target.closest('tr').remove();
+                            }
+                        });
+                    }
+                });
+            </script>
+
+            @endif
+
+
             <!-- Next Post & Internal Links Card -->
             <div class="bg-white rounded-xl shadow-md overflow-hidden">
                 <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">

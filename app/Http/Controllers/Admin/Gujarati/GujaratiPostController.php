@@ -158,6 +158,10 @@ class GujaratiPostController extends Controller
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type selected.'])->withInput();
         }
         $modelClass::create($data);
+
+        // updated menu time to retreve data in refresh content
+        lastDataUpdatedTime($data['post_type'],'gujarati');
+
         return redirect()->back()->with('success', 'Post created successfully.');
         return redirect()->route('admin.gujarati.post.index')->with('success', 'Post created successfully.');
     }
@@ -252,6 +256,9 @@ class GujaratiPostController extends Controller
         $gujaratiPost = $modelClass::find($id);
         $gujaratiPost->update($data);
 
+        // updated menu time to retreve data in refresh content
+        lastDataUpdatedTime($data['post_type'],'gujarati');
+
         return redirect()->back()->with('success', 'Post updated successfully.');
         return redirect()->route('admin.gujarati.post.index')->with('success', 'Post updated successfully.');
     }
@@ -269,6 +276,10 @@ class GujaratiPostController extends Controller
         }
         $post = $modelClass::findOrFail($id);
         $post->delete();
+
+        // updated menu time to retreve data in refresh content
+        lastDataUpdatedTime($postType,'gujarati');
+
         return redirect()->back()->with('success', 'Post deleted successfully.');
     }
 }

@@ -1,5 +1,19 @@
 <?php
 
+use App\Models\Menu;
+
+if (!function_exists('lastDataUpdatedTime')) {
+
+    function lastDataUpdatedTime($postType, $language = 'english')
+    {
+        $menus = Menu::where('post_type', $postType)->where('language', $language)->get();
+        foreach ($menus as $menu) {
+            $menu->last_data_updated_at = \Carbon\Carbon::now();
+            $menu->save();
+        }
+    }
+}
+
 if (!function_exists('greet_user')) {
     function greet_user($name)
     {
@@ -31,6 +45,34 @@ if (!function_exists('getEnglishModel')) {
     }
 }
 
+if (!function_exists('commonPostTypeOptions')) {
+    /**
+     * Return all post type options as [value => label]
+     *
+     * @return array
+     */
+    function commonPostTypeOptions()
+    {
+        return [
+            'sahifas-ahlulbayt' => 'Sahifas Ahlulbayt',
+            'surah' => 'Surah',
+            'daily-dua' => 'Daily Dua',
+            'dua' => 'Dua',
+            'amaal' => 'Amaal',
+            'travel-ziyarat' => 'Travel Ziyarat',
+            'ziyarat' => 'Ziyarat',
+            'essential-supplications' => 'Essential Supplications',
+            'amaal-namaz' => 'Amaal Namaz',
+            'burial-acts-prayers' => 'Burial Acts Prayers',
+            'munajat' => 'Munajat',
+            'salaat-namaz' => 'Salaat Namaz',
+            'salwaat' => 'Salwaat',
+            'tasbih' => 'Tasbih',
+
+        ];
+    }
+}
+
 if (!function_exists('EnglishPostTypeOptions')) {
     /**
      * Return all post type options as [value => label]
@@ -48,12 +90,12 @@ if (!function_exists('EnglishPostTypeOptions')) {
             'travel-ziyarat' => 'Travel Ziyarat',
             'ziyarat' => 'Ziyarat',
             'essential-supplications' => 'Essential Supplications',
-            'amaal-namaz'=>'Amaal Namaz',
-            'burial-acts-prayers'=> 'Burial Acts Prayers',
-            'munajat'=>'Munajat',
-            'salaat-namaz'=>'Salaat Namaz',
-            'salwaat'=>'Salwaat',
-            'tasbih'=>'Tasbih',
+            'amaal-namaz' => 'Amaal Namaz',
+            'burial-acts-prayers' => 'Burial Acts Prayers',
+            'munajat' => 'Munajat',
+            'salaat-namaz' => 'Salaat Namaz',
+            'salwaat' => 'Salwaat',
+            'tasbih' => 'Tasbih',
 
         ];
     }
@@ -111,7 +153,7 @@ if (!function_exists('GujaratiPostTypeOptions')) {
      */
     function GujaratiPostTypeOptions()
     {
-         return [
+        return [
             'sahifas-ahlulbayt' => 'Sahifas Ahlulbayt',
             'surah' => 'Surah',
             'daily-dua' => 'Daily Dua',
@@ -120,12 +162,12 @@ if (!function_exists('GujaratiPostTypeOptions')) {
             'travel-ziyarat' => 'Travel Ziyarat',
             'ziyarat' => 'Ziyarat',
             'essential-supplications' => 'Essential Supplications',
-            'amaal-namaz'=>'Amaal Namaz',
-            'burial-acts-prayers'=> 'Burial Acts Prayers',
-            'munajat'=>'Munajat',
-            'salaat-namaz'=>'Salaat Namaz',
-            'salwaat'=>'Salwaat',
-            'tasbih'=>'Tasbih',
+            'amaal-namaz' => 'Amaal Namaz',
+            'burial-acts-prayers' => 'Burial Acts Prayers',
+            'munajat' => 'Munajat',
+            'salaat-namaz' => 'Salaat Namaz',
+            'salwaat' => 'Salwaat',
+            'tasbih' => 'Tasbih',
         ];
     }
 }

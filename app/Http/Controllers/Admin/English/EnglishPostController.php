@@ -159,6 +159,10 @@ class EnglishPostController extends Controller
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type selected.'])->withInput();
         }
         $modelClass::create($data);
+
+        // updated menu time to retreve data in refresh content
+        lastDataUpdatedTime($data['post_type'],'english');
+
         return redirect()->back()->with('success', 'Post created successfully.');
         return redirect()->route('admin.english.post.index')->with('success', 'Post created successfully.');
     }
@@ -253,6 +257,9 @@ class EnglishPostController extends Controller
         $englishPost = $modelClass::find($id);
         $englishPost->update($data);
 
+        // updated menu time to retreve data in refresh content
+        lastDataUpdatedTime($data['post_type'],'english');
+
         return redirect()->back()->with('success', 'Post updated successfully.');
         return redirect()->route('admin.english.post.index')->with('success', 'Post updated successfully.');
     }
@@ -270,6 +277,10 @@ class EnglishPostController extends Controller
         }
         $post = $modelClass::findOrFail($id);
         $post->delete();
+
+        // updated menu time to retreve data in refresh content
+        lastDataUpdatedTime($postType,'english');
+
         return redirect()->back()->with('success', 'Post deleted successfully.');
     }
 }
