@@ -2,12 +2,32 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\MarqueTextController;
-use App\Http\Controllers\Api\MenuController;
-use App\Http\Controllers\Api\HijriDateEventController;
+use App\Http\Controllers\Api\Common\MarqueTextController;
+use App\Http\Controllers\Api\Common\MenuController;
+use App\Http\Controllers\Api\Common\AuthController;
+use App\Http\Controllers\Api\Common\HijriDateEventController;
 use App\Http\Controllers\Api\English\EnglishCategoryController;
 use App\Http\Controllers\Api\English\EnglishPostController;
+use App\Http\Controllers\Api\Common\CustomUserPostController;
+use App\Http\Controllers\Api\Common\FavoriteController;
 
+
+// common Api's
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/user/details', [AuthController::class, 'details']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::post('/create/custom-post', [CustomUserPostController::class, 'store']);
+    Route::put('/update/custom-posts/{id}', [CustomUserPostController::class, 'update']);
+
+    // favprites
+    Route::post('/create/favorite-post', [FavoriteController::class, 'store']);
+    Route::get('/all/favorite/posts', [FavoriteController::class, 'getAllFavorites']);
+    Route::post('/favorites/delete', [FavoriteController::class, 'destroy']);
+
+});
 
 Route::get('/user', function (Request $request) {
     return $request->user();

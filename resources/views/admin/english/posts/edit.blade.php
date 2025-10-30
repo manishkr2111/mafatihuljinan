@@ -88,7 +88,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Slug</label>
-                            <div class="flex items-center border border-gray-300 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-[#034E7A]">
+                            <div class="flex flex-wrap sm:flex-nowrap items-center border border-gray-300 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-[#034E7A]">
                                 <span class="text-gray-500">https://dev.mafatihuljinan.org/</span>
                                 <input type="text" name="slug" value="{{ old('slug', $englishPost->slug) }}"
                                     class="flex-1 bg-transparent focus:outline-none text-blue-600 font-medium ml-1" disabled>
@@ -109,7 +109,7 @@
                         </h2>
                     </div>
                     <div class="p-6">
-                        <div class="grid grid-cols-2 md:grid-cols-2 gap-3 border p-4 rounded max-h-[300px] overflow-y-auto" >
+                        <div class="grid md:grid-cols-2 gap-3 border p-4 rounded max-h-[300px] overflow-y-auto">
                             @include('admin.english.posts.partials.edit-category-checkbox', [
                             'categories' => $categories,
                             'level' => 0,
@@ -245,6 +245,89 @@
                     </div>
                 </div>
 
+                <!-- word meanning for surah only -->
+                @if($postType == 'surah')
+                <!-- Word Meaning Section -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">
+                        <h2 class="text-xl font-semibold text-white flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Word Meanings
+                        </h2>
+                    </div>
+
+                    <div class="p-6 space-y-6">
+                        <div class="overflow-x-auto overflow-y-auto max-h-[300px]">
+                            <table class="min-w-full border border-gray-200 rounded-lg" id="wordMeaningTable">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-gray-700 font-semibold border">Word</th>
+                                        <th class="px-4 py-2 text-left text-gray-700 font-semibold border">Transliteration</th>
+                                        <th class="px-4 py-2 text-left text-gray-700 font-semibold border">Translation</th>
+                                        <th class="px-4 py-2 text-center text-gray-700 font-semibold border">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="wordMeaningBody">
+                                    @if(!empty($wordMeanings))
+                                    @foreach($wordMeanings as $index => $meaning)
+                                    <tr>
+                                        <td class="border px-4 py-2">
+                                            <input type="text" name="word_meanings[{{ $index }}][word]"
+                                                value="{{ $meaning['word'] ?? '' }}"
+                                                class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Word">
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="text" name="word_meanings[{{ $index }}][transliteration]"
+                                                value="{{ $meaning['transliteration'] ?? '' }}"
+                                                class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Transliteration">
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="text" name="word_meanings[{{ $index }}][translation]"
+                                                value="{{ $meaning['translation'] ?? '' }}"
+                                                class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Translation">
+                                        </td>
+                                        <td class="border px-4 py-2 text-center">
+                                            <button type="button" class="text-red-600 hover:text-red-800 remove-row">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    @else
+                                    <tr>
+                                        <td class="border px-4 py-2">
+                                            <input type="text" name="word_meanings[0][word]"
+                                                class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Word">
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="text" name="word_meanings[0][transliteration]"
+                                                class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Transliteration">
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="text" name="word_meanings[0][translation]"
+                                                class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Translation">
+                                        </td>
+                                        <td class="border px-4 py-2 text-center">
+                                            <button type="button" class="text-red-600 hover:text-red-800 remove-row">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                        <button type="button" id="addWordRow"
+                            class="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2">
+                            <i class="fa fa-plus"></i> Add Row
+                        </button>
+                    </div>
+                </div>
+                @endif
                 <!-- Next Post & Internal Links Card -->
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
                     <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">
@@ -315,4 +398,52 @@
         });
     });
 </script>
+@if($postType == 'surah')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let existingRows = document.querySelectorAll('#wordMeaningBody tr').length;
+        let rowIndex = existingRows > 0 ? existingRows : 1;
+
+        const addBtn = document.getElementById('addWordRow');
+        const tableBody = document.getElementById('wordMeaningBody');
+
+        if (addBtn) {
+            addBtn.addEventListener('click', function() {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                                    <td class="border px-4 py-2">
+                                        <input type="text" name="word_meanings[${rowIndex}][word]" 
+                                            class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" 
+                                            placeholder="Word">
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <input type="text" name="word_meanings[${rowIndex}][transliteration]" 
+                                            class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" 
+                                            placeholder="Transliteration">
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <input type="text" name="word_meanings[${rowIndex}][translation]" 
+                                            class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" 
+                                            placeholder="Translation">
+                                    </td>
+                                    <td class="border px-4 py-2 text-center">
+                                        <button type="button" class="text-red-600 hover:text-red-800 remove-row">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                `;
+                tableBody.appendChild(newRow);
+                rowIndex++;
+            });
+        }
+
+        // Remove row functionality
+        tableBody.addEventListener('click', function(e) {
+            if (e.target.closest('.remove-row')) {
+                e.target.closest('tr').remove();
+            }
+        });
+    });
+</script>
+@endif
 @endsection

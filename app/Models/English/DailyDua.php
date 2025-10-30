@@ -10,6 +10,8 @@ class DailyDua extends Model
 
     protected $fillable = [
         'title',
+        'wordpress_id',
+        'slug',
         'search_text',
         'redirect_deep_link',
         'roman_data',

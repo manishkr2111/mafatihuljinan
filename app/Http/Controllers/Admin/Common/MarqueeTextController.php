@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Common;
 use App\Http\Controllers\Controller; // Important!
 use App\Models\MarqueeText;
 use Illuminate\Http\Request;

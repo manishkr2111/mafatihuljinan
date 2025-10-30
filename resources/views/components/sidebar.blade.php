@@ -1,13 +1,10 @@
-<aside class="w-64 pl-4 bg-white shadow h-screen flex flex-col" id="sidebar">
+<aside class="w-64 pl-4 bg-white shadow h-screen flex flex-col h-full">
     <!-- Sidebar Header -->
     <div class="flex items-center justify-between px-4 py-3 border-b">
         <div class="flex items-center space-x-2">
             <img src="{{ asset('storage/website/mafa-logo.jpg') }}" alt="Logo" class="w-8 h-8 rounded">
             <span class="font-semibold text-lg">Mafatihuljinan</span>
         </div>
-        <button id="closeSidebar" class="text-gray-500 hover:text-gray-700">
-            <i class="fas fa-times"></i>
-        </button>
     </div>
 
     <!-- Sidebar Content -->

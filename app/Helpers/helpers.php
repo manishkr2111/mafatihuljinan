@@ -107,7 +107,7 @@ if (!function_exists('isfavoritePost')) {
         $user_id = auth()->id();
 
         // Get all favorites for this user, post type, and language
-        $user_fav_post_ids = \App\Models\Favorite::where('user_id', $user_id)
+        $user_fav_post_ids = \App\Models\Common\Favorite::where('user_id', $user_id)
             ->where('post_type', $post_type)
             ->where('language', $language)
             ->pluck('post_id')
@@ -188,6 +188,19 @@ if (!function_exists('HindiPostTypeOptions')) {
             'hindi-travel-ziyarat' => 'Travel Ziyarat',
             'hindi-ziyarat' => 'Ziyarat',
             // add more post types here in future
+        ];
+    }
+}
+
+
+if (!function_exists('validLanguages')) {
+    function validLanguages(): array
+    {
+        return [
+            'english',
+            'gujarati',
+            'hindi',
+            'french',
         ];
     }
 }

@@ -10,6 +10,8 @@ class Surah extends Model
 
     protected $fillable = [
         'title',
+        'wordpress_id',
+        'slug',
         'search_text',
         'redirect_deep_link',
         'roman_data',
@@ -29,6 +31,7 @@ class Surah extends Model
         'translation_audio_url',
         'translation_content',
         'simple_translation',
+        'word_meanings',
         'next_post_title',
         'next_post_url',
         'internal_link',

@@ -1,15 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\Common\AuthController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Admin\MenuController;
-use App\Http\Controllers\Admin\HijriDateEventController;
-use App\Http\Controllers\Admin\MarqueeTextController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\Common\MenuController;
+use App\Http\Controllers\Admin\Common\HijriDateEventController;
+use App\Http\Controllers\Admin\Common\MarqueeTextController;
+use App\Http\Controllers\Admin\Common\DashboardController;
 use App\Http\Controllers\Admin\English\EnglishPostController;
 use App\Http\Controllers\Admin\Gujarati\GujaratiPostController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\Common\UserController;
 
 
 Route::get('/greet', function () {

@@ -261,7 +261,7 @@
                 </div>
 
                 <div class="p-6 space-y-6">
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto overflow-y-auto max-h-[300px]">
                         <table class="min-w-full border border-gray-200 rounded-lg" id="wordMeaningTable">
                             <thead class="bg-gray-100">
                                 <tr>
@@ -296,55 +296,6 @@
                     </button>
                 </div>
             </div>
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    // TinyMCE initialization (keep your existing code)
-                    tinymce.init({
-                        selector: 'textarea.tinymce-editor',
-                        height: 400,
-                        plugins: 'link image code lists table',
-                        toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright | bullist numlist | link image | code',
-                        license_key: 'gpl',
-                        menubar: true,
-                        branding: false
-                    });
-
-                    // Word meaning dynamic row logic
-                    let rowIndex = 1;
-                    const addBtn = document.getElementById('addWordRow');
-                    const tableBody = document.getElementById('wordMeaningBody');
-
-                    if (addBtn) {
-                        addBtn.addEventListener('click', function() {
-                            const newRow = document.createElement('tr');
-                            newRow.innerHTML = `
-                    <td class="border px-4 py-2">
-                        <input type="text" name="word_meanings[${rowIndex}][word]" class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Word">
-                    </td>
-                    <td class="border px-4 py-2">
-                        <input type="text" name="word_meanings[${rowIndex}][transliteration]" class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Transliteration">
-                    </td>
-                    <td class="border px-4 py-2">
-                        <input type="text" name="word_meanings[${rowIndex}][translation]" class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Translation">
-                    </td>
-                    <td class="border px-4 py-2 text-center">
-                        <button type="button" class="text-red-600 hover:text-red-800 remove-row"><i class="fa fa-trash"></i></button>
-                    </td>
-                `;
-                            tableBody.appendChild(newRow);
-                            rowIndex++;
-                        });
-
-                        // Handle row removal
-                        tableBody.addEventListener('click', function(e) {
-                            if (e.target.closest('.remove-row')) {
-                                e.target.closest('tr').remove();
-                            }
-                        });
-                    }
-                });
-            </script>
-
             @endif
 
 
@@ -417,4 +368,43 @@
         });
     });
 </script>
+@if($postType == 'surah')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Word meaning dynamic row logic
+        let rowIndex = 1;
+        const addBtn = document.getElementById('addWordRow');
+        const tableBody = document.getElementById('wordMeaningBody');
+
+        if (addBtn) {
+            addBtn.addEventListener('click', function() {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td class="border px-4 py-2">
+                        <input type="text" name="word_meanings[${rowIndex}][word]" class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Word">
+                    </td>
+                    <td class="border px-4 py-2">
+                        <input type="text" name="word_meanings[${rowIndex}][transliteration]" class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Transliteration">
+                    </td>
+                    <td class="border px-4 py-2">
+                        <input type="text" name="word_meanings[${rowIndex}][translation]" class="w-full border-gray-300 rounded px-2 py-1 focus:ring-[#034E7A]" placeholder="Translation">
+                    </td>
+                    <td class="border px-4 py-2 text-center">
+                        <button type="button" class="text-red-600 hover:text-red-800 remove-row"><i class="fa fa-trash"></i></button>
+                    </td>
+                `;
+                tableBody.appendChild(newRow);
+                rowIndex++;
+            });
+
+            // Handle row removal
+            tableBody.addEventListener('click', function(e) {
+                if (e.target.closest('.remove-row')) {
+                    e.target.closest('tr').remove();
+                }
+            });
+        }
+    });
+</script>
+@endif
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\English;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\English\EnglishCategory;
+use Illuminate\Support\Str;
 
 class EnglishPostController extends Controller
 {
@@ -153,13 +154,16 @@ class EnglishPostController extends Controller
             $data['category_ids'] = json_encode($data['category_ids']);
         }*/
         $data['category_ids'] = $data['category_ids'] ?? [];
+        $data['word_meanings'] = json_encode($request->word_meanings);
 
         $modelClass = getEnglishModel($data['post_type']);
         if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type selected.'])->withInput();
         }
-        $modelClass::create($data);
-
+        $post = $modelClass::create($data);
+        $slug = Str::slug($data['title']) . '-' . $post->id;
+        $post->update(['slug' => $slug]);
+        
         // updated menu time to retreve data in refresh content
         lastDataUpdatedTime($data['post_type'],'english');
 
@@ -188,7 +192,9 @@ class EnglishPostController extends Controller
 
         $selectedIds = old('category_ids', $englishPost->category_ids ?? []);
 
-        return view('admin.english.posts.edit', compact('englishPost', 'categories', 'selectedIds', 'postType'));
+        $wordMeanings = json_decode($englishPost->word_meanings, true) ?? [];
+
+        return view('admin.english.posts.edit', compact('englishPost', 'categories', 'selectedIds', 'postType','wordMeanings'));
     }
 
 
@@ -248,7 +254,7 @@ class EnglishPostController extends Controller
         $data['translation_4line'] = $request->has('translation_4line') ? 1 : 0;
 
         $data['category_ids'] = $data['category_ids'] ?? [];
-
+        $data['word_meanings'] = json_encode($request->word_meanings);
         $postType = $data['post_type'];
         $modelClass = getEnglishModel($postType);
         if (!$modelClass) {

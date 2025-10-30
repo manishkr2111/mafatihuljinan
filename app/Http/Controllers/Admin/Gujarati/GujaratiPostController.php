@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Gujarati;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Gujarati\Category;
+use Illuminate\Support\Str;
 
 class GujaratiPostController extends Controller
 {
@@ -152,12 +153,14 @@ class GujaratiPostController extends Controller
             $data['category_ids'] = json_encode($data['category_ids']);
         }*/
         $data['category_ids'] = $data['category_ids'] ?? [];
-
+        $data['word_meanings'] = json_encode($request->word_meanings);
         $modelClass = getGujaratiModel($data['post_type']);
         if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type selected.'])->withInput();
         }
-        $modelClass::create($data);
+        $post = $modelClass::create($data);
+        $slug = Str::slug($data['title']) . '-' . $post->id;
+        $post->update(['slug' => $slug]);
 
         // updated menu time to retreve data in refresh content
         lastDataUpdatedTime($data['post_type'],'gujarati');
@@ -186,8 +189,8 @@ class GujaratiPostController extends Controller
             ->get();
 
         $selectedIds = old('category_ids', $Post->category_ids ?? []);
-
-        return view('admin.gujarati.posts.edit', compact('Post', 'categories', 'selectedIds', 'postType'));
+        $wordMeanings = json_decode($Post->word_meanings, true) ?? [];
+        return view('admin.gujarati.posts.edit', compact('Post', 'categories', 'selectedIds', 'postType','wordMeanings'));
     }
 
 
@@ -247,14 +250,14 @@ class GujaratiPostController extends Controller
         $data['translation_4line'] = $request->has('translation_4line') ? 1 : 0;
 
         $data['category_ids'] = $data['category_ids'] ?? [];
-
+        $data['word_meanings'] = json_encode($request->word_meanings);
         $postType = $data['post_type'];
         $modelClass = getGujaratiModel($postType);
         if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type selected.'])->withInput();
         }
-        $gujaratiPost = $modelClass::find($id);
-        $gujaratiPost->update($data);
+        $Post = $modelClass::find($id);
+        $Post->update($data);
 
         // updated menu time to retreve data in refresh content
         lastDataUpdatedTime($data['post_type'],'gujarati');

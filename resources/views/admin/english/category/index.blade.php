@@ -23,28 +23,29 @@
 
 
     </form>
-
-    <table class="w-full border border-gray-200">
-        <thead class="bg-gray-100">
-            <tr>
-                <th class="p-3 border">ID</th>
-                <th class="p-3 border">Name</th>
-                <th class="p-3 border">Slug</th>
-                <th class="p-3 border">Post Type</th>
-                <th class="p-3 border">Parent</th>
-                <th class="p-3 border">Sort</th>
-                <th class="p-3 border">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($categories as $category)
-            @include('admin.english.category.partials.category-row', ['category' => $category, 'level' => 0])
-            @empty
-            <tr>
-                <td colspan="7" class="text-center p-4 text-gray-500">No categories found.</td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="w-full border border-gray-200">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="p-3 border">ID</th>
+                    <th class="p-3 border">Name</th>
+                    <th class="p-3 border">Slug</th>
+                    <th class="p-3 border">Post Type</th>
+                    <th class="p-3 border">Parent</th>
+                    <th class="p-3 border">Sort</th>
+                    <th class="p-3 border">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($categories as $category)
+                @include('admin.english.category.partials.category-row', ['category' => $category, 'level' => 0])
+                @empty
+                <tr>
+                    <td colspan="7" class="text-center p-4 text-gray-500">No categories found.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
 @endsection
