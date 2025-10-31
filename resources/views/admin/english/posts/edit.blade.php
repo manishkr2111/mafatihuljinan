@@ -361,7 +361,7 @@
 
                 <!-- Action Buttons -->
                 <div class="flex flex-wrap gap-4 justify-end bg-white rounded-xl shadow-md p-6">
-                    <a href="{{ route('admin.english.post.index') }}"
+                    <a href="{{ route('admin.english.post.index' , ['post_type' => $postType]) }}"
                         class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-semibold flex items-center gap-2">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

@@ -204,3 +204,20 @@ if (!function_exists('validLanguages')) {
         ];
     }
 }
+
+if (!function_exists('getModelByLanguageAndType')) {
+    function getModelByLanguageAndType($language, $postType)
+    {
+        switch (strtolower($language)) {
+            case 'gujarati':
+                return getGujaratiModel($postType);
+            case 'english':
+                return getEnglishModel($postType);
+            // case 'arabic':
+            //     return getArabicModel($postType);
+            default:
+                return null;
+        }
+    }
+}
+

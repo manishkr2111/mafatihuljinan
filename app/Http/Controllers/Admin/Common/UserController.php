@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\Admin\Common;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Common\Favorite;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,11 +18,31 @@ class UserController extends Controller
         return view('admin.users.index', compact('users'));
     }
 
-    // UserController.php
-    public function show(User $user)
+    // UserController
+    public function Details(User $user)
     {
-        return view('admin.users.details', compact('user'));
+        $FavoritePosts = Favorite::where('user_id', $user->id)->get();
+
+        // Attach post data dynamically
+        $FavoritePosts->transform(function ($fav) {
+            $modelClass = getModelByLanguageAndType($fav->language, $fav->post_type);
+            if ($modelClass && class_exists($modelClass)) {
+                $fav->post = $modelClass::find($fav->post_id);
+            } else {
+                $fav->post = null;
+            }
+            return $fav;
+        });
+
+        // Group by language (only those with post data)
+        $GroupedFavorites = $FavoritePosts
+            ->filter(fn($fav) => $fav->post) // skip missing posts
+            ->groupBy('language');
+
+        return view('admin.users.details', compact('user', 'GroupedFavorites'));
     }
+
+
 
     // Show the edit form
     public function edit(User $user)
@@ -38,13 +60,13 @@ class UserController extends Controller
             'password' => 'nullable|string|min:6',
         ]);
 
-        if(Auth::user()->role !== 'admin') {
+        if (Auth::user()->role !== 'admin') {
             return redirect()->back()->with('error', 'you do not have permission to update users.');
         }
-        if(Auth::user()->id === $user->id && $request->email !== $user->email) {
+        if (Auth::user()->id === $user->id && $request->email !== $user->email) {
             return redirect()->back()->with('error', 'you cannot change your own email.');
         }
-        if(Auth::user()->id === $user->id && $request->role !== $user->role) {
+        if (Auth::user()->id === $user->id && $request->role !== $user->role) {
             return redirect()->back()->with('error', 'you cannot change your own role.');
         }
         $user->name = $request->name;

@@ -13,7 +13,7 @@ class MenuController extends Controller
         $language = $request->get('language', 'english'); // default to English
         try {
             $menus = Menu::where('language', $language)->orderBy('sort_number')
-                ->select('id', 'menu_name', 'last_data_updated_at')
+                ->select('id', 'menu_name', 'post_type','last_data_updated_at')
                 ->get();
             return response()->json([
                 'status' => true,
