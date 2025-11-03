@@ -244,7 +244,7 @@ class EnglishPostController extends Controller
             ->where('status', 'published')
             ->first();
         if ($post) {
-            $post->makeHidden(['created_at', 'updated_at', 'category_ids','sort_number']);
+            $post->makeHidden(['created_at', 'updated_at', 'category_ids', 'sort_number']);
         } else {
             // handle the case where the post is not found
             return response()->json([
@@ -297,9 +297,11 @@ class EnglishPostController extends Controller
         ];
         // Convert post to array and add cData inside
         $postArray = $post->toArray();
-        
+
         $postArray['cData'] = $cData;
-        $postArray['WordMeanings'] = json_decode($postArray['word_meanings'], true) ?? [];
+        if ($post_type == 'surah') {
+            $postArray['WordMeanings'] = json_decode($postArray['word_meanings'], true) ?? [];
+        }
         // unset the unnecessary fields
         unset(
             $postArray['arabic_content'],
@@ -379,12 +381,30 @@ class EnglishPostController extends Controller
                 if ($islyrics == false) {
                     // dd($linecount);
                     while ($linecount > 0) {
+                        $filtereData = $paragraphs[$count] ?? '';
+                        $tafsir = "";
+                        $search_text = [];
+
+                        if (preg_match('/tafsir\s*=\s*(\d+)/i', $filtereData, $match)) {
+                            $tafsir = $match[1];
+                            $paragraphs[$count] = trim(preg_replace('/["\'\s-]*tafsir\s*=\s*\d+["\'\s-]*/i', '', $filtereData));
+                        }
+
+                        if (preg_match('/search_text\s*=\s*\[([^\]]+)\]/i', $paragraphs[$count], $match)) {
+                            // Split by comma and trim
+                            $search_text = array_map('trim', explode(',', $match[1]));
+                            // Remove the search_text part from the line
+                            $paragraphs[$count] = preg_replace('/["\'\s-]*search_text\s*=\s*\[[^\]]+\]["\'\s-]*/i', '', $paragraphs[$count]);
+                        }
+
                         $data[] = [
                             'time' => '',
                             'arabic' => $paragraphs[$count] ?? '',
                             'translitration' => $paragraphs[$count + 1] ?? '',
                             'translation' => $paragraphs[$count + 2] ?? '',
-                            'english' => ''
+                            'english' => '',
+                            'tafsir' => $tafsir,
+                            'search_text' => $search_text
                         ];
                         //dd($paragraphs[$count + 3]);
                         $linecount -= 3;

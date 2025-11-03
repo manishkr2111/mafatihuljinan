@@ -328,6 +328,10 @@
                     </div>
                 </div>
                 @endif
+                @php
+                $baseUrl = rtrim(config('app.url'), '/') . '/';
+                @endphp
+
                 <!-- Next Post & Internal Links Card -->
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
                     <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">
@@ -347,13 +351,25 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">Next Post URL</label>
-                                <input type="text" name="next_post_url" value="{{ old('next_post_url', $englishPost->next_post_url) }}"
-                                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
+                                <div class="flex items-center rounded-lg overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-[#034E7A] bg-white transition">
+                                    <span class="bg-gray-100 text-gray-600 px-3 py-3 text-sm whitespace-nowrap select-none">
+                                        {{ $baseUrl }}
+                                    </span>
+                                    <input type="text" name="next_post_url" value="{{ old('next_post_url', $englishPost->next_post_url) }}" placeholder="enter-slug-here"
+                                        class="w-full px-3 py-3 text-gray-800 text-sm focus:outline-none" />
+                                </div>
                             </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Internal Link</label>
-                                <input type="text" name="internal_link" value="{{ old('internal_link', $englishPost->internal_link) }}"
-                                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
+                            <div class="mb-6">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    Internal Link
+                                </label>
+                                <div class="flex items-center rounded-lg overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-[#034E7A] bg-white transition">
+                                    <span class="bg-gray-100 text-gray-600 px-3 py-3 text-sm whitespace-nowrap select-none">
+                                        {{ $baseUrl }}
+                                    </span>
+                                    <input type="text" name="internal_link" value="{{ old('internal_link', $englishPost->internal_link) }}" placeholder="enter-slug-here"
+                                        class="w-full px-3 py-3 text-gray-800 text-sm focus:outline-none" />
+                                </div>
                             </div>
                         </div>
                     </div>

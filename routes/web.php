@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Common\DashboardController;
 use App\Http\Controllers\Admin\English\EnglishPostController;
 use App\Http\Controllers\Admin\Gujarati\GujaratiPostController;
 use App\Http\Controllers\Admin\Common\UserController;
+use App\Http\Controllers\Admin\Common\TafsirDataController;
 
 
 Route::get('/greet', function () {
@@ -76,6 +77,14 @@ Route::middleware(['auth','role:admin,editor'])->prefix('admin')->name('admin.')
     Route::get('menus/{menu}/edit', [MenuController::class, 'edit'])->name('menus.edit');
     Route::put('menus/{menu}', [MenuController::class, 'update'])->name('menus.update');
     Route::delete('menus/{menu}', [MenuController::class, 'destroy'])->name('menus.destroy');
+
+    Route::get('/tafsir', [TafsirDataController::class, 'index'])->name('tafsir.index');
+    Route::get('/tafsir/create', [TafsirDataController::class, 'create'])->name('tafsir.create');
+    Route::post('/tafsir/store', [TafsirDataController::class, 'store'])->name('tafsir.store');
+    Route::get('/tafsir/edit/{id}', [TafsirDataController::class, 'edit'])->name('tafsir.edit');
+    Route::post('/tafsir/update/{id}', [TafsirDataController::class, 'update'])->name('tafsir.update');
+    Route::delete('/tafsir/delete/{id}', [TafsirDataController::class, 'destroy'])->name('tafsir.destroy');
+
 
     Route::get('/marquee', [MarqueeTextController::class, 'index'])->name('marquee.index');
     Route::post('/marquee/store', [MarqueeTextController::class, 'store'])->name('marquee.store');

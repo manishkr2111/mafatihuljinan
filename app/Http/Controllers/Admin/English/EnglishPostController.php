@@ -160,12 +160,52 @@ class EnglishPostController extends Controller
         if (!$modelClass) {
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type selected.'])->withInput();
         }
+
+
+        foreach (['internal_link', 'next_post_url'] as $field) {
+            if (!empty($data[$field])) {
+                $data[$field] = Str::slug($data[$field]);
+            }
+        }
+        //  If internal_link exists, copy content from that post
+        if (!empty($data['internal_link'])) {
+            $linkedPost = $modelClass::where('slug', $data['internal_link'])->first();
+            if ($linkedPost) {
+                // Copy specific fields you want from linked post
+                $copyFields = [
+                    'arabic_content',
+                    'arabic_audio_url',
+                    'simple_arabic',
+                    'arabic_4line',
+                    'arabic_islrc',
+                    'transliteration_content',
+                    'transliteration_audio_url',
+                    'simple_transliteration',
+                    'transliteration_4line',
+                    'transliteration_islrc',
+                    'translation_content',
+                    'translation_audio_url',
+                    'simple_translation',
+                    'translation_4line',
+                    'translation_islrc',
+                    'category_ids',
+                    'word_meanings'
+                ];
+
+                foreach ($copyFields as $field) {
+                    $data[$field] = $linkedPost->$field;
+                }
+            }
+        }
         $post = $modelClass::create($data);
         $slug = Str::slug($data['title']) . '-' . $post->id;
-        $post->update(['slug' => $slug]);
-        
+        $post->update([
+            'slug' => $slug,
+            'sort_number' => $post->id,
+        ]);
+
         // updated menu time to retreve data in refresh content
-        lastDataUpdatedTime($data['post_type'],'english');
+        lastDataUpdatedTime($data['post_type'], 'english');
 
         return redirect()->back()->with('success', 'Post created successfully.');
         return redirect()->route('admin.english.post.index')->with('success', 'Post created successfully.');
@@ -194,7 +234,7 @@ class EnglishPostController extends Controller
 
         $wordMeanings = json_decode($englishPost->word_meanings, true) ?? [];
 
-        return view('admin.english.posts.edit', compact('englishPost', 'categories', 'selectedIds', 'postType','wordMeanings'));
+        return view('admin.english.posts.edit', compact('englishPost', 'categories', 'selectedIds', 'postType', 'wordMeanings'));
     }
 
 
@@ -261,10 +301,45 @@ class EnglishPostController extends Controller
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type selected.'])->withInput();
         }
         $englishPost = $modelClass::find($id);
+        foreach (['internal_link', 'next_post_url'] as $field) {
+            if (!empty($data[$field])) {
+                $data[$field] = Str::slug($data[$field]);
+            }
+        }
+        //  If internal_link exists, copy content from that post
+        if (!empty($data['internal_link'])) {
+            $linkedPost = $modelClass::where('slug', $data['internal_link'])->first();
+            if ($linkedPost) {
+                // Copy specific fields you want from linked post
+                $copyFields = [
+                    'arabic_content',
+                    'arabic_audio_url',
+                    'simple_arabic',
+                    'arabic_4line',
+                    'arabic_islrc',
+                    'transliteration_content',
+                    'transliteration_audio_url',
+                    'simple_transliteration',
+                    'transliteration_4line',
+                    'transliteration_islrc',
+                    'translation_content',
+                    'translation_audio_url',
+                    'simple_translation',
+                    'translation_4line',
+                    'translation_islrc',
+                    'category_ids',
+                    'word_meanings'
+                ];
+
+                foreach ($copyFields as $field) {
+                    $data[$field] = $linkedPost->$field;
+                }
+            }
+        }
         $englishPost->update($data);
 
         // updated menu time to retreve data in refresh content
-        lastDataUpdatedTime($data['post_type'],'english');
+        lastDataUpdatedTime($data['post_type'], 'english');
 
         return redirect()->back()->with('success', 'Post updated successfully.');
         return redirect()->route('admin.english.post.index')->with('success', 'Post updated successfully.');
@@ -285,7 +360,7 @@ class EnglishPostController extends Controller
         $post->delete();
 
         // updated menu time to retreve data in refresh content
-        lastDataUpdatedTime($postType,'english');
+        lastDataUpdatedTime($postType, 'english');
 
         return redirect()->back()->with('success', 'Post deleted successfully.');
     }

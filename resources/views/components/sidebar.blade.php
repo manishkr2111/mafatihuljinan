@@ -37,6 +37,12 @@
                         <i class="fa fa-file-text mr-2"></i> Marquee Text
                     </a>
                 </li>
+                 <li>
+                    <a href="{{ route('admin.tafsir.index') }}"
+                        class="flex items-center px-2 py-2 rounded hover:bg-[#034E7A] hover:text-[#fff] {{ Route::is('admin.tafsir.index') ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                        <i class="fa fa-file-text mr-2"></i> Tafsir
+                    </a>
+                </li>
             </ul>
         </div>
 
