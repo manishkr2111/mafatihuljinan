@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Common;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Common\Favorite;
+use App\Models\Common\CustomUserPost;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\Rule;
@@ -152,17 +153,26 @@ class FavoriteController extends Controller
                     $posts = $modelClass::whereIn('id', $postIds)
                         ->get(['id', 'title',]);
 
-                    $data[] = [
+                    $favoritesData[] = [
                         'post_type' => $postType,
                         'posts' => $posts,
                     ];
                 }
             }
+            // Fetch custom posts
+            $customPosts = CustomUserPost::where('user_id', $user->id)
+                ->where('language', 'like', $language)
+                ->get(['id', 'title', 'arabic_content', 'transliteration_content', 'translation_content']);
 
+            // Prepare final structured response
+            $data = [
+                'favorites' => $favoritesData,
+                'custom_posts' => $customPosts,
+            ];
             return response()->json([
                 'success' => true,
                 'message' => 'Favorites retrieved successfully.',
-                 'language' => $language,
+                'language' => $language,
                 'data' => $data,
             ], 200);
         } catch (\Exception $e) {

@@ -14,5 +14,6 @@ class TafsirData extends Model
         'post_type',
         'content',
         'language',
+        'tafsir_html_content'
     ];
 }

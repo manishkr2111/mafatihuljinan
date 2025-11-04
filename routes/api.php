@@ -10,6 +10,9 @@ use App\Http\Controllers\Api\English\EnglishCategoryController;
 use App\Http\Controllers\Api\English\EnglishPostController;
 use App\Http\Controllers\Api\Common\CustomUserPostController;
 use App\Http\Controllers\Api\Common\FavoriteController;
+use App\Http\Controllers\Api\Common\TafsirDataController;
+use App\Http\Controllers\Api\Common\UserNotepadController;
+
 
 
 // common Api's
@@ -27,6 +30,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/all/favorite/posts', [FavoriteController::class, 'getAllFavorites']);
     Route::post('/favorites/delete', [FavoriteController::class, 'destroy']);
 
+
+    Route::get('all/notes', [UserNotepadController::class, 'index'])->name('notes.index');
+
+    Route::post('create/notes', [UserNotepadController::class, 'store'])->name('notes.store');
+
+    Route::post('update/notes/', [UserNotepadController::class, 'update'])->name('notes.update');
+
+    Route::delete('delete/note', [UserNotepadController::class, 'destroy'])->name('notes.destroy');
 });
 
 Route::get('/user', function (Request $request) {
@@ -55,4 +66,6 @@ Route::middleware(['ApiTokenMiddleware'])->group(function () {
 
     Route::get('english/DuaData', [EnglishPostController::class, 'DuaData']);
     Route::get('english/single-post/{id}', [EnglishPostController::class, 'singlepostdata']);
+
+    Route::get('tafsir/data/{id}', [TafsirDataController::class, 'TafsirData']);
 });

@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tafsir_data', function (Blueprint $table) {
+        Schema::create('user_notepad', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->index();
             $table->string('title');
-            $table->string('post_type')->nullable();
             $table->longText('content')->nullable();
-            $table->longText('tafsir_html_content')->nullable();
             $table->string('language');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tafsir_data');
+        Schema::dropIfExists('user_notepad');
     }
 };

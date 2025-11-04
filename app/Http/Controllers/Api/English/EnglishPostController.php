@@ -351,12 +351,19 @@ class EnglishPostController extends Controller
                 $count = 0;
                 if ($islyrics == 0) {
                     while ($linecount >  0) {
+                        
+                        $TafsirandSearch = $this->extractTafsirandSearch($paragraphs[$count]);
+                        $tafsir = $TafsirandSearch['tafsir'];
+                        $search_text = $TafsirandSearch['search_text'];
+
                         $data[] = [
                             'time' => '',
                             'arabic' => $paragraphs[$count] ?? '',
                             'translitration' => $paragraphs[$count + 1] ?? '',
                             'translation' => $paragraphs[$count + 2] ?? '',
                             'english' =>  $paragraphs[$count + 3] ?? '',
+                            'tafsir' => $tafsir,
+                            'search_text' => $search_text
                         ];
                         //dd($paragraphs[$count + 3]);
                         $linecount -= 4;
@@ -364,12 +371,19 @@ class EnglishPostController extends Controller
                     }
                 } else {
                     while ($linecount > 0) {
+
+                        $TafsirandSearch = $this->extractTafsirandSearch($paragraphs[$count + 1]);
+                        $tafsir = $TafsirandSearch['tafsir'];
+                        $search_text = $TafsirandSearch['search_text'];
+
                         $data[] = [
                             'time' => $paragraphs[$count],
                             'arabic' => $paragraphs[$count + 1] ?? '',
                             'translitration' => $paragraphs[$count + 2] ?? '',
                             'translation' => $paragraphs[$count + 3] ?? '',
-                            'english' =>  $paragraphs[$count + 4] ?? ''
+                            'english' =>  $paragraphs[$count + 4] ?? '',
+                            'tafsir' => $tafsir,
+                            'search_text' => $search_text
                         ];
                         //dd($paragraphs[$count + 3]);
                         $linecount -= 5;
@@ -381,21 +395,9 @@ class EnglishPostController extends Controller
                 if ($islyrics == false) {
                     // dd($linecount);
                     while ($linecount > 0) {
-                        $filtereData = $paragraphs[$count] ?? '';
-                        $tafsir = "";
-                        $search_text = [];
-
-                        if (preg_match('/tafsir\s*=\s*(\d+)/i', $filtereData, $match)) {
-                            $tafsir = $match[1];
-                            $paragraphs[$count] = trim(preg_replace('/["\'\s-]*tafsir\s*=\s*\d+["\'\s-]*/i', '', $filtereData));
-                        }
-
-                        if (preg_match('/search_text\s*=\s*\[([^\]]+)\]/i', $paragraphs[$count], $match)) {
-                            // Split by comma and trim
-                            $search_text = array_map('trim', explode(',', $match[1]));
-                            // Remove the search_text part from the line
-                            $paragraphs[$count] = preg_replace('/["\'\s-]*search_text\s*=\s*\[[^\]]+\]["\'\s-]*/i', '', $paragraphs[$count]);
-                        }
+                        $TafsirandSearch = $this->extractTafsirandSearch($paragraphs[$count]);
+                        $tafsir = $TafsirandSearch['tafsir'];
+                        $search_text = $TafsirandSearch['search_text'];
 
                         $data[] = [
                             'time' => '',
@@ -412,12 +414,19 @@ class EnglishPostController extends Controller
                     }
                 } else {
                     while ($linecount > 0) {
+
+                        $TafsirandSearch = $this->extractTafsirandSearch($paragraphs[$count + 1]);
+                        $tafsir = $TafsirandSearch['tafsir'];
+                        $search_text = $TafsirandSearch['search_text'];
+
                         $data[] = [
                             'time' => $paragraphs[$count],
                             'arabic' => $paragraphs[$count + 1] ?? '',
                             'translitration' => $paragraphs[$count + 2] ?? '',
                             'translation' => $paragraphs[$count + 3] ?? '',
-                            'english' =>  ''
+                            'english' =>  '',
+                            'tafsir' => $tafsir,
+                            'search_text' => $search_text
                         ];
                         //dd($paragraphs[$count + 3]);
                         $linecount -= 4;
@@ -429,5 +438,27 @@ class EnglishPostController extends Controller
         return $data;
         //return $paragraphs;
         dd($paragraphs);
+    }
+
+    private function extractTafsirandSearch(&$line)
+    {
+        $tafsir = "";
+        $search_text = "";
+
+        // Extract tafsir
+        if (preg_match('/tafsir\s*=\s*(\d+)/i', $line, $match)) {
+            $tafsir = $match[1];
+            $line = preg_replace('/["\'\s-]*tafsir\s*=\s*\d+["\'\s-]*/i', '', $line);
+        }
+
+        // Extract search_text
+        if (preg_match('/search_text\s*=\s*\[([^\]]+)\]/i', $line, $match)) {
+            $search_text = array_map('trim', explode(',', $match[1]));
+            $line = preg_replace('/["\'\s-]*search_text\s*=\s*\[[^\]]+\]["\'\s-]*/i', '', $line);
+        }
+
+        $line = trim($line);
+
+        return ['tafsir' => $tafsir, 'search_text' => $search_text];
     }
 }

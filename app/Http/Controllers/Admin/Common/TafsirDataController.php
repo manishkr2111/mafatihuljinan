@@ -26,6 +26,7 @@ class TafsirDataController extends Controller
             'post_type' => 'required|string',
             'language' => 'required|string',
             'content' => 'nullable|string',
+            'tafsir_html_content' => 'nullable|string',
         ]);
 
         TafsirData::create($validated);
@@ -46,6 +47,7 @@ class TafsirDataController extends Controller
             'post_type' => 'required|string',
             'language' => 'required|string',
             'content' => 'nullable|string',
+            'tafsir_html_content' => 'nullable|string',
         ]);
 
         $tafsir = TafsirData::findOrFail($id);
