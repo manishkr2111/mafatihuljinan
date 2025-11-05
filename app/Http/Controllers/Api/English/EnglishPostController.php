@@ -7,6 +7,7 @@ use App\Models\English\EnglishCategory;
 use Illuminate\Http\Request;
 use App\Models\English\EnglishSahifasAhlulbayt;
 use Illuminate\Support\Facades\Cache;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class EnglishPostController extends Controller
 {
@@ -116,18 +117,27 @@ class EnglishPostController extends Controller
 
     public function DuaData(Request $request)
     {
+        $token = $request->bearerToken();
+        $user = null;
+
+        if ($token) {
+            $accessToken = PersonalAccessToken::findToken($token);
+            if ($accessToken) {
+                $user = $accessToken->tokenable; // this is the User model
+            }
+        }
         $post_type = $request->query('post_type', $request->post_type);
         $parent_category_id = $request->query('parent_category_id', $request->parent_category_id);
         try {
             if ($parent_category_id == null) {
                 $parent_category = EnglishCategory::where('post_type', $post_type)
                     ->whereNull('parent_id')
-                    ->select('id', 'name', 'slug', 'parent_id')
+                    ->select('id', 'name', 'slug', 'parent_id', 'post_type')
                     ->get();
             } else {
                 $parent_category = EnglishCategory::where('post_type', $post_type)
                     ->where('parent_id', $parent_category_id)
-                    ->select('id', 'name', 'slug', 'parent_id')
+                    ->select('id', 'name', 'slug', 'parent_id', 'post_type')
                     ->get();
             }
             $model = getEnglishModel($post_type);
@@ -143,8 +153,14 @@ class EnglishPostController extends Controller
                     ->select('id', 'title')
                     ->where('category_ids', '[]')
                     ->get();
-                if (auth()->check()) {
-                    isFavoritePosts('english', $post_type, $posts);
+                if ($posts) {
+                    $posts = $posts->map(function ($post) use ($post_type) {
+                        $post->post_type = $post_type;
+                        return $post;
+                    });
+                }
+                if ($user) {
+                    isFavoritePosts('english', $post_type, $posts,$user);
                 } else {
                     // If user not logged in, default is_fav to false
                     $posts->map(function ($post) {
@@ -165,11 +181,12 @@ class EnglishPostController extends Controller
                 ->whereJsonContains('category_ids', (string)$parent_category_id)
                 ->select('id', 'title')
                 ->get();
-            if (auth()->check()) {
-                isFavoritePosts('english', $post_type, $posts);
+            if ($user) {
+                isFavoritePosts('english', $post_type, $posts,$user);
             } else {
                 // If user not logged in, default is_fav to false
-                $posts->map(function ($post) {
+                $posts->map(function ($post) use ($post_type) {
+                    $post->post_type = $post_type;
                     $post->is_fav = false;
                     return $post;
                 });
@@ -351,7 +368,7 @@ class EnglishPostController extends Controller
                 $count = 0;
                 if ($islyrics == 0) {
                     while ($linecount >  0) {
-                        
+
                         $TafsirandSearch = $this->extractTafsirandSearch($paragraphs[$count]);
                         $tafsir = $TafsirandSearch['tafsir'];
                         $search_text = $TafsirandSearch['search_text'];

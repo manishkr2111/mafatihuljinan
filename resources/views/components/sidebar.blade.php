@@ -1,4 +1,4 @@
-<aside class="w-64 pl-4 pb-[60px] max-h-full bg-white shadow h-screen flex flex-col h-full">
+<aside class="w-64 pl-4 pb-[60px] md:pb-0 max-h-full bg-white shadow h-screen flex flex-col h-full">
     <!-- Sidebar Header -->
     <div class="flex items-center justify-between px-4 py-3 border-b">
         <div class="flex items-center space-x-2">

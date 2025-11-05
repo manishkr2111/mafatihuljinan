@@ -102,10 +102,9 @@ if (!function_exists('EnglishPostTypeOptions')) {
 }
 
 if (!function_exists('isfavoritePost')) {
-    function isFavoritePosts($language = 'English', $post_type, $posts)
+    function isFavoritePosts($language = 'English', $post_type, $posts, $user)
     {
-        $user_id = auth()->id();
-
+        $user_id = $user->id;
         // Get all favorites for this user, post type, and language
         $user_fav_post_ids = \App\Models\Common\Favorite::where('user_id', $user_id)
             ->where('post_type', $post_type)
@@ -114,7 +113,8 @@ if (!function_exists('isfavoritePost')) {
             ->toArray();
 
         // Map posts to include is_fav
-        $posts->map(function ($post) use ($user_fav_post_ids) {
+        $posts->map(function ($post) use ($user_fav_post_ids, $post_type) {
+            $post->post_type = $post_type;
             $post->is_fav = in_array($post->id, $user_fav_post_ids);
             return $post;
         });
@@ -213,11 +213,10 @@ if (!function_exists('getModelByLanguageAndType')) {
                 return getGujaratiModel($postType);
             case 'english':
                 return getEnglishModel($postType);
-            // case 'arabic':
-            //     return getArabicModel($postType);
+                // case 'arabic':
+                //     return getArabicModel($postType);
             default:
                 return null;
         }
     }
 }
-
