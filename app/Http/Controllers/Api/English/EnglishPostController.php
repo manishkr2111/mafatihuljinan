@@ -156,6 +156,7 @@ class EnglishPostController extends Controller
                 if ($posts) {
                     $posts = $posts->map(function ($post) use ($post_type) {
                         $post->post_type = $post_type;
+                        $post->parent_category_id = "";
                         return $post;
                     });
                 }
@@ -164,6 +165,7 @@ class EnglishPostController extends Controller
                 } else {
                     // If user not logged in, default is_fav to false
                     $posts->map(function ($post) {
+                         $post->parent_category_id = "";
                         $post->is_fav = false;
                         return $post;
                     });
@@ -182,11 +184,12 @@ class EnglishPostController extends Controller
                 ->select('id', 'title')
                 ->get();
             if ($user) {
-                isFavoritePosts('english', $post_type, $posts,$user);
+                isFavoritePosts('english', $post_type, $posts,$user,$parent_category_id);
             } else {
                 // If user not logged in, default is_fav to false
-                $posts->map(function ($post) use ($post_type) {
+                $posts->map(function ($post) use ($post_type,$parent_category_id) {
                     $post->post_type = $post_type;
+                    $post->parent_category_id = $$parent_category_id;
                     $post->is_fav = false;
                     return $post;
                 });

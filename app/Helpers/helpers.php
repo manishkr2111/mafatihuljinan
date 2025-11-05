@@ -102,7 +102,7 @@ if (!function_exists('EnglishPostTypeOptions')) {
 }
 
 if (!function_exists('isfavoritePost')) {
-    function isFavoritePosts($language = 'English', $post_type, $posts, $user)
+    function isFavoritePosts($language = 'English', $post_type, $posts, $user, $parent_category_id = null)
     {
         $user_id = $user->id;
         // Get all favorites for this user, post type, and language
@@ -113,8 +113,9 @@ if (!function_exists('isfavoritePost')) {
             ->toArray();
 
         // Map posts to include is_fav
-        $posts->map(function ($post) use ($user_fav_post_ids, $post_type) {
+        $posts->map(function ($post) use ($user_fav_post_ids, $post_type, $parent_category_id) {
             $post->post_type = $post_type;
+            $post->parent_category_id = $parent_category_id;
             $post->is_fav = in_array($post->id, $user_fav_post_ids);
             return $post;
         });
