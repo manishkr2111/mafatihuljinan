@@ -13,7 +13,7 @@ class EnglishCategoryController extends Controller
 
     private function hideTimestamps($category)
     {
-        $category->makeHidden(['created_at', 'updated_at','post_type']);
+        $category->makeHidden(['created_at', 'updated_at', 'post_type']);
 
         if ($category->relationLoaded('allChildren') && $category->allChildren->isNotEmpty()) {
             $category->allChildren->transform(function ($child) {
@@ -41,6 +41,25 @@ class EnglishCategoryController extends Controller
         return response()->json([
             'status' => true,
             'post_type' => $post_type,
+            'message' => 'Categories fetched successfully',
+            'data' => $categories
+        ]);
+    }
+
+
+    public function allDualCategories()
+    {
+        $cacheKey = 'english_all_categories';
+        $categories = Cache::rememberForever($cacheKey, function () {
+            $cats = EnglishCategory::whereNull('parent_id')
+                ->with('allChildren')
+                ->get(['id', 'name', 'post_type']);
+            return $cats->transform(function ($category) {
+                return $this->hideTimestamps($category);
+            });
+        });
+        return response()->json([
+            'status' => true,
             'message' => 'Categories fetched successfully',
             'data' => $categories
         ]);

@@ -65,15 +65,29 @@ class CategoryController extends Controller
             'parent_id' => 'nullable|exists:english_categories,id',
         ]);
         $model = getEnglishModel($post_type);
-        if(!$model){
-            return redirect()->back()->with('error','Invalid Post Type');
+        if (!$model) {
+            return redirect()->back()->with('error', 'Invalid Post Type');
+        }
+
+        if ($request->parent_id) {
+            $parent = EnglishCategory::find($request->parent_id);
+
+            $level = 1;
+            while ($parent && $parent->parent_id) {
+                $level++;
+                $parent = $parent->parent;
+            }
+
+            if ($level >= 6) {
+                return redirect()->back()->with('error', 'You cannot create a category deeper than 5 levels.');
+            }
         }
         $validated['slug'] = Str::slug($validated['slug'], '-');
         $Category = EnglishCategory::create($validated);
         $Category->post_type = $post_type;
         $Category->save();
         Cache::forget('english_categories_' . $post_type);
-
+        Cache::forget('english_all_categories');
         return redirect()->route('admin.english.category.index')->with('success', 'Category created successfully.');
     }
 
@@ -97,6 +111,7 @@ class CategoryController extends Controller
         $category = EnglishCategory::findOrFail($id);
         $post_type = $request->input('post_type', $request->post_type);
         Cache::forget('english_categories_' . $post_type);
+        Cache::forget('english_all_categories');
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|unique:english_categories,slug,' . $category->id,
@@ -105,10 +120,10 @@ class CategoryController extends Controller
             'parent_id' => 'nullable|exists:english_categories,id',
         ]);
         $model = getEnglishModel($post_type);
-        if(!$model){
-            return redirect()->back()->with('error','Invalid Post Type');
+        if (!$model) {
+            return redirect()->back()->with('error', 'Invalid Post Type');
         }
-        $validated['slug'] = Str::slug($validated['slug'], '-');     
+        $validated['slug'] = Str::slug($validated['slug'], '-');
 
         $category->update($validated);
         $category->post_type = $post_type;

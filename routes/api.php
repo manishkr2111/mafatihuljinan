@@ -60,6 +60,8 @@ Route::middleware(['ApiTokenMiddleware'])->group(function () {
 
     Route::get('english/categories', [EnglishCategoryController::class, 'index']);
 
+    Route::get('english/all/categories', [EnglishCategoryController::class, 'allDualCategories']);
+
 
     Route::get('english/posts', [EnglishPostController::class, 'SahifasShlulbayt']);
     Route::get('english/posts/{id}', [EnglishPostController::class, 'show']);
