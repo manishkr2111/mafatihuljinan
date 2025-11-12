@@ -65,10 +65,26 @@
                 <div class="mt-2 text-sm text-green-700">
                     <h5 class="font-semibold text-[#034E7A] mb-1">LRC Enabled For:</h5>
                     <ul class="space-y-1">
-                        <li>Arabic: {{ $counts['arabic_lrc_enabled_count'] ?? 0 }}</li>
-                        <li>Transliteration: {{ $counts['transliteration_lrc_enabled_count'] ?? 0}}</li>
-                        <li>Translation: {{ $counts['translation_lrc_enabled_count'] ?? 0 }}</li>
+                        <li>
+                            <a href="{{ route('admin.lrc.posts', ['language' => $language, 'postType' => $type, 'lrcType' => 'arabic']) }}"
+                                class="text-green-700 hover:underline">
+                                Arabic: {{ $counts['arabic_lrc_enabled_count'] ?? 0 }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.lrc.posts', ['language' => $language, 'postType' => $type, 'lrcType' => 'transliteration']) }}"
+                                class="text-green-700 hover:underline">
+                                Transliteration: {{ $counts['transliteration_lrc_enabled_count'] ?? 0 }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.lrc.posts', ['language' => $language, 'postType' => $type, 'lrcType' => 'translation']) }}"
+                                class="text-green-700 hover:underline">
+                                Translation: {{ $counts['translation_lrc_enabled_count'] ?? 0 }}
+                            </a>
+                        </li>
                     </ul>
+
                 </div>
                 </p>
             </div>

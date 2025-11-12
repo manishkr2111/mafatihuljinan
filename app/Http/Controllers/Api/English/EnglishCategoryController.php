@@ -50,18 +50,16 @@ class EnglishCategoryController extends Controller
     public function allDualCategories()
     {
         $cacheKey = 'english_all_categories';
-        $categories = Cache::rememberForever($cacheKey, function () {
-            $cats = EnglishCategory::whereNull('parent_id')
-                ->with('allChildren')
-                ->get(['id', 'name', 'post_type']);
-            return $cats->transform(function ($category) {
-                return $this->hideTimestamps($category);
-            });
+        $cats = Cache::remember($cacheKey, 1440, function () {
+            return EnglishCategory::select('id','name', 'post_type', 'parent_id')
+                ->orderBy('sort_number', 'asc')
+                ->get();
         });
+
         return response()->json([
             'status' => true,
             'message' => 'Categories fetched successfully',
-            'data' => $categories
+            'data' => $cats
         ]);
     }
 }

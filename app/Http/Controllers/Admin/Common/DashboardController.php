@@ -17,13 +17,13 @@ class DashboardController extends Controller
         $apiToken = Setting::get('api_access_token');
         $totalUsers = User::count();
 
-        // 🧮 User count by language
+        //  User count by language
         $userCount = User::selectRaw('language, COUNT(*) as total')
             ->groupBy('language')
             ->pluck('total', 'language')
             ->toArray();
 
-        // 🧩 Post types list
+        //  Post types list
         $postTypes = [
             'sahifas-ahlulbayt',
             'surah',
@@ -84,6 +84,41 @@ class DashboardController extends Controller
             'apiToken'
         ));
     }
+
+    public function showLrcEnabledPosts($language, $postType, $lrcType)
+    {
+        // Determine model based on language
+        if ($language === 'english') {
+            $modelClass = getEnglishModel($postType);
+        } elseif ($language === 'gujarati') {
+            $modelClass = getGujaratiModel($postType);
+        } else {
+            abort(404, 'Unsupported language');
+        }
+
+        if (!$modelClass || !class_exists($modelClass)) {
+            abort(404, 'Invalid post type');
+        }
+
+        // Map the LRC type to the correct column name
+        $lrcColumnMap = [
+            'arabic' => 'arabic_islrc',
+            'transliteration' => 'transliteration_islrc',
+            'translation' => 'translation_islrc',
+        ];
+
+        if (!array_key_exists($lrcType, $lrcColumnMap)) {
+            abort(404, 'Invalid LRC type');
+        }
+
+        $column = $lrcColumnMap[$lrcType];
+
+        // Fetch posts with LRC enabled
+        $posts = $modelClass::where($column, 1)->paginate(20);
+
+        return view('admin.lrc-posts', compact('posts', 'postType', 'language', 'lrcType'));
+    }
+
 
     public function generateApiToken()
     {

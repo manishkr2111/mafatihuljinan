@@ -40,4 +40,11 @@ class EnglishCategory extends Model
     {
         return $this->children()->with('allChildren');
     }
+
+    public function allChildren_2()
+    {
+        return $this->children()
+            ->select(['id', 'name', 'post_type', 'parent_id'])
+            ->with('allChildren');
+    }
 }
