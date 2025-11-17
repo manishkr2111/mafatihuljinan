@@ -131,9 +131,10 @@ class DashboardController extends Controller
 
     public function uploadAudiopage(Request $request)
     {
-        $directory = '/var/www/vhosts/mafatihuljinan.org/audio.mafatihuljinan.org/audio';
-        $webUrl = 'https://audio.mafatihuljinan.org/audio/';
-
+        $language = $request->get('language', 'english');
+        $directory = env('AUDIO_DIRECTORY').'/'.$language;
+        $webUrl = env('AUDIO_WEBURL').'/'.$language;
+        // dd($directory,$webUrl);
         $files = [];
 
         if (is_dir($directory)) {
@@ -153,7 +154,14 @@ class DashboardController extends Controller
         $files = array_reverse($files);
 
         // Pagination settings
-        $perPage = 10; // how many files per page
+        // Get per_page from request, default to 50
+        $perPage = $request->get('per_page', 25);
+
+        // Validate per_page to prevent abuse
+        $allowedPerPage = [25, 50, 100, 150, 200];
+        if (!in_array($perPage, $allowedPerPage)) {
+            $perPage = 25; // fallback to default
+        }
         $page = request()->get('page', 1); // current page
         $offset = ($page - 1) * $perPage;
 
@@ -169,16 +177,18 @@ class DashboardController extends Controller
             ['path' => url()->current()]
         );
 
-        return view('admin.audio.upload-audio', compact('filesPaginated'));
+        return view('admin.audio.upload-audio', compact('filesPaginated', 'language'));
     }
 
 
 
     public function uploadAudio(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'audio' => 'required|file|mimes:mp3,wav,aac',
-            'post_type' => 'required|string'
+            'post_type' => 'required|string',
+            'language' => 'required|string'
         ]);
 
         try {
@@ -193,10 +203,10 @@ class DashboardController extends Controller
 
             $fileName = $postType . '_' . $originalName . '_' . $randomId . '.' . $extension;
 
-            $destination = '/var/www/vhosts/mafatihuljinan.org/audio.mafatihuljinan.org/audio';
+            $destination = env('AUDIO_DIRECTORY') . '/' . $request->language;
             $audio->move($destination, $fileName);
 
-            $url = 'https://audio.mafatihuljinan.org/audio/' . $fileName;
+            $url = env('AUDIO_WEBURL') .'/'.$request->language . '/'. $fileName;
 
             return back()->with([
                 'success' => 'Audio uploaded successfully!',
@@ -215,7 +225,7 @@ class DashboardController extends Controller
             return back()->with('error', 'File name is missing.');
         }
 
-        $directory = '/var/www/vhosts/mafatihuljinan.org/audio.mafatihuljinan.org/audio';
+        $directory = env('AUDIO_DIRECTORY');
         $filePath = $directory . '/' . $fileName;
 
         if (file_exists($filePath)) {

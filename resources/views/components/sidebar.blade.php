@@ -20,8 +20,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.uploadAudioPage') }}"
-                        class="flex items-center px-2 py-2 rounded hover:bg-[#034E7A] hover:text-[#fff] {{ Route::is('admin.uploadAudioPage') ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                    <a href="{{ route('admin.uploadAudioPage', ['language' => 'english']) }}"
+                        class="flex items-center px-2 py-2 rounded hover:bg-[#034E7A] hover:text-[#fff] {{ Route::is('admin.uploadAudioPage', ['language' => 'english']) ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
                         <i class="fas fa-microphone mr-2"></i> Upload Audio
                     </a>
                 </li>
@@ -294,19 +294,9 @@
             <div class="text-gray-500 uppercase text-xs font-bold mb-2">Management</div>
             <ul class="space-y-1">
                 <li><a href="#" class="flex items-center px-2 py-2 rounded hover:bg-gray-100"><i class="fa fa-search mr-2"></i> Search Posts</a></li>
-                <li><a href="#" class="flex items-center px-2 py-2 rounded hover:bg-gray-100"><i class="fas fa-cog mr-2"></i> Settings</a></li>
+                <!-- <li><a href="#" class="flex items-center px-2 py-2 rounded hover:bg-gray-100"><i class="fas fa-cog mr-2"></i> Settings</a></li> -->
                 <li><a href="{{ Route('admin.users')}}" class="flex items-center px-2 py-2 rounded hover:bg-gray-100 {{ Route::is('admin.users.*') ? 'bg-gray-100 font-semibold' : '' }}"><i class="fas fa-users mr-2"></i> Users</a></li>
                 <li><a href="#" class="flex items-center px-2 py-2 rounded hover:bg-gray-100"><i class="fas fa-bell mr-2"></i> Notifications</a></li>
-            </ul>
-        </div>
-
-        <!-- Support Section -->
-        <div>
-            <div class="text-gray-500 uppercase text-xs font-bold mb-2">Support</div>
-            <ul class="space-y-1">
-                <li><a href="#" class="flex items-center px-2 py-2 rounded hover:bg-gray-100"><i class="fas fa-question-circle mr-2"></i> Help Center</a></li>
-                <li><a href="#" class="flex items-center px-2 py-2 rounded hover:bg-gray-100"><i class="fas fa-headset mr-2"></i> Contact Support</a></li>
-                <li><a href="#" class="flex items-center px-2 py-2 rounded hover:bg-gray-100"><i class="fas fa-book mr-2"></i> Documentation</a></li>
             </ul>
         </div>
     </div>
