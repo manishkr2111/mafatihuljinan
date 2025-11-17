@@ -127,4 +127,57 @@ class DashboardController extends Controller
         return redirect()->route('admin.dashboard')
             ->with('success', 'API token regenerated successfully.');
     }
+
+
+    public function uploadAudiopage(Request $request)
+    {
+        // Server path where audio files are stored
+        $directory = '/var/www/vhosts/mafatihuljinan.org/audio.mafatihuljinan.org/audio';
+
+        // Web URL prefix
+        $webUrl = 'https://audio.mafatihuljinan.org/audio/';
+
+        $files = [];
+
+        if (is_dir($directory)) {
+            foreach (scandir($directory) as $file) {
+                if ($file !== '.' && $file !== '..') {
+
+                    // Only list audio files
+                    if (preg_match('/\.(mp3|wav|aac)$/i', $file)) {
+                        $files[] = [
+                            'name' => $file,
+                            'url'  => $webUrl . $file
+                        ];
+                    }
+                }
+            }
+        }
+
+        return view('admin.audio.upload-audio', compact('files'));
+    }
+
+
+    public function uploadAudio(Request $request)
+    {
+        $request->validate([
+            'audio' => 'required|file|mimes:mp3,wav,aac'
+        ]);
+
+        $audio = $request->file('audio');
+
+        $fileName = time() . '_' . $audio->getClientOriginalName();
+
+        // Full path to audio folder on Plesk
+        $destinationPath = '/var/www/vhosts/mafatihuljinan.org/audio.mafatihuljinan.org/audio';
+
+        // Move file
+        $audio->move($destinationPath, $fileName);
+        return back()->with('audio_url', 'https://audio.mafatihuljinan.org/audio/' . $fileName);
+
+        return response()->json([
+            'status' => true,
+            'url' => 'https://audio.mafatihuljinan.org/audio/' . $fileName
+        ]);
+    }
 }

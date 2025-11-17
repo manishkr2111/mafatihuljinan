@@ -7,10 +7,12 @@ use App\Http\Controllers\Admin\Common\MenuController;
 use App\Http\Controllers\Admin\Common\HijriDateEventController;
 use App\Http\Controllers\Admin\Common\MarqueeTextController;
 use App\Http\Controllers\Admin\Common\DashboardController;
-use App\Http\Controllers\Admin\English\EnglishPostController;
-use App\Http\Controllers\Admin\Gujarati\GujaratiPostController;
 use App\Http\Controllers\Admin\Common\UserController;
 use App\Http\Controllers\Admin\Common\TafsirDataController;
+use App\Http\Controllers\Admin\English\EnglishPostController;
+use App\Http\Controllers\Admin\English\CategoryController;
+use App\Http\Controllers\Admin\Gujarati\GujaratiPostController;
+use App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController;
 
 
 Route::get('/greet', function () {
@@ -94,15 +96,18 @@ Route::middleware(['auth','role:admin,editor'])->prefix('admin')->name('admin.')
     Route::post('/marquee/update/{marqueeText}', [MarqueeTextController::class, 'update'])->name('marquee.update');
     Route::delete('/marquee/delete/{marqueeText}', [MarqueeTextController::class, 'destroy'])->name('marquee.delete');
 
-    Route::prefix('english/categories')->name('english.category.')->group(function () {
-        Route::get('/', [\App\Http\Controllers\Admin\English\CategoryController::class, 'index'])->name('index');
-        Route::get('/create', [\App\Http\Controllers\Admin\English\CategoryController::class, 'create'])->name('create');
-        Route::post('/', [\App\Http\Controllers\Admin\English\CategoryController::class, 'store'])->name('store');
-        Route::get('/{category}/edit', [\App\Http\Controllers\Admin\English\CategoryController::class, 'edit'])->name('edit');
-        Route::put('/{category}', [\App\Http\Controllers\Admin\English\CategoryController::class, 'update'])->name('update');
-        Route::delete('/{category}', [\App\Http\Controllers\Admin\English\CategoryController::class, 'destroy'])->name('destroy');
+    Route::get('/upload-audio', [DashboardController::class, 'uploadAudiopage'])->name('uploadAudioPage');
+    Route::post('/uploadAudio', [DashboardController::class, 'uploadAudio'])->name('uploadAudio');
 
-        Route::get('/parents', [\App\Http\Controllers\Admin\English\CategoryController::class, 'getParentCategories'])->name('parents');
+    Route::prefix('english/categories')->name('english.category.')->group(function () {
+        Route::get('/', [CategoryController::class, 'index'])->name('index');
+        Route::get('/create', [CategoryController::class, 'create'])->name('create');
+        Route::post('/', [CategoryController::class, 'store'])->name('store');
+        Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('edit');
+        Route::put('/{category}', [CategoryController::class, 'update'])->name('update');
+        Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('destroy');
+
+        Route::get('/parents', [CategoryController::class, 'getParentCategories'])->name('parents');
     });
 
     Route::prefix('english/post')->name('english.post.')->group(function () {
@@ -124,13 +129,13 @@ Route::middleware(['auth','role:admin,editor'])->prefix('admin')->name('admin.')
     });
 
     Route::prefix('gujarati/categories')->name('gujarati.category.')->group(function () {
-        Route::get('/', [\App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController::class, 'index'])->name('index');
-        Route::get('/create', [\App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController::class, 'create'])->name('create');
-        Route::post('/', [\App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController::class, 'store'])->name('store');
-        Route::get('/{category}/edit', [\App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController::class, 'edit'])->name('edit');
-        Route::put('/{category}', [\App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController::class, 'update'])->name('update');
-        Route::delete('/{category}', [\App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController::class, 'destroy'])->name('destroy');
+        Route::get('/', [GujaratiCategoryController::class, 'index'])->name('index');
+        Route::get('/create', [GujaratiCategoryController::class, 'create'])->name('create');
+        Route::post('/', [GujaratiCategoryController::class, 'store'])->name('store');
+        Route::get('/{category}/edit', [GujaratiCategoryController::class, 'edit'])->name('edit');
+        Route::put('/{category}', [GujaratiCategoryController::class, 'update'])->name('update');
+        Route::delete('/{category}', [GujaratiCategoryController::class, 'destroy'])->name('destroy');
 
-        Route::get('/parents', [\App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController::class, 'getParentCategories'])->name('parents');
+        Route::get('/parents', [GujaratiCategoryController::class, 'getParentCategories'])->name('parents');
     });
 });

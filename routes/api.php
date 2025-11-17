@@ -12,8 +12,10 @@ use App\Http\Controllers\Api\Common\CustomUserPostController;
 use App\Http\Controllers\Api\Common\FavoriteController;
 use App\Http\Controllers\Api\Common\TafsirDataController;
 use App\Http\Controllers\Api\Common\UserNotepadController;
+use App\Http\Controllers\Admin\Common\DashboardController;
 
 
+Route::post('/uploadAudio', [DashboardController::class, 'uploadAudio'])->name('uploadAudio');
 
 // common Api's
 Route::post('/login', [AuthController::class, 'login']);
