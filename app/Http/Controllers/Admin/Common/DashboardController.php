@@ -131,10 +131,7 @@ class DashboardController extends Controller
 
     public function uploadAudiopage(Request $request)
     {
-        // Server path where audio files are stored
         $directory = '/var/www/vhosts/mafatihuljinan.org/audio.mafatihuljinan.org/audio';
-
-        // Web URL prefix
         $webUrl = 'https://audio.mafatihuljinan.org/audio/';
 
         $files = [];
@@ -142,8 +139,6 @@ class DashboardController extends Controller
         if (is_dir($directory)) {
             foreach (scandir($directory) as $file) {
                 if ($file !== '.' && $file !== '..') {
-
-                    // Only list audio files
                     if (preg_match('/\.(mp3|wav|aac)$/i', $file)) {
                         $files[] = [
                             'name' => $file,
@@ -154,30 +149,61 @@ class DashboardController extends Controller
             }
         }
 
-        return view('admin.audio.upload-audio', compact('files'));
+        // Sort newest first
+        $files = array_reverse($files);
+
+        // Pagination settings
+        $perPage = 10; // how many files per page
+        $page = request()->get('page', 1); // current page
+        $offset = ($page - 1) * $perPage;
+
+        // Slice list for current page
+        $paginatedItems = array_slice($files, $offset, $perPage);
+
+        // Create Laravel Paginator manually
+        $filesPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            $paginatedItems,
+            count($files),
+            $perPage,
+            $page,
+            ['path' => url()->current()]
+        );
+
+        return view('admin.audio.upload-audio', compact('filesPaginated'));
     }
+
 
 
     public function uploadAudio(Request $request)
     {
         $request->validate([
-            'audio' => 'required|file|mimes:mp3,wav,aac'
+            'audio' => 'required|file|mimes:mp3,wav,aac',
+            'post_type' => 'required|string'
         ]);
 
-        $audio = $request->file('audio');
+        try {
+            $audio = $request->file('audio');
+            $postType = strtolower($request->post_type);
 
-        $fileName = time() . '_' . $audio->getClientOriginalName();
+            $originalName = pathinfo($audio->getClientOriginalName(), PATHINFO_FILENAME);
+            $originalName = preg_replace('/[^a-zA-Z0-9_-]/', '', $originalName);
 
-        // Full path to audio folder on Plesk
-        $destinationPath = '/var/www/vhosts/mafatihuljinan.org/audio.mafatihuljinan.org/audio';
+            $randomId = uniqid();
+            $extension = $audio->getClientOriginalExtension();
 
-        // Move file
-        $audio->move($destinationPath, $fileName);
-        return back()->with('audio_url', 'https://audio.mafatihuljinan.org/audio/' . $fileName);
+            $fileName = $postType . '_' . $originalName . '_' . $randomId . '.' . $extension;
 
-        return response()->json([
-            'status' => true,
-            'url' => 'https://audio.mafatihuljinan.org/audio/' . $fileName
-        ]);
+            $destination = '/var/www/vhosts/mafatihuljinan.org/audio.mafatihuljinan.org/audio';
+            $audio->move($destination, $fileName);
+
+            $url = 'https://audio.mafatihuljinan.org/audio/' . $fileName;
+
+            return back()->with([
+                'success' => 'Audio uploaded successfully!',
+                'audio_url' => $url
+            ]);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
     }
 }
