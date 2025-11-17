@@ -13,7 +13,7 @@
             @csrf
 
             <div class="mb-4">
-                <label class="block text-sm font-medium text-[#034E7A] mb-2">Choose Audio File</label>
+                <label class="block text-sm font-medium text-[#034E7A] mb-2">Choose Audio File (MP3, WAV, AAC)</label>
                 <input
                     type="file"
                     name="audio"
@@ -100,7 +100,7 @@
 
             <!-- Copy URL -->
             <button onclick="copyToClipboard('{{ $file['url'] }}')"
-                class="text-sm px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 transition">
+                class="text-sm px-3 py-1 mb-4 rounded bg-blue-600 text-white hover:bg-blue-700 transition">
                 Copy URL
             </button>
 
@@ -120,9 +120,65 @@
     @endforeach
 
     <!-- Pagination Links -->
-    <div class="mt-4">
-        {{ $filesPaginated->links('pagination::bootstrap-5') }}
+    <!-- Pagination Links -->
+    <div class="mt-6 flex justify-center">
+        <nav aria-label="Page navigation">
+            <ul class="inline-flex items-center -space-x-px">
+
+                {{-- Previous Page Link --}}
+                @if ($filesPaginated->onFirstPage())
+                <li>
+                    <span class="px-3 py-2 ml-0 leading-tight text-gray-400 bg-gray-200 border border-gray-300 rounded-l-lg cursor-not-allowed select-none">
+                        Previous
+                    </span>
+                </li>
+                @else
+                <li>
+                    <a href="{{ $filesPaginated->previousPageUrl() }}"
+                        class="px-3 py-2 ml-0 leading-tight text-[#034E7A] bg-white border border-gray-300 rounded-l-lg hover:bg-[#034E7A] hover:text-white transition">
+                        Previous
+                    </a>
+                </li>
+                @endif
+
+                {{-- Page Numbers --}}
+                @foreach ($filesPaginated->getUrlRange(1, $filesPaginated->lastPage()) as $page => $url)
+                @if ($page == $filesPaginated->currentPage())
+                <li>
+                    <span class="px-3 py-2 leading-tight bg-[#034E7A] text-white border border-gray-300">
+                        {{ $page }}
+                    </span>
+                </li>
+                @else
+                <li>
+                    <a href="{{ $url }}"
+                        class="px-3 py-2 leading-tight text-[#034E7A] bg-white border border-gray-300 hover:bg-[#034E7A] hover:text-white transition">
+                        {{ $page }}
+                    </a>
+                </li>
+                @endif
+                @endforeach
+
+                {{-- Next Page Link --}}
+                @if ($filesPaginated->hasMorePages())
+                <li>
+                    <a href="{{ $filesPaginated->nextPageUrl() }}"
+                        class="px-3 py-2 leading-tight text-[#034E7A] bg-white border border-gray-300 rounded-r-lg hover:bg-[#034E7A] hover:text-white transition">
+                        Next
+                    </a>
+                </li>
+                @else
+                <li>
+                    <span class="px-3 py-2 leading-tight text-gray-400 bg-gray-200 border border-gray-300 rounded-r-lg cursor-not-allowed select-none">
+                        Next
+                    </span>
+                </li>
+                @endif
+
+            </ul>
+        </nav>
     </div>
+
 </div>
 @else
 <div class="bg-white rounded shadow p-5 mt-6">

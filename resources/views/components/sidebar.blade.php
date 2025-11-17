@@ -20,6 +20,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.uploadAudioPage') }}"
+                        class="flex items-center px-2 py-2 rounded hover:bg-[#034E7A] hover:text-[#fff] {{ Route::is('admin.uploadAudioPage') ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                        <i class="fas fa-microphone mr-2"></i> Upload Audio
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('admin.menus.index') }}"
                         class="flex items-center px-2 py-2 rounded hover:bg-[#034E7A] hover:text-[#fff] {{ Route::is('admin.menus.index') ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
                         <i class="fa fa-bars mr-2"></i> Menu Item
@@ -37,7 +43,7 @@
                         <i class="fa fa-file-text mr-2"></i> Marquee Text
                     </a>
                 </li>
-                 <li>
+                <li>
                     <a href="{{ route('admin.tafsir.index') }}"
                         class="flex items-center px-2 py-2 rounded hover:bg-[#034E7A] hover:text-[#fff] {{ Route::is('admin.tafsir.index') ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
                         <i class="fa fa-file-text mr-2"></i> Tafsir
@@ -324,13 +330,13 @@
 </aside>
 
 <script>
-document.querySelectorAll("#sidebar details").forEach(details => {
-    details.addEventListener("toggle", function() {
-        if (this.open) {
-            document.querySelectorAll("#sidebar details").forEach(other => {
-                if (other !== this) other.removeAttribute("open");
-            });
-        }
+    document.querySelectorAll("#sidebar details").forEach(details => {
+        details.addEventListener("toggle", function() {
+            if (this.open) {
+                document.querySelectorAll("#sidebar details").forEach(other => {
+                    if (other !== this) other.removeAttribute("open");
+                });
+            }
+        });
     });
-});
 </script>
