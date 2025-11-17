@@ -98,6 +98,7 @@ Route::middleware(['auth','role:admin,editor'])->prefix('admin')->name('admin.')
 
     Route::get('/upload-audio', [DashboardController::class, 'uploadAudiopage'])->name('uploadAudioPage');
     Route::post('/uploadAudio', [DashboardController::class, 'uploadAudio'])->name('uploadAudio');
+    Route::delete('/delete-audio', [DashboardController::class, 'deleteAudio'])->name('deleteAudio');
 
     Route::prefix('english/categories')->name('english.category.')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('index');

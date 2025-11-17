@@ -206,4 +206,23 @@ class DashboardController extends Controller
             return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
+
+    public function deleteAudio(Request $request)
+    {
+        $fileName = $request->file_name;
+
+        if (!$fileName) {
+            return back()->with('error', 'File name is missing.');
+        }
+
+        $directory = '/var/www/vhosts/mafatihuljinan.org/audio.mafatihuljinan.org/audio';
+        $filePath = $directory . '/' . $fileName;
+
+        if (file_exists($filePath)) {
+            unlink($filePath);
+            return back()->with('success', 'Audio file deleted successfully.');
+        } else {
+            return back()->with('error', 'File not found.');
+        }
+    }
 }
