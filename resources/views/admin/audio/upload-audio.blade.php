@@ -15,17 +15,39 @@
             <input type="hidden" name="language" value="{{$language}}">
 
             <div class="mb-4">
-                <div class="mb-4 flex items-center gap-2">
-                    <label for="languageSelect" class="block text-sm font-medium text-[#034E7A] mb-2">Language:</label>
-                    <select id="languageSelect"
-                        onchange="changeLanguage(this.value)"
-                        class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-[#034E7A]">
-                        @foreach(validLanguages() as $lang)
-                        <option value="{{ $lang }}" {{ $language == $lang ? 'selected' : '' }}>
-                            {{ ucfirst($lang) }}
-                        </option>
-                        @endforeach
-                    </select>
+                <div class="mb-4 flex items-center gap-4">
+                    <div>
+                        <div class="mb-4">
+                            <label for="languageSelect" class="block text-sm font-medium text-[#034E7A] mb-2">Language:</label>
+                            <select id="languageSelect"
+                                onchange="changeLanguage(this.value)"
+                                class="w-full border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-[#034E7A]">
+                                @foreach(validLanguages() as $lang)
+                                <option value="{{ $lang }}" {{ $language == $lang ? 'selected' : '' }}>
+                                    {{ ucfirst($lang) }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-[#034E7A] mb-2">Select Post Type</label>
+                            <select name="post_type"
+                                class="w-full border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-[#034E7A]"
+                                required>
+                                <option value="">Select Type</option>
+
+                                @foreach(commonPostTypeOptions() as $key => $label)
+                                <option value="{{ $key }}">{{ $label }}</option>
+                                @endforeach
+                            </select>
+
+                            @error('post_type')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="mb-4">
@@ -37,23 +59,6 @@
                     class="w-full border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-[#034E7A]"
                     required>
                 @error('audio')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-[#034E7A] mb-2">Select Post Type</label>
-                <select name="post_type"
-                    class="w-full border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-[#034E7A]"
-                    required>
-                    <option value="">Select Type</option>
-
-                    @foreach(commonPostTypeOptions() as $key => $label)
-                    <option value="{{ $key }}">{{ $label }}</option>
-                    @endforeach
-                </select>
-
-                @error('post_type')
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>

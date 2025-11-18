@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\English\EnglishPostController;
 use App\Http\Controllers\Admin\English\CategoryController;
 use App\Http\Controllers\Admin\Gujarati\GujaratiPostController;
 use App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController;
+use App\Http\Controllers\Admin\Common\EventPopupController;
+
 
 
 Route::get('/greet', function () {
@@ -74,6 +76,11 @@ Route::middleware(['auth','role:admin,editor'])->prefix('admin')->name('admin.')
     Route::delete('/hijri-date-event/delete/{hijriEvent}', [HijriDateEventController::class, 'destroy'])->name('hijri.date.event.delete');
 
     Route::get('/showEventHijri', [HijriDateEventController::class, 'showEventHijri'])->name('showEventHijri');
+
+    // eventpop
+    Route::get('/eventpopup', [EventPopupController::class, 'index'])->name('eventpopup');
+    Route::post('/eventpopup/store', [EventPopupController::class, 'store'])->name('eventpopup.store');
+    Route::delete('/eventpopup/destroy', [EventPopupController::class, 'destroy'])->name('eventpopup.destroy');
 
     Route::get('menus', [MenuController::class, 'index'])->name('menus.index');
     Route::get('menus/create', [MenuController::class, 'create'])->name('menus.create');

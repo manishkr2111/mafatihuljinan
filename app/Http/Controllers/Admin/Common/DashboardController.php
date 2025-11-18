@@ -133,7 +133,7 @@ class DashboardController extends Controller
     {
         $language = $request->get('language', 'english');
         $directory = env('AUDIO_DIRECTORY').'/'.$language;
-        $webUrl = env('AUDIO_WEBURL').'/'.$language;
+        $webUrl = env('AUDIO_WEBURL').'/'.$language.'/';
         // dd($directory,$webUrl);
         $files = [];
 

@@ -38,6 +38,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.eventpopup') }}"
+                        class="flex items-center px-2 py-2 rounded hover:bg-[#034E7A] hover:text-[#fff] {{ Route::is('admin.eventpopup') ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                        <i class="fa fa-file-text mr-2"></i> Event Pop Up
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('admin.marquee.index') }}"
                         class="flex items-center px-2 py-2 rounded hover:bg-[#034E7A] hover:text-[#fff] {{ Route::is('admin.marquee.index') ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
                         <i class="fa fa-file-text mr-2"></i> Marquee Text
