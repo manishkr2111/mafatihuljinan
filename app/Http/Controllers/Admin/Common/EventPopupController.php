@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\Common;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Common\EventPopup;
-use Illuminate\Support\Facades\storage;
+use Illuminate\Support\Facades\Storage;
 
 class EventPopupController extends Controller
 {
@@ -19,12 +19,24 @@ class EventPopupController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'file' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // validate image
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'date' => 'required|integer|min:1|max:31',
             'month' => 'required|integer|min:1|max:12',
-            'language' => 'nullable|string|max:50',
+            'language' => [
+                'required',
+                'string',
+                'max:50',
+                'in:' . implode(',', validLanguages()),
+            ],
         ]);
 
+        $existingPopup = EventPopup::where('date', $request->input('date'))
+            ->where('month', $request->input('month'))
+            ->where('language', $request->input('language'))
+            ->first();
+        if($existingPopup) {
+            return redirect()->back()->with('error', 'Event Popup already exists for this date and month.');
+        }
         $eventPopup = new EventPopup();
         $eventPopup->title = $request->input('title');
         $eventPopup->date = $request->input('date');
@@ -45,8 +57,16 @@ class EventPopupController extends Controller
 
     public function destroy(EventPopup $eventPopup)
     {
+        // delete file also if stored
+        if ($eventPopup->imgurl) {
+            $relativePath = str_replace(asset('storage/') . '/', '', $eventPopup->imgurl);
+            Storage::disk('public')->delete($relativePath);
+        }
+
         $eventPopup->delete();
-        dd($eventPopup);
-        return redirect()->route('admin.eventpopup')->with('success', 'Event Popup deleted successfully.');
+
+        return redirect()
+            ->route('admin.eventpopup')
+            ->with('success', 'Event Popup deleted successfully.');
     }
 }

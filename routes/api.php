@@ -13,7 +13,7 @@ use App\Http\Controllers\Api\Common\FavoriteController;
 use App\Http\Controllers\Api\Common\TafsirDataController;
 use App\Http\Controllers\Api\Common\UserNotepadController;
 use App\Http\Controllers\Admin\Common\DashboardController;
-
+use App\Http\Controllers\Api\Common\EventPopupController;
 
 // test audio upload
 Route::post('/uploadAudio', [DashboardController::class, 'uploadAudio'])->name('uploadAudio');
@@ -60,6 +60,8 @@ Route::middleware(['ApiTokenMiddleware'])->group(function () {
     Route::get('/hijri-date', [HijriDateEventController::class, 'getCurrentHijriDate']);
     Route::any('/hijri-date-with-events', [HijriDateEventController::class, 'getHijriDateWithEvents']);
     Route::post('/ramadan-date', [HijriDateEventController::class, 'getRamadanDate']);
+
+    Route::get('/eventpopup', [EventPopupController::class, 'GetEventPopUp']);
 
     Route::get('english/categories', [EnglishCategoryController::class, 'index']);
 

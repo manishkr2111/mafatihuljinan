@@ -80,7 +80,7 @@ Route::middleware(['auth','role:admin,editor'])->prefix('admin')->name('admin.')
     // eventpop
     Route::get('/eventpopup', [EventPopupController::class, 'index'])->name('eventpopup');
     Route::post('/eventpopup/store', [EventPopupController::class, 'store'])->name('eventpopup.store');
-    Route::delete('/eventpopup/destroy', [EventPopupController::class, 'destroy'])->name('eventpopup.destroy');
+    Route::delete('/eventpopup/{eventPopup}', [EventPopupController::class, 'destroy'])->name('eventpopup.destroy');
 
     Route::get('menus', [MenuController::class, 'index'])->name('menus.index');
     Route::get('menus/create', [MenuController::class, 'create'])->name('menus.create');
