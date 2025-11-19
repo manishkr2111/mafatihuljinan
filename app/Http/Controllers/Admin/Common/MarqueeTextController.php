@@ -10,8 +10,7 @@ class MarqueeTextController extends Controller
     public function index()
     {
         $marquees = MarqueeText::orderBy('language', 'desc')->get();
-        $languages = ['english', 'hindi', 'french','gujarati']; // Add more as needed
-        return view('admin.marquee.index', compact('marquees', 'languages'));
+        return view('admin.marquee.index', compact('marquees'));
     }
 
     public function store(Request $request)
@@ -31,8 +30,7 @@ class MarqueeTextController extends Controller
 
     public function edit(MarqueeText $marqueeText)
     {
-        $languages = ['english', 'hindi', 'french','gujarati']; // Add more as needed
-        return view('admin.marquee.edit', compact('marqueeText', 'languages'));
+        return view('admin.marquee.edit', compact('marqueeText'));
     }
 
     public function update(Request $request, MarqueeText $marqueeText)

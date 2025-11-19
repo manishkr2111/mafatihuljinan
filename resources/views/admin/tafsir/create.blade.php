@@ -14,7 +14,7 @@
             <input type="text" name="title" id="title" value="{{ old('title') }}"
                 class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A]" required>
             @error('title')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
 
@@ -25,13 +25,13 @@
                 class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A]" required>
                 <option value="">Select Post Type</option>
                 @foreach(commonPostTypeOptions() as $key => $label)
-                    <option value="{{ $key }}" {{ old('post_type') == $key ? 'selected' : '' }}>
-                        {{ $label }}
-                    </option>
+                <option value="{{ $key }}" {{ old('post_type') == $key ? 'selected' : '' }}>
+                    {{ $label }}
+                </option>
                 @endforeach
             </select>
             @error('post_type')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
 
@@ -41,14 +41,14 @@
             <select name="language" id="language"
                 class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A]" required>
                 <option value="">Select Language</option>
-                <option value="english" {{ old('language') == 'english' ? 'selected' : '' }}>English</option>
-                <option value="hindi" {{ old('language') == 'hindi' ? 'selected' : '' }}>Hindi</option>
-                <option value="gujarati" {{ old('language') == 'gujarati' ? 'selected' : '' }}>Gujarati</option>
-                <option value="french" {{ old('language') == 'french' ? 'selected' : '' }}>French</option>
-                <option value="spanish" {{ old('language') == 'spanish' ? 'selected' : '' }}>Spanish</option>
+                @foreach(validLanguages() as $language)
+                <option value="{{ $language }}" {{ old('language') == $language ? 'selected' : '' }}>
+                    {{ ucfirst($language) }}
+                </option>
+                @endforeach
             </select>
             @error('language')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
 
@@ -58,7 +58,7 @@
             <textarea name="content" id="content" rows="6"
                 class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A]">{{ old('content') }}</textarea>
             @error('content')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
         <div class="mb-4">

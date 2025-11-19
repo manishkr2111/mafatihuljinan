@@ -7,9 +7,9 @@
 
     <!-- Success Message -->
     @if(session('success'))
-        <div class="bg-green-100 text-green-700 px-4 py-2 rounded mb-6">
-            {{ session('success') }}
-        </div>
+    <div class="bg-green-100 text-green-700 px-4 py-2 rounded mb-6">
+        {{ session('success') }}
+    </div>
     @endif
 
     <h2 class="text-2xl font-bold text-[#034E7A] mb-6">Edit Marquee Text</h2>
@@ -25,8 +25,8 @@
         <div class="mb-4">
             <label class="block font-medium text-[#034E7A] mb-1">Language</label>
             <select name="language" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A]" required>
-                @foreach($languages as $lang)
-                    <option value="{{ $lang }}" @if($marqueeText->language == $lang) selected @endif>{{ ucfirst($lang) }}</option>
+                @foreach(validLanguages() as $language)
+                <option value="{{ $language }}" @if($marqueeText->language == $language) selected @endif>{{ ucfirst($language) }}</option>
                 @endforeach
             </select>
         </div>

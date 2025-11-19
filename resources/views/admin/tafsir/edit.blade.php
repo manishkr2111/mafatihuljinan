@@ -41,11 +41,9 @@
             <select name="language" id="language"
                 class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A]" required>
                 <option value="">Select Language</option>
-                <option value="english" {{ old('language', $tafsir->language) == 'english' ? 'selected' : '' }}>English</option>
-                <option value="hindi" {{ old('language', $tafsir->language) == 'hindi' ? 'selected' : '' }}>Hindi</option>
-                <option value="gujarati" {{ old('language', $tafsir->language) == 'gujarati' ? 'selected' : '' }}>Gujarati</option>
-                <option value="french" {{ old('language', $tafsir->language) == 'french' ? 'selected' : '' }}>French</option>
-                <option value="spanish" {{ old('language', $tafsir->language) == 'spanish' ? 'selected' : '' }}>Spanish</option>
+                @foreach(validLanguages() as $language)
+                <option value="{{ $language }}" {{ old('language', $tafsir->language) == $language ? 'selected' : '' }}>{{ ucfirst($language) }}</option>
+                @endforeach
             </select>
             @error('language')
             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>

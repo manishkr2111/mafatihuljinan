@@ -18,8 +18,8 @@
         <div class="mb-4">
             <label class="block font-medium text-[#034E7A] mb-1">Language</label>
             <select name="language" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A]" required>
-                @foreach($languages as $lang)
-                    <option value="{{ $lang }}">{{ ucfirst($lang) }}</option>
+                @foreach(validLanguages() as $language)
+                <option value="{{ $language }}">{{ ucfirst($language) }}</option>
                 @endforeach
             </select>
         </div>

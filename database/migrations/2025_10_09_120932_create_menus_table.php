@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('sort_number')->default(0);
             $table->string('menu_name'); 
+            $table->string('post_type'); 
             $table->string('language', 10);
             $table->dateTime('last_data_updated_at')->nullable();
             $table->timestamps(); 

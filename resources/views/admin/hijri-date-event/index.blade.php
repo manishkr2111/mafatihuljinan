@@ -83,10 +83,9 @@
             <div>
                 <label class="block font-medium text-[#034E7A] mb-1">Language</label>
                 <select name="language" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A]" required>
-                    <option value="english">English</option>
-                    <option value="hindi">Hindi</option>
-                    <option value="gujarati">Gujarati</option>
-                    <option value="french">French</option>
+                    @foreach(validLanguages() as $language)
+                    <option value="{{ $language }}">{{ ucfirst($language) }}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
@@ -116,10 +115,9 @@
 
             <select id="filterLanguage" class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A]" onchange="filterTable()">
                 <option value="">-- Filter by Language --</option>
-                <option value="english">English</option>
-                <option value="hindi">Hindi</option>
-                <option value="gujarati">Gujarati</option>
-                <option value="french">French</option>
+                @foreach(validLanguages() as $language)
+                <option value="{{ $language }}">{{ ucfirst($language) }}</option>
+                @endforeach
             </select>
 
             <input type="text" id="filterEvent" placeholder="Search by Event Name" class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A]" onkeyup="filterTable()">

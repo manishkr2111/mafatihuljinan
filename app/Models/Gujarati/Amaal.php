@@ -2,7 +2,7 @@
 namespace App\Models\Gujarati;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Gujarati\Category;
 class Amaal extends Model
 {
     protected $table = 'gujarati_amaal';
@@ -44,7 +44,7 @@ class Amaal extends Model
     // Helper to get assigned categories
     public function old_categories()
     {
-        return \App\Models\English\EnglishCategory::whereIn('id', $this->category_ids ?? [])->get();
+        return Category::whereIn('id', $this->category_ids ?? [])->get();
     }
     public function categories()
     {
@@ -59,6 +59,6 @@ class Amaal extends Model
             $ids = [];
         }
 
-        return \App\Models\English\EnglishCategory::whereIn('id', $ids)->get();
+        return Category::whereIn('id', $ids)->get();
     }
 }

@@ -13,7 +13,12 @@ return new class extends Migration
     {
         $postTables = [
             'english_surah',
-            'gujarati_surah'
+            'gujarati_surah',
+            'hindi_surah',
+            'urdu_surah',
+            'roman_Urdu_surah',
+            'french_surah',
+            'swahili_surah',
         ];
         foreach ($postTables as $postTable) {
             Schema::table($postTable, function (Blueprint $table) {
@@ -29,7 +34,12 @@ return new class extends Migration
     {
         $postTables = [
             'english_surah',
-            'gujarati_surah'
+            'gujarati_surah',
+            'hindi_surah',
+            'urdu_surah',
+            'roman_Urdu_surah',
+            'french_surah',
+            'swahili_surah',
         ];
         foreach ($postTables as $postTable) {
             Schema::table($postTable, function (Blueprint $table) {

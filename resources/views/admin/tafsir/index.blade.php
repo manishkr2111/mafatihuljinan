@@ -25,11 +25,9 @@
                 <select id="languageFilter"
                     class="border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-[#034E7A]">
                     <option value="">All</option>
-                    <option value="english">English</option>
-                    <option value="hindi">Hindi</option>
-                    <option value="gujarati">Gujarati</option>
-                    <option value="french">French</option>
-                    <option value="spanish">Spanish</option>
+                    @foreach(validLanguages() as $language)
+                    <option value="{{ $language }}">{{ ucfirst($language) }}</option>
+                    @endforeach
                 </select>
             </div>
 

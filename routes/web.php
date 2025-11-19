@@ -13,6 +13,10 @@ use App\Http\Controllers\Admin\English\EnglishPostController;
 use App\Http\Controllers\Admin\English\CategoryController;
 use App\Http\Controllers\Admin\Gujarati\GujaratiPostController;
 use App\Http\Controllers\Admin\Gujarati\GujaratiCategoryController;
+use App\Http\Controllers\Admin\Hindi\HindiPostController;
+use App\Http\Controllers\Admin\Hindi\HindiCategoryController;
+use App\Http\Controllers\Admin\Urdu\UrduPostController;
+use App\Http\Controllers\Admin\Urdu\UrduCategoryController;
 use App\Http\Controllers\Admin\Common\EventPopupController;
 
 
@@ -22,7 +26,7 @@ Route::get('/greet', function () {
 });
 
 Route::get('/home', function () {
-   return view('welcome');
+    return view('welcome');
 });
 Route::get('/', function () {
     return redirect('/login');
@@ -54,7 +58,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-Route::middleware(['auth','role:admin,editor'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:admin,editor'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/users', [UserController::class, 'index'])->name('users');
     Route::get('/users/{user}', [UserController::class, 'Details'])->name('users.show');
@@ -65,7 +69,7 @@ Route::middleware(['auth','role:admin,editor'])->prefix('admin')->name('admin.')
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::post('/regenerateToken', [DashboardController::class, 'GenerateAPItoken'])->name('regenerateToken');
     Route::get('/lrc-posts/{language}/{postType}/{lrcType}', [DashboardController::class, 'showLrcEnabledPosts'])
-    ->name('lrc.posts');
+        ->name('lrc.posts');
 
     Route::post('/day-difference', [HijriDateEventController::class, 'dayDifference'])->name('hijri.date.difference.store');
 
@@ -107,6 +111,7 @@ Route::middleware(['auth','role:admin,editor'])->prefix('admin')->name('admin.')
     Route::post('/uploadAudio', [DashboardController::class, 'uploadAudio'])->name('uploadAudio');
     Route::delete('/delete-audio', [DashboardController::class, 'deleteAudio'])->name('deleteAudio');
 
+    // English
     Route::prefix('english/categories')->name('english.category.')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('index');
         Route::get('/create', [CategoryController::class, 'create'])->name('create');
@@ -127,6 +132,7 @@ Route::middleware(['auth','role:admin,editor'])->prefix('admin')->name('admin.')
         Route::delete('/{postId}', [EnglishPostController::class, 'destroy'])->name('destroy');
     });
 
+    // Gujarati
     Route::prefix('gujarati/post')->name('gujarati.post.')->group(function () {
         Route::get('/', [GujaratiPostController::class, 'index'])->name('index');
         Route::get('/create', [GujaratiPostController::class, 'create'])->name('create');
@@ -145,5 +151,47 @@ Route::middleware(['auth','role:admin,editor'])->prefix('admin')->name('admin.')
         Route::delete('/{category}', [GujaratiCategoryController::class, 'destroy'])->name('destroy');
 
         Route::get('/parents', [GujaratiCategoryController::class, 'getParentCategories'])->name('parents');
+    });
+
+    // Hindi
+    Route::prefix('hindi/post')->name('hindi.post.')->group(function () {
+        Route::get('/', [HindiPostController::class, 'index'])->name('index');
+        Route::get('/create', [HindiPostController::class, 'create'])->name('create');
+        Route::post('/store', [HindiPostController::class, 'store'])->name('store');
+        Route::get('/{postId}/edit', [HindiPostController::class, 'edit'])->name('edit');
+        Route::put('/{postId}', [HindiPostController::class, 'update'])->name('update');
+        Route::delete('/{postId}', [HindiPostController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('hindi/categories')->name('hindi.category.')->group(function () {
+        Route::get('/', [HindiCategoryController::class, 'index'])->name('index');
+        Route::get('/create', [HindiCategoryController::class, 'create'])->name('create');
+        Route::post('/', [HindiCategoryController::class, 'store'])->name('store');
+        Route::get('/{category}/edit', [HindiCategoryController::class, 'edit'])->name('edit');
+        Route::put('/{category}', [HindiCategoryController::class, 'update'])->name('update');
+        Route::delete('/{category}', [HindiCategoryController::class, 'destroy'])->name('destroy');
+
+        Route::get('/parents', [HindiCategoryController::class, 'getParentCategories'])->name('parents');
+    });
+
+    //Urdu
+    Route::prefix('urdu/post')->name('urdu.post.')->group(function () {
+        Route::get('/', [UrduPostController::class, 'index'])->name('index');
+        Route::get('/create', [UrduPostController::class, 'create'])->name('create');
+        Route::post('/store', [UrduPostController::class, 'store'])->name('store');
+        Route::get('/{postId}/edit', [UrduPostController::class, 'edit'])->name('edit');
+        Route::put('/{postId}', [UrduPostController::class, 'update'])->name('update');
+        Route::delete('/{postId}', [UrduPostController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('urdu/categories')->name('urdu.category.')->group(function () {
+        Route::get('/', [UrduCategoryController::class, 'index'])->name('index');
+        Route::get('/create', [UrduCategoryController::class, 'create'])->name('create');
+        Route::post('/', [UrduCategoryController::class, 'store'])->name('store');
+        Route::get('/{category}/edit', [UrduCategoryController::class, 'edit'])->name('edit');
+        Route::put('/{category}', [UrduCategoryController::class, 'update'])->name('update');
+        Route::delete('/{category}', [UrduCategoryController::class, 'destroy'])->name('destroy');
+
+        Route::get('/parents', [UrduCategoryController::class, 'getParentCategories'])->name('parents');
     });
 });
