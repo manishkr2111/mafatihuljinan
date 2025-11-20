@@ -21,6 +21,8 @@ use App\Http\Controllers\Admin\French\FrenchPostController;
 use App\Http\Controllers\Admin\French\FrenchCategoryController;
 use App\Http\Controllers\Admin\RomanUrdu\RomanUrduPostController;
 use App\Http\Controllers\Admin\RomanUrdu\RomanUrduCategoryController;
+use App\Http\Controllers\Admin\Swahili\SwahiliPostController;
+use App\Http\Controllers\Admin\Swahili\SwahiliCategoryController;
 use App\Http\Controllers\Admin\Common\EventPopupController;
 
 
@@ -239,5 +241,26 @@ Route::middleware(['auth', 'role:admin,editor'])->prefix('admin')->name('admin.'
         Route::delete('/{category}', [FrenchCategoryController::class, 'destroy'])->name('destroy');
 
         Route::get('/parents', [FrenchCategoryController::class, 'getParentCategories'])->name('parents');
+    });
+
+    //Swahili
+    Route::prefix('swahili/post')->name('swahili.post.')->group(function () {
+        Route::get('/', [SwahiliPostController::class, 'index'])->name('index');
+        Route::get('/create', [SwahiliPostController::class, 'create'])->name('create');
+        Route::post('/store', [SwahiliPostController::class, 'store'])->name('store');
+        Route::get('/{postId}/edit', [SwahiliPostController::class, 'edit'])->name('edit');
+        Route::put('/{postId}', [SwahiliPostController::class, 'update'])->name('update');
+        Route::delete('/{postId}', [SwahiliPostController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('swahili/categories')->name('swahili.category.')->group(function () {
+        Route::get('/', [SwahiliCategoryController::class, 'index'])->name('index');
+        Route::get('/create', [SwahiliCategoryController::class, 'create'])->name('create');
+        Route::post('/', [SwahiliCategoryController::class, 'store'])->name('store');
+        Route::get('/{category}/edit', [SwahiliCategoryController::class, 'edit'])->name('edit');
+        Route::put('/{category}', [SwahiliCategoryController::class, 'update'])->name('update');
+        Route::delete('/{category}', [SwahiliCategoryController::class, 'destroy'])->name('destroy');
+
+        Route::get('/parents', [SwahiliCategoryController::class, 'getParentCategories'])->name('parents');
     });
 });
