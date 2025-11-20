@@ -26,6 +26,7 @@ class UserController extends Controller
         // Attach post data dynamically
         $FavoritePosts->transform(function ($fav) {
             $modelClass = getModelByLanguageAndType($fav->language, $fav->post_type);
+            dd($modelClass);
             if ($modelClass && class_exists($modelClass)) {
                 $fav->post = $modelClass::find($fav->post_id);
             } else {

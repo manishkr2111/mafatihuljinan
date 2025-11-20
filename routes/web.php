@@ -17,6 +17,8 @@ use App\Http\Controllers\Admin\Hindi\HindiPostController;
 use App\Http\Controllers\Admin\Hindi\HindiCategoryController;
 use App\Http\Controllers\Admin\Urdu\UrduPostController;
 use App\Http\Controllers\Admin\Urdu\UrduCategoryController;
+use App\Http\Controllers\Admin\French\FrenchPostController;
+use App\Http\Controllers\Admin\French\FrenchCategoryController;
 use App\Http\Controllers\Admin\Common\EventPopupController;
 
 
@@ -193,5 +195,27 @@ Route::middleware(['auth', 'role:admin,editor'])->prefix('admin')->name('admin.'
         Route::delete('/{category}', [UrduCategoryController::class, 'destroy'])->name('destroy');
 
         Route::get('/parents', [UrduCategoryController::class, 'getParentCategories'])->name('parents');
+    });
+
+
+    //French
+    Route::prefix('french/post')->name('french.post.')->group(function () {
+        Route::get('/', [FrenchPostController::class, 'index'])->name('index');
+        Route::get('/create', [FrenchPostController::class, 'create'])->name('create');
+        Route::post('/store', [FrenchPostController::class, 'store'])->name('store');
+        Route::get('/{postId}/edit', [FrenchPostController::class, 'edit'])->name('edit');
+        Route::put('/{postId}', [FrenchPostController::class, 'update'])->name('update');
+        Route::delete('/{postId}', [FrenchPostController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('french/categories')->name('french.category.')->group(function () {
+        Route::get('/', [FrenchCategoryController::class, 'index'])->name('index');
+        Route::get('/create', [FrenchCategoryController::class, 'create'])->name('create');
+        Route::post('/', [FrenchCategoryController::class, 'store'])->name('store');
+        Route::get('/{category}/edit', [FrenchCategoryController::class, 'edit'])->name('edit');
+        Route::put('/{category}', [FrenchCategoryController::class, 'update'])->name('update');
+        Route::delete('/{category}', [FrenchCategoryController::class, 'destroy'])->name('destroy');
+
+        Route::get('/parents', [FrenchCategoryController::class, 'getParentCategories'])->name('parents');
     });
 });

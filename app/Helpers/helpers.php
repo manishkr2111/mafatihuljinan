@@ -117,7 +117,101 @@ if (!function_exists('getUrduModel')) {
         return $map[$postType] ?? null;
     }
 }
+if (!function_exists('getFrenchModel')) {
+    function getFrenchModel($postType)
+    {
+        $map = [
+            'sahifas-ahlulbayt'     => \App\Models\French\SahifasAhlulbayt::class,
+            'surah'                 => \App\Models\French\Surah::class,
+            'dua'                   => \App\Models\French\Dua::class,
+            'daily-dua'             => \App\Models\French\DailyDua::class,
+            'amaal-namaz'           => \App\Models\French\AmaalNamaz::class,
+            'burial-acts-prayers'   => \App\Models\French\BurialActsPrayers::class,
+            'amaal'                 => \App\Models\French\Amaal::class,
+            'munajat'               => \App\Models\French\Munajat::class,
+            'salaat-namaz'          => \App\Models\French\SalaatNamaz::class,
+            'salwaat'               => \App\Models\French\Salwaat::class,
+            'tasbih'                => \App\Models\French\Tasbih::class,
+            'travel-ziyarat'        => \App\Models\French\TravelZiyarat::class,
+            'ziyarat'               => \App\Models\French\Ziyarat::class,
+            'essential-supplications' => \App\Models\French\EssentialSupplications::class,
+        ];
 
+        return $map[$postType] ?? null;
+    }
+}
+
+if (!function_exists('getSwahiliModel')) {
+    function getSwahiliModel($postType)
+    {
+        $map = [
+            'sahifas-ahlulbayt'     => \App\Models\Urdu\SahifasAhlulbayt::class,
+            'surah'                 => \App\Models\Urdu\Surah::class,
+            'dua'                   => \App\Models\Urdu\Dua::class,
+            'daily-dua'             => \App\Models\Urdu\DailyDua::class,
+            'amaal-namaz'           => \App\Models\Urdu\AmaalNamaz::class,
+            'burial-acts-prayers'   => \App\Models\Urdu\BurialActsPrayers::class,
+            'amaal'                 => \App\Models\Urdu\Amaal::class,
+            'munajat'               => \App\Models\Urdu\Munajat::class,
+            'salaat-namaz'          => \App\Models\Urdu\SalaatNamaz::class,
+            'salwaat'               => \App\Models\Urdu\Salwaat::class,
+            'tasbih'                => \App\Models\Urdu\Tasbih::class,
+            'travel-ziyarat'        => \App\Models\Urdu\TravelZiyarat::class,
+            'ziyarat'               => \App\Models\Urdu\Ziyarat::class,
+            'essential-supplications' => \App\Models\Urdu\EssentialSupplications::class,
+        ];
+
+        return $map[$postType] ?? null;
+    }
+}
+
+if (!function_exists('getRomanUrduModel')) {
+    function getRomanUrduModel($postType)
+    {
+        $map = [
+            'sahifas-ahlulbayt'     => \App\Models\Urdu\SahifasAhlulbayt::class,
+            'surah'                 => \App\Models\Urdu\Surah::class,
+            'dua'                   => \App\Models\Urdu\Dua::class,
+            'daily-dua'             => \App\Models\Urdu\DailyDua::class,
+            'amaal-namaz'           => \App\Models\Urdu\AmaalNamaz::class,
+            'burial-acts-prayers'   => \App\Models\Urdu\BurialActsPrayers::class,
+            'amaal'                 => \App\Models\Urdu\Amaal::class,
+            'munajat'               => \App\Models\Urdu\Munajat::class,
+            'salaat-namaz'          => \App\Models\Urdu\SalaatNamaz::class,
+            'salwaat'               => \App\Models\Urdu\Salwaat::class,
+            'tasbih'                => \App\Models\Urdu\Tasbih::class,
+            'travel-ziyarat'        => \App\Models\Urdu\TravelZiyarat::class,
+            'ziyarat'               => \App\Models\Urdu\Ziyarat::class,
+            'essential-supplications' => \App\Models\Urdu\EssentialSupplications::class,
+        ];
+
+        return $map[$postType] ?? null;
+    }
+}
+
+if (!function_exists('getFrenchModel')) {
+    function getUrduModel($postType)
+    {
+        $map = [
+            'sahifas-ahlulbayt'     => \App\Models\Urdu\SahifasAhlulbayt::class,
+            'surah'                 => \App\Models\Urdu\Surah::class,
+            'dua'                   => \App\Models\Urdu\Dua::class,
+            'daily-dua'             => \App\Models\Urdu\DailyDua::class,
+            'amaal-namaz'           => \App\Models\Urdu\AmaalNamaz::class,
+            'burial-acts-prayers'   => \App\Models\Urdu\BurialActsPrayers::class,
+            'amaal'                 => \App\Models\Urdu\Amaal::class,
+            'munajat'               => \App\Models\Urdu\Munajat::class,
+            'salaat-namaz'          => \App\Models\Urdu\SalaatNamaz::class,
+            'salwaat'               => \App\Models\Urdu\Salwaat::class,
+            'tasbih'                => \App\Models\Urdu\Tasbih::class,
+            'travel-ziyarat'        => \App\Models\Urdu\TravelZiyarat::class,
+            'ziyarat'               => \App\Models\Urdu\Ziyarat::class,
+            'essential-supplications' => \App\Models\Urdu\EssentialSupplications::class,
+        ];
+
+        return $map[$postType] ?? null;
+    }
+}
 if (!function_exists('commonPostTypeOptions')) {
     /**
      * Return all post type options as [value => label]
@@ -376,8 +470,16 @@ if (!function_exists('getModelByLanguageAndType')) {
                 return getGujaratiModel($postType);
             case 'english':
                 return getEnglishModel($postType);
-                // case 'arabic':
-                //     return getArabicModel($postType);
+            case 'hindi':
+                return getHindiModel($postType);
+            case 'urdu':
+                return getUrduModel($postType);
+            case 'french':
+                return getFrenchModel($postType);
+            case 'swahili':
+                return getSwahiliModel($postType);
+            case 'roman urdu':
+                return getRomanUrduModel($postType);
             default:
                 return null;
         }
