@@ -169,20 +169,20 @@ if (!function_exists('getRomanUrduModel')) {
     function getRomanUrduModel($postType)
     {
         $map = [
-            'sahifas-ahlulbayt'     => \App\Models\Urdu\SahifasAhlulbayt::class,
-            'surah'                 => \App\Models\Urdu\Surah::class,
-            'dua'                   => \App\Models\Urdu\Dua::class,
-            'daily-dua'             => \App\Models\Urdu\DailyDua::class,
-            'amaal-namaz'           => \App\Models\Urdu\AmaalNamaz::class,
-            'burial-acts-prayers'   => \App\Models\Urdu\BurialActsPrayers::class,
-            'amaal'                 => \App\Models\Urdu\Amaal::class,
-            'munajat'               => \App\Models\Urdu\Munajat::class,
-            'salaat-namaz'          => \App\Models\Urdu\SalaatNamaz::class,
-            'salwaat'               => \App\Models\Urdu\Salwaat::class,
-            'tasbih'                => \App\Models\Urdu\Tasbih::class,
-            'travel-ziyarat'        => \App\Models\Urdu\TravelZiyarat::class,
-            'ziyarat'               => \App\Models\Urdu\Ziyarat::class,
-            'essential-supplications' => \App\Models\Urdu\EssentialSupplications::class,
+            'sahifas-ahlulbayt'     => \App\Models\RomanUrdu\SahifasAhlulbayt::class,
+            'surah'                 => \App\Models\RomanUrdu\Surah::class,
+            'dua'                   => \App\Models\RomanUrdu\Dua::class,
+            'daily-dua'             => \App\Models\RomanUrdu\DailyDua::class,
+            'amaal-namaz'           => \App\Models\RomanUrdu\AmaalNamaz::class,
+            'burial-acts-prayers'   => \App\Models\RomanUrdu\BurialActsPrayers::class,
+            'amaal'                 => \App\Models\RomanUrdu\Amaal::class,
+            'munajat'               => \App\Models\RomanUrdu\Munajat::class,
+            'salaat-namaz'          => \App\Models\RomanUrdu\SalaatNamaz::class,
+            'salwaat'               => \App\Models\RomanUrdu\Salwaat::class,
+            'tasbih'                => \App\Models\RomanUrdu\Tasbih::class,
+            'travel-ziyarat'        => \App\Models\RomanUrdu\TravelZiyarat::class,
+            'ziyarat'               => \App\Models\RomanUrdu\Ziyarat::class,
+            'essential-supplications' => \App\Models\RomanUrdu\EssentialSupplications::class,
         ];
 
         return $map[$postType] ?? null;

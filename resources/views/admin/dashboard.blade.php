@@ -31,7 +31,7 @@
     <h2 class="text-lg font-bold text-[#034E7A] mb-3">User Counts by Language</h2>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-2">
         <div class="bg-white rounded shadow p-2 text-center">
-            <h3 class="text-sm font-medium text-[#034E7A]">Total Users</h3>
+            <h3 class="text-sm font-medium text-[#034E7A]"><a href="{{ route('admin.users') }}">Total Users</a></h3>
             <p class="text-2xl font-bold text-[#034E7A] mt-2">{{$totalUsers}}</p>
         </div>
 
@@ -67,19 +67,19 @@
                     <ul class="space-y-1">
                         <li>
                             <a href="{{ route('admin.lrc.posts', ['language' => $language, 'postType' => $type, 'lrcType' => 'arabic']) }}"
-                                class="text-green-700 hover:underline">
+                                target="_blank" class="text-green-700 hover:underline">
                                 Arabic: {{ $counts['arabic_lrc_enabled_count'] ?? 0 }}
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('admin.lrc.posts', ['language' => $language, 'postType' => $type, 'lrcType' => 'transliteration']) }}"
-                                class="text-green-700 hover:underline">
+                                target="_blank" class="text-green-700 hover:underline">
                                 Transliteration: {{ $counts['transliteration_lrc_enabled_count'] ?? 0 }}
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('admin.lrc.posts', ['language' => $language, 'postType' => $type, 'lrcType' => 'translation']) }}"
-                                class="text-green-700 hover:underline">
+                                target="_blank" class="text-green-700 hover:underline">
                                 Translation: {{ $counts['translation_lrc_enabled_count'] ?? 0 }}
                             </a>
                         </li>

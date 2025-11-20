@@ -524,7 +524,121 @@
                         </ul>
                     </details>
                 </li>
-
+                <!-- Roman Urdu -->
+                <li>
+                    <details class="group" {{ Route::is('admin.roman-urdu.*') ? 'open' : '' }}>
+                        <summary class="flex justify-between items-center px-2 py-2 cursor-pointer rounded hover:bg-[#034E7A] hover:text-[#fff]">
+                            <span><i class="fa fa-language mr-2"></i> Roman Urdu</span>
+                            <i class="fas fa-chevron-down transition-transform duration-200 group-open:rotate-180"></i>
+                        </summary>
+                        <ul class="pl-6 mt-1 space-y-1">
+                            <li>
+                                <a href="{{ route('admin.roman-urdu.category.index') }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] {{ Route::is('admin.roman-urdu.category.*') ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i> Categories
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roman-urdu.post.index', ['post_type' => 'sahifas-ahlulbayt']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff]  
+                                    {{ Route::is('admin.roman-urdu.post.*') && request('post_type') === 'sahifas-ahlulbayt' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Sahifas Ahlulbayt
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roman-urdu.post.index', ['post_type' => 'dua']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] 
+                                    {{ Route::is('admin.roman-urdu.post.*') && request('post_type') === 'dua' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Dua
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roman-urdu.post.index', ['post_type' => 'daily-dua']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] 
+                                    {{ Route::is('admin.roman-urdu.post.*') && request('post_type') === 'daily-dua' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Daily Dua
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roman-urdu.post.index', ['post_type' => 'surah']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] 
+                                    {{ Route::is('admin.roman-urdu.post.*') && request('post_type') === 'surah' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Surah (Holy Quran)
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roman-urdu.post.index', ['post_type' => 'amaal']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] 
+                                    {{ Route::is('admin.roman-urdu.post.*') && request('post_type') === 'amaal' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Amaal
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roman-urdu.post.index', ['post_type' => 'amaal-namaz']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] 
+                                    {{ Route::is('admin.roman-urdu.post.*') && request('post_type') === 'amaal-namaz' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Amaal Namaz
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roman-urdu.post.index', ['post_type' => 'munajat']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] 
+                                    {{ Route::is('admin.roman-urdu.post.*') && request('post_type') === 'munajat' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Munajat
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roman-urdu.post.index', ['post_type' => 'salwaat']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] 
+                                    {{ Route::is('admin.roman-urdu.post.*') && request('post_type') === 'salwaat' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Salwaat
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roman-urdu.post.index', ['post_type' => 'salaat-namaz']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] 
+                                    {{ Route::is('admin.roman-urdu.post.index') && request('post_type') === 'salaat-namaz' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Salaat Namaz
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roman-urdu.post.index', ['post_type' => 'tasbih']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] 
+                                    {{ Route::is('admin.roman-urdu.post.*') && request('post_type') === 'tasbih' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Tasbih
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roman-urdu.post.index', ['post_type' => 'ziyarat']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] 
+                                    {{ Route::is('admin.roman-urdu.post.*') && request('post_type') === 'ziyarat' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Ziyarat
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roman-urdu.post.index', ['post_type' => 'travel-ziyarat']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] 
+                                    {{ Route::is('admin.roman-urdu.post.*') && request('post_type') === 'travel-ziyarat' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Travel Ziyarat
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roman-urdu.post.index', ['post_type' => 'essential-supplications']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] 
+                                    {{ Route::is('admin.roman-urdu.post.*') && request('post_type') === 'essential-supplications' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Essential Supplications
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roman-urdu.post.index', ['post_type' => 'burial-acts-prayers']) }}"
+                                    class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] 
+                                    {{ Route::is('admin.roman-urdu.post.*') && request('post_type') === 'burial-acts-prayers' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    <i class="fa fa-pencil-alt mr-2"></i> Burial Acts Prayers
+                                </a>
+                            </li>
+                        </ul>
+                    </details>
+                </li>
                 <!-- French -->
                 <li>
                     <details class="group" {{ Route::is('admin.french.*') ? 'open' : '' }}>
@@ -626,7 +740,7 @@
                             <li>
                                 <a href="{{ route('admin.french.post.index', ['post_type' => 'essential-supplications']) }}"
                                     class="flex items-center px-2 py-1 rounded hover:bg-[#034E7A] hover:text-[#fff] 
-                                    {{ Route::is('admin.urdu.post.*') && request('post_type') === 'essential-supplications' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                                    {{ Route::is('admin.french.post.*') && request('post_type') === 'essential-supplications' ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
                                     <i class="fa fa-pencil-alt mr-2"></i> Essential Supplications
                                 </a>
                             </li>

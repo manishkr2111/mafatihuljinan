@@ -35,8 +35,8 @@
                 <!-- Table Header -->
                 <div class="grid grid-cols-12 bg-[#034E7A] text-white sticky top-0 z-10">
                     <div class="col-span-1 px-2 sm:px-3 py-2 sm:py-3 font-semibold text-xs sm:text-sm">#</div>
-                    <div class="col-span-2 px-2 sm:px-3 py-2 sm:py-3 font-semibold text-xs sm:text-sm">Name</div>
-                    <div class="col-span-3 px-2 sm:px-3 py-2 sm:py-3 font-semibold text-xs sm:text-sm">Email</div>
+                    <div class="col-span-2 px-2 sm:px-3 py-2 sm:py-3 font-medium text-gray-800 max-w-[120px] truncate">Name</div>
+                    <div class="col-span-3 px-2 sm:px-3 py-2 sm:py-3 text-gray-700 text-xs sm:text-sm max-w-[180px] break-all truncate">Email</div>
                     <div class="col-span-1 px-2 sm:px-3 py-2 sm:py-3 font-semibold text-xs sm:text-sm">Role</div>
                     <div class="col-span-1 px-2 sm:px-3 py-2 sm:py-3 font-semibold text-xs sm:text-sm">Verified</div>
                     <div class="col-span-2 px-2 sm:px-3 py-2 sm:py-3 font-semibold text-xs sm:text-sm">Created At</div>
@@ -48,13 +48,17 @@
                     @forelse($users as $index => $user)
                     <div class="grid grid-cols-12 hover:bg-gray-50 items-center user-row">
                         <div class="col-span-1 px-2 sm:px-3 py-2 sm:py-3 text-xs sm:text-sm">{{ $index + 1 }}</div>
-                        <div class="col-span-2 px-2 sm:px-3 py-2 sm:py-3 font-medium text-gray-800">
+                        <div class="col-span-2 px-2 sm:px-3 py-2 sm:py-3 font-medium text-gray-800 max-w-[120px] truncate">
                             <a href="{{ route('admin.users.show', $user->id) }}" class="hover:underline text-blue-600 text-xs sm:text-sm">
                                 {{ $user->name }}
                             </a>
                         </div>
-                        <div class="col-span-3 px-2 sm:px-3 py-2 sm:py-3 text-gray-700 text-xs sm:text-sm break-all">{{ $user->email }}</div>
-                        <div class="col-span-1 px-2 sm:px-3 py-2 sm:py-3 text-gray-700 text-xs sm:text-sm">{{ $user->role }}</div>
+                        <div class="col-span-3 px-2 sm:px-3 py-2 sm:py-3 text-gray-700 text-xs sm:text-sm max-w-[180px] truncate break-all">
+                            {{ $user->email }}
+                        </div>
+                        <div class="col-span-1 px-2 sm:px-3 py-2 sm:py-3 text-gray-700 text-xs sm:text-sm">
+                            {{ $user->role }}
+                        </div>
                         <div class="col-span-1 px-2 sm:px-3 py-2 sm:py-3">
                             @if($user->email_verified_at)
                             <span class="px-2 py-1 text-xs font-semibold text-green-700 bg-green-100 rounded-full whitespace-nowrap">Yes</span>

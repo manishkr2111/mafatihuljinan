@@ -19,6 +19,8 @@ use App\Http\Controllers\Admin\Urdu\UrduPostController;
 use App\Http\Controllers\Admin\Urdu\UrduCategoryController;
 use App\Http\Controllers\Admin\French\FrenchPostController;
 use App\Http\Controllers\Admin\French\FrenchCategoryController;
+use App\Http\Controllers\Admin\RomanUrdu\RomanUrduPostController;
+use App\Http\Controllers\Admin\RomanUrdu\RomanUrduCategoryController;
 use App\Http\Controllers\Admin\Common\EventPopupController;
 
 
@@ -197,6 +199,26 @@ Route::middleware(['auth', 'role:admin,editor'])->prefix('admin')->name('admin.'
         Route::get('/parents', [UrduCategoryController::class, 'getParentCategories'])->name('parents');
     });
 
+    //Roman Urdu
+    Route::prefix('roman-urdu/post')->name('roman-urdu.post.')->group(function () {
+        Route::get('/', [RomanUrduPostController::class, 'index'])->name('index');
+        Route::get('/create', [RomanUrduPostController::class, 'create'])->name('create');
+        Route::post('/store', [RomanUrduPostController::class, 'store'])->name('store');
+        Route::get('/{postId}/edit', [RomanUrduPostController::class, 'edit'])->name('edit');
+        Route::put('/{postId}', [RomanUrduPostController::class, 'update'])->name('update');
+        Route::delete('/{postId}', [RomanUrduPostController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('roman-urdu/categories')->name('roman-urdu.category.')->group(function () {
+        Route::get('/', [RomanUrduCategoryController::class, 'index'])->name('index');
+        Route::get('/create', [RomanUrduCategoryController::class, 'create'])->name('create');
+        Route::post('/', [RomanUrduCategoryController::class, 'store'])->name('store');
+        Route::get('/{category}/edit', [RomanUrduCategoryController::class, 'edit'])->name('edit');
+        Route::put('/{category}', [RomanUrduCategoryController::class, 'update'])->name('update');
+        Route::delete('/{category}', [RomanUrduCategoryController::class, 'destroy'])->name('destroy');
+
+        Route::get('/parents', [RomanUrduCategoryController::class, 'getParentCategories'])->name('parents');
+    });
 
     //French
     Route::prefix('french/post')->name('french.post.')->group(function () {

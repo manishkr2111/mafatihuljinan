@@ -98,9 +98,9 @@ class DashboardController extends Controller
             $modelClass = getUrduModel($postType);
         } elseif ($language === 'roman urdu') {
             $modelClass = getRomanUrduModel($postType);
-        } elseif ($language === 'gujarati') {
+        } elseif ($language === 'french') {
             $modelClass = getFrenchModel($postType);
-        } elseif ($language === 'gujarati') {
+        } elseif ($language === 'swahili') {
             $modelClass = getSwahiliModel($postType);
         } else {
             abort(404, 'Unsupported language');
