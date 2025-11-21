@@ -3,8 +3,8 @@
 @section('title', 'Users')
 
 @section('content')
-<div class="min-h-screen bg-gray-100 p-2 sm:p-4">
-    <div class="w-full max-w-7xl mx-auto bg-white rounded-xl shadow-lg">
+<div class="min-h-screen bg-gray-100">
+    <div class="w-full max-w-7xl mx-auto bg-white rounded-xl ">
 
         <!-- Header Title -->
         <div class="p-4 border-b border-gray-200">
@@ -33,46 +33,46 @@
         <div class="overflow-x-auto">
             <div class="min-w-max">
                 <!-- Table Header -->
-                <div class="grid grid-cols-12 bg-[#034E7A] text-white sticky top-0 z-10">
-                    <div class="col-span-1 px-2 sm:px-3 py-2 sm:py-3 font-semibold text-xs sm:text-sm">#</div>
-                    <div class="col-span-2 px-2 sm:px-3 py-2 sm:py-3 font-medium text-gray-800 max-w-[120px] truncate">Name</div>
-                    <div class="col-span-3 px-2 sm:px-3 py-2 sm:py-3 text-gray-700 text-xs sm:text-sm max-w-[180px] break-all truncate">Email</div>
-                    <div class="col-span-1 px-2 sm:px-3 py-2 sm:py-3 font-semibold text-xs sm:text-sm">Role</div>
-                    <div class="col-span-1 px-2 sm:px-3 py-2 sm:py-3 font-semibold text-xs sm:text-sm">Verified</div>
-                    <div class="col-span-2 px-2 sm:px-3 py-2 sm:py-3 font-semibold text-xs sm:text-sm">Created At</div>
-                    <div class="col-span-2 px-2 sm:px-3 py-2 sm:py-3 font-semibold text-center text-xs sm:text-sm">Actions</div>
+                <!-- Table Header -->
+                <div class="grid grid-cols-[40px_150px_200px_80px_80px_120px_1fr] gap-0 bg-[#034E7A] text-white sticky top-0 z-10 text-xs sm:text-sm">
+                    <div class="px-1 py-2 font-semibold truncate">#</div>
+                    <div class="px-1 py-2 font-semibold truncate">Name</div>
+                    <div class="px-1 py-2 font-semibold truncate">Email</div>
+                    <div class="px-1 py-2 font-semibold truncate">Role</div>
+                    <div class="px-1 py-2 font-semibold truncate">Verified</div>
+                    <div class="px-1 py-2 font-semibold truncate">Created At</div>
+                    <div class="px-1 py-2 font-semibold text-center">Actions</div>
                 </div>
 
                 <!-- Table Body -->
                 <div class="divide-y divide-gray-200">
                     @forelse($users as $index => $user)
-                    <div class="grid grid-cols-12 hover:bg-gray-50 items-center user-row">
-                        <div class="col-span-1 px-2 sm:px-3 py-2 sm:py-3 text-xs sm:text-sm">{{ $index + 1 }}</div>
-                        <div class="col-span-2 px-2 sm:px-3 py-2 sm:py-3 font-medium text-gray-800 max-w-[120px] truncate">
-                            <a href="{{ route('admin.users.show', $user->id) }}" class="hover:underline text-blue-600 text-xs sm:text-sm">
+                    <div class="grid grid-cols-[40px_150px_200px_80px_80px_120px_1fr] gap-0 hover:bg-gray-50 items-center user-row text-xs sm:text-sm">
+                        <div class="px-1 py-2 truncate">{{ $index + 1 }}</div>
+                        <div class="px-1 py-2 font-medium text-gray-800 truncate">
+                            <a href="{{ route('admin.users.show', $user->id) }}" class="hover:underline text-blue-600">
                                 {{ $user->name }}
                             </a>
                         </div>
-                        <div class="col-span-3 px-2 sm:px-3 py-2 sm:py-3 text-gray-700 text-xs sm:text-sm max-w-[180px] truncate break-all">
+                        <div class="px-1 py-2 text-gray-700 truncate break-all">
                             {{ $user->email }}
                         </div>
-                        <div class="col-span-1 px-2 sm:px-3 py-2 sm:py-3 text-gray-700 text-xs sm:text-sm">
-                            {{ $user->role }}
-                        </div>
-                        <div class="col-span-1 px-2 sm:px-3 py-2 sm:py-3">
+                        <div class="px-1 py-2 text-gray-700 truncate">{{ $user->role }}</div>
+                        <div class="px-1 py-2">
                             @if($user->email_verified_at)
                             <span class="px-2 py-1 text-xs font-semibold text-green-700 bg-green-100 rounded-full whitespace-nowrap">Yes</span>
                             @else
                             <span class="px-2 py-1 text-xs font-semibold text-red-700 bg-red-100 rounded-full whitespace-nowrap">No</span>
                             @endif
                         </div>
-                        <div class="col-span-2 px-2 sm:px-3 py-2 sm:py-3 text-gray-600 text-xs sm:text-sm whitespace-nowrap">{{ $user->created_at ? $user->created_at->format('Y-m-d') : '-' }}</div>
-                        <div class="col-span-2 px-2 sm:px-3 py-2 sm:py-3 flex items-center justify-center space-x-1 sm:space-x-2">
-                            <a href="{{ route('admin.users.edit', $user->id) }}" class="text-blue-600 px-2 sm:px-3 py-1 rounded bg-blue-50 hover:bg-blue-100 text-xs sm:text-sm transition whitespace-nowrap">Edit</a>
+                        <div class="px-1 py-2 text-gray-600 truncate whitespace-nowrap">{{ $user->created_at ? $user->created_at->format('Y-m-d') : '-' }}</div>
+                        <div class="px-1 py-2 flex items-center justify-center space-x-1 sm:space-x-2">
+                            <a href="{{ route('admin.users.edit', $user->id) }}" class="text-blue-600 px-2 py-1 rounded bg-blue-50 hover:bg-blue-100 transition whitespace-nowrap">Edit</a>
+                            <a href="{{ route('admin.users.edit-role', $user->id) }}" class="text-blue-600 px-2 py-1 rounded bg-blue-50 hover:bg-blue-100 transition whitespace-nowrap">Edit Role</a>
                             <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-600 px-2 sm:px-3 py-1 rounded bg-red-50 hover:bg-red-100 text-xs sm:text-sm transition whitespace-nowrap">Delete</button>
+                                <button type="submit" class="text-red-600 px-2 py-1 rounded bg-red-50 hover:bg-red-100 transition whitespace-nowrap">Delete</button>
                             </form>
                         </div>
                     </div>
@@ -82,6 +82,7 @@
                     </div>
                     @endforelse
                 </div>
+
             </div>
         </div>
 

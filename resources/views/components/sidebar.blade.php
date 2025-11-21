@@ -60,7 +60,7 @@
 
         <!-- All Dua's Section -->
         <div class="mb-4">
-            <div class="text-gray-500 uppercase text-xs font-bold mb-2">All Dua's</div>
+            <div class="text-gray-500 uppercase text-xs font-bold mb-2">All Post / Dua</div>
             <ul class="space-y-1">
                 <!-- English -->
                 <li>
@@ -876,12 +876,34 @@
         <div class="mb-4">
             <div class="text-gray-500 uppercase text-xs font-bold mb-2">Management</div>
             <ul class="space-y-1">
-                <li><a href="#" class="flex items-center px-2 py-2 rounded hover:bg-gray-100"><i class="fa fa-search mr-2"></i> Search Posts</a></li>
-                <!-- <li><a href="#" class="flex items-center px-2 py-2 rounded hover:bg-gray-100"><i class="fas fa-cog mr-2"></i> Settings</a></li> -->
-                <li><a href="{{ Route('admin.users')}}" class="flex items-center px-2 py-2 rounded hover:bg-gray-100 {{ Route::is('admin.users.*') ? 'bg-gray-100 font-semibold' : '' }}"><i class="fas fa-users mr-2"></i> Users</a></li>
-                <li><a href="#" class="flex items-center px-2 py-2 rounded hover:bg-gray-100"><i class="fas fa-bell mr-2"></i> Notifications</a></li>
+                <li>
+                    <a href="{{ route('admin.post.search') }}"
+                        class="flex items-center px-2 py-1 rounded 
+                      hover:bg-[#034E7A] hover:text-white 
+                      {{ Route::is('admin.post.search') ? 'bg-[#034E7A] text-white font-semibold' : '' }}">
+                        <i class="fa fa-search mr-2"></i> Search Posts
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.users') }}"
+                        class="flex items-center px-2 py-1 rounded 
+                      hover:bg-[#034E7A] hover:text-white 
+                      {{ Route::is('admin.users') || Route::is('admin.users.*') ? 'bg-[#034E7A] text-white font-semibold' : '' }}">
+                        <i class="fas fa-users mr-2"></i> Users
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#"
+                        class="flex items-center px-2 py-1 rounded 
+                      hover:bg-[#034E7A] hover:text-white">
+                        <i class="fas fa-bell mr-2"></i> Notifications
+                    </a>
+                </li>
             </ul>
         </div>
+
     </div>
 
     <!-- Sidebar Footer -->

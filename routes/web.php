@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\RomanUrdu\RomanUrduCategoryController;
 use App\Http\Controllers\Admin\Swahili\SwahiliPostController;
 use App\Http\Controllers\Admin\Swahili\SwahiliCategoryController;
 use App\Http\Controllers\Admin\Common\EventPopupController;
+use App\Http\Controllers\Admin\Common\PostSearchController;
 
 
 
@@ -72,6 +73,10 @@ Route::middleware(['auth', 'role:admin,editor'])->prefix('admin')->name('admin.'
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
+    Route::get('/users/{user}/edit-role', [UserController::class, 'editRole'])->name('users.edit-role');
+    Route::post('/users/{user}/update-role', [UserController::class, 'updateRole'])->name('users.update-role');
+
+
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::post('/regenerateToken', [DashboardController::class, 'GenerateAPItoken'])->name('regenerateToken');
     Route::get('/lrc-posts/{language}/{postType}/{lrcType}', [DashboardController::class, 'showLrcEnabledPosts'])
@@ -116,6 +121,11 @@ Route::middleware(['auth', 'role:admin,editor'])->prefix('admin')->name('admin.'
     Route::get('/upload-audio', [DashboardController::class, 'uploadAudiopage'])->name('uploadAudioPage');
     Route::post('/uploadAudio', [DashboardController::class, 'uploadAudio'])->name('uploadAudio');
     Route::delete('/delete-audio', [DashboardController::class, 'deleteAudio'])->name('deleteAudio');
+
+
+    Route::get('/post-search', [PostSearchController::class, 'index'])->name('post.search');
+    Route::post('/post-search', [PostSearchController::class, 'search'])->name('post.search.submit');
+
 
     // English
     Route::prefix('english/categories')->name('english.category.')->group(function () {

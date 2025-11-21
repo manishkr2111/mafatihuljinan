@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::orderBy('created_at', 'desc')->paginate(2000);
+        $users = User::orderBy('created_at', 'desc')->where('id', '!=', Auth::user()->id)->paginate(2000);
 
         return view('admin.users.index', compact('users'));
     }
@@ -57,7 +57,6 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'role' => 'required|string|in:admin,editor,subscriber',
             'password' => 'nullable|string|min:6',
         ]);
 
@@ -85,6 +84,24 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'User updated successfully.');
+    }
+
+    public function editRole(User $user)
+    {
+        $roles = ['editor' => 'Editor', 'subscriber' => 'Subscriber'];
+        return view('admin.users.edit-role', compact('user', 'roles'));
+    }
+
+    public function updateRole(Request $request, User $user)
+    {
+        $request->validate([
+            'role' => 'required|in:editor,subscriber',
+        ]);
+
+        $user->role = $request->role;
+        $user->save();
+
+        return redirect()->route('admin.users')->with('success', 'User role updated successfully!');
     }
 
     public function destroy(User $user)

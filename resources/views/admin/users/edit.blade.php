@@ -55,21 +55,6 @@
                         class="h-4 w-4 text-blue-600 border-gray-300 rounded">
                     <label for="email_verified" class="ml-2 text-gray-700 font-medium">Email Verified</label>
                 </div>
-
-                <!-- Role -->
-                <div>
-                    <label class="block text-gray-500 font-semibold mb-1" for="role">Role</label>
-                    <select name="role" id="role"
-                            class="w-full px-4 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
-                        <option value="editor" {{ old('role', $user->role) == 'editor' ? 'selected' : '' }}>Editor</option>
-                        <option value="subscriber" {{ old('role', $user->role) == 'subscriber' ? 'selected' : '' }}>Subscriber</option>
-                    </select>
-                    @error('role')
-                        <span class="text-red-600 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
             </div>
 
             <!-- Created / Updated Info -->
