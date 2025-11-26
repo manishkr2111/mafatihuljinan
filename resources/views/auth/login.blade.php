@@ -181,9 +181,9 @@
       <button type="submit">Login</button>
     </form>
 
-    <div class="text-center">
+    <!-- <div class="text-center">
       <a href="{{ route('register') }}">Don't have an account? Register here</a>
-    </div>
+    </div> -->
 
   </div>
 

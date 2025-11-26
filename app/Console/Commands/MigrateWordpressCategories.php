@@ -32,7 +32,7 @@ class MigrateWordpressCategories extends Command
         // Fetch all terms for your custom taxonomy
         $wpCategories = DB::connection('wordpress')->table('terms as t')
             ->join('term_taxonomy as tt', 't.term_id', '=', 'tt.term_id')
-            ->where('tt.taxonomy', 'surah-english-category') // your taxonomy name
+            ->where('tt.taxonomy', 'dua-day-gujarati') // your taxonomy name
             ->select('t.term_id', 't.name', 't.slug', 'tt.description', 'tt.parent')
             ->get();
 
@@ -51,21 +51,31 @@ class MigrateWordpressCategories extends Command
 
         foreach ($wpCategories as $wpCat) {
             $parentId = $wpCat->parent ? ($termMap[$wpCat->parent] ?? null) : null;
-
-            $categoryId = DB::table('english_categories')->updateOrInsert(
+			$baseSlug = Str::slug($wpCat->name);
+			$slug = 'daily-dua-'.$baseSlug;
+			$counter = 1;
+			while (
+				DB::table('gujarati_categories')
+					->where('slug', $slug)
+					->where('wordpress_id', '!=', $wpCat->term_id)
+					->exists()
+			) {
+				$slug = $baseSlug . '-' . $counter++;
+			}
+            $categoryId = DB::table('gujarati_categories')->updateOrInsert(
                 ['wordpress_id' => $wpCat->term_id], // make sure you have this column
                 [
                     'name' => $wpCat->name,
-                    'slug' => $wpCat->slug ?: Str::slug($wpCat->name),
+                    'slug' => $slug,
                     'description' => $wpCat->description,
                     'parent_id' => $parentId,
                     'sort_number' => 0,
-                    'post_type' => 'surah', // optional
+                    'post_type' => 'daily-dua', // optional
                 ]
             );
 
             // Get the Laravel ID of inserted/updated category
-            $laravelCat = DB::table('english_categories')->where('wordpress_id', $wpCat->term_id)->first();
+            $laravelCat = DB::table('gujarati_categories')->where('wordpress_id', $wpCat->term_id)->first();
             $termMap[$wpCat->term_id] = $laravelCat->id;
 
             $bar->advance();

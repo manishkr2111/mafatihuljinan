@@ -42,6 +42,16 @@ class FavoriteController extends Controller
                     $modelClass = getGujaratiModel($postType);
                 } elseif ($language === 'english') {
                     $modelClass = getEnglishModel($postType);
+                } elseif ($language === 'hindi') {
+                    $modelClass = getHindiModel($postType);
+                } elseif ($language === 'urdu') {
+                    $modelClass = getUrduModel($postType);
+                } elseif ($language === 'roman urdu') {
+                    $modelClass = getRomanUrduModel($postType);
+                } elseif ($language === 'swahili') {
+                    $modelClass = getSwahiliModel($postType);
+                } elseif ($language === 'french') {
+                    $modelClass = getFrenchModel($postType);
                 } else {
                     $modelClass = null;
                 }

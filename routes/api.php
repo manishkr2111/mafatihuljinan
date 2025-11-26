@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\English\EnglishCategoryController;
 use App\Http\Controllers\Api\English\EnglishPostController;
 use App\Http\Controllers\Api\Common\CustomUserPostController;
 use App\Http\Controllers\Api\Common\FavoriteController;
+use App\Http\Controllers\Api\Common\BookmarkController;
 use App\Http\Controllers\Api\Common\TafsirDataController;
 use App\Http\Controllers\Api\Common\UserNotepadController;
 use App\Http\Controllers\Admin\Common\DashboardController;
@@ -28,10 +29,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/create/custom-post', [CustomUserPostController::class, 'store']);
     Route::put('/update/custom-posts/{id}', [CustomUserPostController::class, 'update']);
 
-    // favprites
+    // favorites
     Route::post('/create/favorite-post', [FavoriteController::class, 'store']);
     Route::get('/all/favorite/posts', [FavoriteController::class, 'getAllFavorites']);
     Route::post('/favorites/delete', [FavoriteController::class, 'destroy']);
+
+    // bookmark
+    Route::post('/create/bookmark-post', [BookmarkController::class, 'store']);
+    Route::get('/all/bookmark/posts', [BookmarkController::class, 'getAllBookmark']);
+    Route::post('/remove/bookmark/index', [BookmarkController::class, 'removeBookmarkIndex']);
+    Route::post('/bookmark/delete', [BookmarkController::class, 'destroy']);
 
 
     Route::get('all/notes', [UserNotepadController::class, 'index'])->name('notes.index');

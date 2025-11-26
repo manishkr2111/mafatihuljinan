@@ -47,7 +47,7 @@ Route::middleware('auth')->get('/home', function () {
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 
 // Handle the registration form submission
-Route::post('/register', [AuthController::class, 'register']);
+//Route::post('/register', [AuthController::class, 'register']);
 
 // Show the login form
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
