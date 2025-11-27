@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="{{ asset('storage/website/mafa-logo.jpg') }}">
+  <script src="https://www.google.com/recaptcha/api.js?render={{ env('GOOGLE_RECAPTCHA_KEY') }}"></script>
   <title>Register</title>
   <style>
     :root {
@@ -34,7 +36,7 @@
     .register-card {
       background-color: var(--white);
       border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       padding: 2rem;
       width: 100%;
       max-width: 450px;
@@ -132,6 +134,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="register-card">
@@ -139,17 +142,18 @@
 
     <!-- Display validation errors if any -->
     @if ($errors->any())
-      <div class="alert">
-        <ul>
-          @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-      </div>
+    <div class="alert">
+      <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+      </ul>
+    </div>
     @endif
 
     <form action="{{ route('register') }}" method="POST">
       @csrf
+      <input type="hidden" name="g-recaptcha-response" id="recaptcha_response">
 
       <label for="name">Full Name</label>
       <input type="text" name="name" id="name" value="{{ old('name') }}" required>
@@ -172,4 +176,15 @@
   </div>
 
 </body>
+<script>
+  grecaptcha.ready(function() {
+    grecaptcha.execute("{{ env('GOOGLE_RECAPTCHA_KEY') }}", {
+        action: 'login'
+      })
+      .then(function(token) {
+        document.getElementById('recaptcha_response').value = token;
+      });
+  });
+</script>
+
 </html>
