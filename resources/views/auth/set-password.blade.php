@@ -161,10 +161,15 @@
 <body>
 
     <div class="container">
+
+        @if (session('success'))
+        <div class="success" style="padding: 10px;">
+            <p style="color: #22c55e;">{{ session('success') }}</p>
+        </div>
+        @endif
         <div class="header">
             <h2>Set Your Password</h2>
         </div>
-
         <div class="content">
             <p>Please choose a secure password to complete your registration.</p>
 
@@ -177,7 +182,6 @@
                 </ul>
             </div>
             @endif
-
             <form action="{{ url('/set-password') }}" method="POST">
                 @csrf
                 <input type="hidden" name="token" value="{{ $token }}">

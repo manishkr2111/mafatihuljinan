@@ -44,6 +44,8 @@ Route::middleware('auth')->get('/home', function () {
 
 
 Route::get('/set-password/{token}', [App\Http\Controllers\Api\Common\AuthController::class, 'showSetPasswordForm']);
+Route::get('/set-password', [App\Http\Controllers\Api\Common\AuthController::class, 'showSetPasswordForm'])
+->name('set-password');
 Route::post('/set-password', [App\Http\Controllers\Api\Common\AuthController::class, 'setPassword']);
 
 

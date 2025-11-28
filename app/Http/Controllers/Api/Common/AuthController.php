@@ -50,12 +50,9 @@ class AuthController extends Controller
             'message' => 'Check your email to complete registration.'
         ]);
     }
-    public function showSetPasswordForm($token)
+    public function showSetPasswordForm($token = null)
     {
         $data = Cache::get('register_' . $token);
-        if (!$data) {
-            abort(404, 'This link has expired or is invalid.');
-        }
 
         return view('auth.set-password', ['token' => $token]);
     }
@@ -85,7 +82,7 @@ class AuthController extends Controller
 
         Cache::forget('register_' . $request->token);
 
-        return back()->with('success', 'Your account has been created. You can now log in.');
+        return redirect()->route('set-password')->with('success', 'Your account has been created successfully.');
     }
     public function register(Request $request)
     {
