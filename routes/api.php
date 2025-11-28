@@ -20,7 +20,8 @@ use App\Http\Controllers\Api\Common\EventPopupController;
 Route::post('/uploadAudio', [DashboardController::class, 'uploadAudio'])->name('uploadAudio');
 
 // common Api's
-Route::post('/register', [AuthController::class, 'register']);
+// Route::post('/register-user', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'registerUser']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forget-password', [AuthController::class, 'forgetPassword']);
 Route::middleware('auth:sanctum')->group(function () {

@@ -43,6 +43,10 @@ Route::middleware('auth')->get('/home', function () {
 });
 
 
+Route::get('/set-password/{token}', [App\Http\Controllers\Api\Common\AuthController::class, 'showSetPasswordForm']);
+Route::post('/set-password', [App\Http\Controllers\Api\Common\AuthController::class, 'setPassword']);
+
+
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 // Handle the registration form submission
 //Route::post('/register', [AuthController::class, 'register']);

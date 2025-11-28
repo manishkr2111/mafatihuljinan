@@ -12,10 +12,81 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Mail\ResetPasswordMail;
+use App\Mail\RegisterUserEmail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
 
 class AuthController extends Controller
 {
+
+    public function registerUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error.',
+                'data' => $validator->errors()
+            ], 422);
+        }
+
+        $token = Str::random(64);
+
+        // Store name/email temporarily in cache for 15 minutes
+        Cache::put('register_' . $token, [
+            'name' => $request->name,
+            'email' => $request->email
+        ], now()->addMinutes(15));
+
+        // Send email with link
+        Mail::to($request->email)->send(new RegisterUserEmail($token, $request->email));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Check your email to complete registration.'
+        ]);
+    }
+    public function showSetPasswordForm($token)
+    {
+        $data = Cache::get('register_' . $token);
+        if (!$data) {
+            abort(404, 'This link has expired or is invalid.');
+        }
+
+        return view('auth.set-password', ['token' => $token]);
+    }
+
+    public function setPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'token' => 'required',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator);
+        }
+
+        $data = Cache::get('register_' . $request->token);
+        if (!$data) {
+            return back()->withErrors(['token' => 'This link has expired or is invalid.']);
+        }
+
+        // Create user
+        User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($request->password),
+        ]);
+
+        Cache::forget('register_' . $request->token);
+
+        return back()->with('success', 'Your account has been created. You can now log in.');
+    }
     public function register(Request $request)
     {
         try {
