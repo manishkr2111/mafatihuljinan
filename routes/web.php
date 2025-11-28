@@ -43,27 +43,18 @@ Route::middleware('auth')->get('/home', function () {
 });
 
 
-// Show the registration form
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
-
 // Handle the registration form submission
 //Route::post('/register', [AuthController::class, 'register']);
-
-// Show the login form
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-
-// Handle the login form submission
 Route::post('/login', [AuthController::class, 'login']);
-
-// Logout Route
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
+Route::get('/reset-password', [App\Http\Controllers\Api\Common\AuthController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [App\Http\Controllers\Api\Common\AuthController::class, 'resetPassword'])->name('password.update');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard-start', [AdminController::class, 'dashboard'])->name('dashboard-start');
 });
-
-
 
 Route::middleware(['auth', 'role:admin,editor'])->prefix('admin')->name('admin.')->group(function () {
 
