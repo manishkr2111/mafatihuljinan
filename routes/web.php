@@ -45,7 +45,7 @@ Route::middleware('auth')->get('/home', function () {
 
 Route::get('/set-password/{token}', [App\Http\Controllers\Api\Common\AuthController::class, 'showSetPasswordForm']);
 Route::get('/set-password', [App\Http\Controllers\Api\Common\AuthController::class, 'showSetPasswordForm'])
-->name('set-password');
+    ->name('set-password');
 Route::post('/set-password', [App\Http\Controllers\Api\Common\AuthController::class, 'setPassword']);
 
 
@@ -122,6 +122,17 @@ Route::middleware(['auth', 'role:admin,editor'])->prefix('admin')->name('admin.'
 
     Route::get('/post-search', [PostSearchController::class, 'index'])->name('post.search');
     Route::post('/post-search', [PostSearchController::class, 'search'])->name('post.search.submit');
+
+
+    Route::get('/post/search-replace', [PostSearchController::class, 'showSearchReplace'])
+    ->name('post.search.replace.page');
+
+    Route::post('/post/search-replace', [PostSearchController::class, 'searchReplace'])
+        ->name('post.search.replace');
+
+    Route::post('/post/perform-replace', [PostSearchController::class, 'performReplace'])
+        ->name('post.perform.replace');
+
 
 
     // English

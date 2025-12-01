@@ -78,6 +78,7 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($request->password),
+            'email_verified_at' => now()
         ]);
 
         Cache::forget('register_' . $request->token);

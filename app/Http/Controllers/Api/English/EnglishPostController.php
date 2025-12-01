@@ -264,7 +264,8 @@ class EnglishPostController extends Controller
             ->where('status', 'published')
             ->first();
         if ($post) {
-            $post->makeHidden(['created_at', 'updated_at', 'category_ids', 'sort_number']);
+            $post->makeHidden(['wordpress_id','created_at', 'updated_at', 'category_ids', 'sort_number']);
+            $post->post_type = $post_type;
         } else {
             // handle the case where the post is not found
             return response()->json([
@@ -275,7 +276,6 @@ class EnglishPostController extends Controller
         }
         $result = [
             'status' => true,
-            'post_type' => $post_type,
             'message' => 'Posts fetched successfully',
             'data' => []
         ];
