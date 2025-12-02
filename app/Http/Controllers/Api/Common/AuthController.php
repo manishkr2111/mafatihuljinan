@@ -174,6 +174,64 @@ class AuthController extends Controller
             ]);
         }
     }
+    public function GoogleLogin(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'email' => 'required|email',
+                'google_id' => 'required|string',
+                'name' => 'required|string',
+                'language' => 'required|string',
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation error.',
+                    'data' => $validator->errors()
+                ], 422);
+            }
+
+            $user = User::where('email', $request->email)->first();
+            if ($user) {
+                $user->update([
+                    'google_id' => $request->google_id,
+                ]);
+                $token = $user->createToken('auth_token')->plainTextToken;
+                $user['token'] = $token;
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Login successful.',
+                    'data' => $user
+                ]);
+            } else {
+                $user = User::create([
+                    'email' => $request->email,
+                    'google_id' => $request->google_id,
+                    'name' => $request->name,
+                    'language' => $request->language,
+                ]);
+                $token = $user->createToken('auth_token')->plainTextToken;
+                $user['token'] = $token;
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Login successful.',
+                    'data' => $user
+                ]);
+            }
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed.',
+                'data' => $e->validator->errors()
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed.',
+                'data' => 'something went wrong'
+            ]);
+        }
+    }
 
     public function details()
     {
