@@ -15,6 +15,7 @@ use App\Mail\ResetPasswordMail;
 use App\Mail\RegisterUserEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -174,7 +175,57 @@ class AuthController extends Controller
             ]);
         }
     }
-    public function GoogleLogin(Request $request)
+
+    public function googleLogin(Request $request)
+    {
+        try {
+            $request->validate([
+                'access_token' => 'required',
+            ]);
+
+            // Get user info using Socialite
+            $googleUser = Socialite::driver('google')->userFromToken($request->access_token);
+
+            if (!$googleUser) {
+                return response()->json(['error' => 'Invalid Google token'], 401);
+            }
+
+            // Find or create user
+            $user = User::where('email', $googleUser->email)->first();
+            // dd($user, $googleUser);
+            if (!$user) {
+                $user = User::create([
+                    'name' => $googleUser->name,
+                    'email' => $googleUser->email,
+                    'password' => bcrypt(uniqid()),
+                    'role' => 'subscriber',
+                    'email_verified_at' => now()
+                ]);
+            }
+
+            // Generate API token (Sanctum)
+            $token = $user->createToken('google-login')->plainTextToken;
+            $user['token'] = $token;
+            return response()->json([
+                'success' => true,
+                'message' => 'Login successful',
+                'data'    => $user,
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed.',
+                'error' => $e->getMessage(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function GoogleLogin_old(Request $request)
     {
         try {
             $validator = Validator::make($request->all(), [

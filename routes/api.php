@@ -23,7 +23,9 @@ Route::post('/uploadAudio', [DashboardController::class, 'uploadAudio'])->name('
 // Route::post('/register-user', [AuthController::class, 'register']);
 Route::post('/register', [AuthController::class, 'registerUser']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/google-login', [AuthController::class, 'GoogleLogin']);
+Route::post('/google-login-old', [AuthController::class, 'GoogleLogin_old']);
+Route::post('/google/login', [AuthController::class, 'googleLogin']);
+
 Route::post('/forget-password', [AuthController::class, 'forgetPassword']);
 Route::middleware('auth:sanctum')->group(function () {
 

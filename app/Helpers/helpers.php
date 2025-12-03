@@ -441,8 +441,8 @@ if (!function_exists('validLanguages')) {
 }
 
 
-if (!function_exists('isfavoritePost')) {
-    function isFavoritePosts($language = 'English', $post_type, $posts, $user, $parent_category_id = null)
+if (!function_exists('isfavoritePosts')) {
+    function isFavoritePosts($post_type, $posts, $user, $language = 'English', $parent_category_id = null)
     {
         $user_id = $user->id;
         // Get all favorites for this user, post type, and language

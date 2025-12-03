@@ -27,6 +27,8 @@ use App\Http\Controllers\Admin\Common\EventPopupController;
 use App\Http\Controllers\Admin\Common\PostSearchController;
 
 
+Route::get('/google/redirect', [App\Http\Controllers\SocialLoginController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('/google/callback', [App\Http\Controllers\SocialLoginController::class, 'handleGoogleCallback'])->name('google.callback');
 
 Route::get('/greet', function () {
     return greet_user('Manish');

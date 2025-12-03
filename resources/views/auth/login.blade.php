@@ -166,6 +166,12 @@
       </ul>
     </div>
     @endif
+    @if (session('error'))
+    <div class="alert">
+      {{ session('error') }}
+    </div>
+    @endif
+
 
     <!-- Login Form -->
     <form action="{{ route('login') }}" method="POST">
@@ -189,7 +195,10 @@
     <!-- <div class="text-center">
       <a href="{{ route('register') }}">Don't have an account? Register here</a>
     </div> -->
-
+    <div class="text-center grid grid-cols-1 gap-2">
+      <span>OR</span>
+      <a href="{{ route('google.redirect') }}" class="btn btn-primary"> Login with Google </a>
+    </div>
   </div>
 
 </body>
