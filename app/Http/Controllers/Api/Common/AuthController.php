@@ -16,6 +16,7 @@ use App\Mail\RegisterUserEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Socialite\Facades\Socialite;
+use Google\Client;
 
 class AuthController extends Controller
 {
@@ -173,6 +174,68 @@ class AuthController extends Controller
                 'message' => 'Something went wrong.',
                 'data' => []
             ]);
+        }
+    }
+
+    public function googleLoginIdToken(Request $request)
+    {
+        try {
+            $request->validate([
+                'id_token' => 'required',
+            ]);
+
+            // $client = new \Google_Client(['client_id' => env('GOOGLE_CLIENT_ID')]);
+            $client = new Client(['client_id' => env('GOOGLE_CLIENT_ID')]);
+
+
+            // Verify the ID token
+            $payload = $client->verifyIdToken($request->id_token);
+
+            if (!$payload) {
+                return response()->json(['error' => 'Invalid Google ID token'], 401);
+            }
+
+            $email = $payload['email'] ?? null;
+            $name = $payload['name'] ?? 'Unknown User';
+
+            if (!$email) {
+                return response()->json(['error' => 'Email not found in Google token'], 400);
+            }
+
+            // Find or create user
+            $user = User::where('email', $email)->first();
+
+            if (!$user) {
+                $user = User::create([
+                    'name' => $name,
+                    'email' => $email,
+                    'password' => bcrypt(uniqid()),
+                    'role' => 'subscriber',
+                    'email_verified_at' => now()
+                ]);
+            }
+
+            // Generate Sanctum token
+            $token = $user->createToken('google-login')->plainTextToken;
+            $user['token'] = $token;
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Login successful',
+                'data' => $user,
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed.',
+                'error' => $e->getMessage(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 

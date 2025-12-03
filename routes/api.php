@@ -25,6 +25,7 @@ Route::post('/register', [AuthController::class, 'registerUser']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/google-login-old', [AuthController::class, 'GoogleLogin_old']);
 Route::post('/google/login', [AuthController::class, 'googleLogin']);
+Route::post('/google/login-id-token', [AuthController::class, 'googleLoginIdToken']);
 
 Route::post('/forget-password', [AuthController::class, 'forgetPassword']);
 Route::middleware('auth:sanctum')->group(function () {
