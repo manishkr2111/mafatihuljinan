@@ -192,14 +192,22 @@ class AuthController extends Controller
             $payload = $client->verifyIdToken($request->id_token);
 
             if (!$payload) {
-                return response()->json(['error' => 'Invalid Google ID token'], 401);
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Invalid Google ID token',
+                    'data' => []
+                ], 401);
             }
 
             $email = $payload['email'] ?? null;
             $name = $payload['name'] ?? 'Unknown User';
 
             if (!$email) {
-                return response()->json(['error' => 'Email not found in Google token'], 400);
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Email not found in Google token',
+                    'data' => []
+                ], 400);
             }
 
             // Find or create user
@@ -250,7 +258,11 @@ class AuthController extends Controller
             $googleUser = Socialite::driver('google')->userFromToken($request->access_token);
 
             if (!$googleUser) {
-                return response()->json(['error' => 'Invalid Google token'], 401);
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Invalid Google token',
+                    'data' => []
+                ], 401);
             }
 
             // Find or create user
@@ -356,6 +368,7 @@ class AuthController extends Controller
                 return response()->json([
                     'status' => false,
                     'message' => 'Unauthorized access.',
+                    'data' => []
                 ], 401);
             }
 
