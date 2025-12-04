@@ -94,7 +94,7 @@ class FavoriteController extends Controller
             }
 
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'Favorites processed successfully.',
                 'language' => $language,
                 'data' => [
@@ -104,13 +104,13 @@ class FavoriteController extends Controller
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation failed.',
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'error' => $e->getMessage(),
             ], 500);
@@ -133,7 +133,7 @@ class FavoriteController extends Controller
 
             if ($favorites->isEmpty()) {
                 return response()->json([
-                    'success' => true,
+                    'status' => true,
                     'message' => 'No favorites found.',
                     'data' => [],
                 ], 200);
@@ -180,14 +180,14 @@ class FavoriteController extends Controller
                 'custom_posts' => $customPosts,
             ];
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'Favorites retrieved successfully.',
                 'language' => $language,
                 'data' => $data,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'error' => $e->getMessage(),
             ], 500);

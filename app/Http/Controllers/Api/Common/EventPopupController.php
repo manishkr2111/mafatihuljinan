@@ -31,26 +31,26 @@ class EventPopupController extends Controller
                 ->select('title', 'date', 'month', 'language', 'imgurl')->first();
             if (!$eventPopups) {
                 return response()->json([
-                    'success' => false,
+                    'status' => false,
                     'message' => 'Event Popups not found for this date and month',
                     'data' => [],
                 ], 404);
             }
             $eventPopups->imgurl = asset('storage/' . $eventPopups->imgurl);
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'Event Popups fetched successfully',
                 'data' => $eventPopups
             ]);
         } catch (ValidationException $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation error',
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => "Something went wrong",
                 'data' => [],
             ], 500);

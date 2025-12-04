@@ -25,7 +25,7 @@ class UserNotepadController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation error.',
                 'errors'  => $validator->errors(),
             ], 422);
@@ -37,7 +37,7 @@ class UserNotepadController extends Controller
             ->get();
 
         return response()->json([
-            'success' => true,
+            'status' => true,
             'message' => 'Notes retrieved successfully.',
             'language' => $language,
             'data' => $notes,
@@ -57,7 +57,7 @@ class UserNotepadController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation error.',
                 'errors'  => $validator->errors(),
             ], 422);
@@ -73,7 +73,7 @@ class UserNotepadController extends Controller
         ]);
 
         return response()->json([
-            'success' => true,
+            'status' => true,
             'message' => 'Note created successfully.',
             'data'    => $note,
         ], 201);
@@ -90,7 +90,7 @@ class UserNotepadController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation error.',
                 'errors'  => $validator->errors(),
             ], 422);
@@ -104,7 +104,7 @@ class UserNotepadController extends Controller
 
         if (!$note) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Note not found or unauthorized.',
             ], 404);
         }
@@ -117,7 +117,7 @@ class UserNotepadController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation error.',
                 'errors'  => $validator->errors(),
             ], 422);
@@ -126,7 +126,7 @@ class UserNotepadController extends Controller
         $note->update($validator->validated());
 
         return response()->json([
-            'success' => true,
+            'status' => true,
             'message' => 'Note updated successfully.',
             'data'    => $note,
         ]);
@@ -142,7 +142,7 @@ class UserNotepadController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation error.',
                 'errors'  => $validator->errors(),
             ], 422);
@@ -154,13 +154,13 @@ class UserNotepadController extends Controller
 
         if (!$note) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Note not found or unauthorized.',
             ], 404);
         }
         $note->delete();
         return response()->json([
-            'success' => true,
+            'status' => true,
             'message' => 'Note deleted successfully.',
         ]);
     }

@@ -26,7 +26,7 @@ class HijriDateEventController extends Controller
             });
 
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'Events fetched successfully',
                 'language' => $language,
                 'data' => $events
@@ -53,7 +53,7 @@ class HijriDateEventController extends Controller
         $event = HijriEvent::create($request->all());
 
         return response()->json([
-            'success' => true,
+            'status' => true,
             'message' => 'Event created successfully',
             'data' => $event
         ]);

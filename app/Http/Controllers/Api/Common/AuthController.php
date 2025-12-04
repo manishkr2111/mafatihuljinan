@@ -30,7 +30,7 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation error.',
                 'data' => $validator->errors()
             ], 422);
@@ -48,7 +48,7 @@ class AuthController extends Controller
         Mail::to($request->email)->send(new RegisterUserEmail($token, $request->email));
 
         return response()->json([
-            'success' => true,
+            'status' => true,
             'message' => 'Check your email to complete registration.'
         ]);
     }
@@ -98,7 +98,7 @@ class AuthController extends Controller
 
             if ($validator->fails()) {
                 return response()->json([
-                    'success' => false,
+                    'status' => false,
                     'message' => 'Validation error.',
                     'data' => $validator->errors()
                 ], 422);
@@ -111,19 +111,19 @@ class AuthController extends Controller
             ]);
 
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'User created successfully.',
                 'data' => $user
             ], 201);
         } catch (ValidationException $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation failed.',
                 'data' => $e->validator->errors()
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'data' => []
             ]);
@@ -145,7 +145,7 @@ class AuthController extends Controller
 
             if (! $user || ! Hash::check($credentials['password'], $user->password)) {
                 return response()->json([
-                    'success' => false,
+                    'status' => false,
                     'message' => 'Invalid email or password.',
                     'data' => []
                 ], 401);
@@ -158,19 +158,19 @@ class AuthController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
             $user['token'] = $token;
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'Login successful.',
                 'data' => $user
             ]);
         } catch (ValidationException $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation failed.',
                 'data' => $e->validator->errors()
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'data' => []
             ]);
@@ -220,19 +220,19 @@ class AuthController extends Controller
             $user['token'] = $token;
 
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'Login successful',
                 'data' => $user,
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation failed.',
                 'error' => $e->getMessage(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'error' => $e->getMessage(),
             ], 500);
@@ -270,19 +270,19 @@ class AuthController extends Controller
             $token = $user->createToken('google-login')->plainTextToken;
             $user['token'] = $token;
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'Login successful',
                 'data'    => $user,
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation failed.',
                 'error' => $e->getMessage(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'error' => $e->getMessage(),
             ], 500);
@@ -299,7 +299,7 @@ class AuthController extends Controller
             ]);
             if ($validator->fails()) {
                 return response()->json([
-                    'success' => false,
+                    'status' => false,
                     'message' => 'Validation error.',
                     'data' => $validator->errors()
                 ], 422);
@@ -313,7 +313,7 @@ class AuthController extends Controller
                 $token = $user->createToken('auth_token')->plainTextToken;
                 $user['token'] = $token;
                 return response()->json([
-                    'success' => true,
+                    'status' => true,
                     'message' => 'Login successful.',
                     'data' => $user
                 ]);
@@ -327,20 +327,20 @@ class AuthController extends Controller
                 $token = $user->createToken('auth_token')->plainTextToken;
                 $user['token'] = $token;
                 return response()->json([
-                    'success' => true,
+                    'status' => true,
                     'message' => 'Login successful.',
                     'data' => $user
                 ]);
             }
         } catch (ValidationException $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation failed.',
                 'data' => $e->validator->errors()
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation failed.',
                 'data' => 'something went wrong'
             ]);
@@ -354,7 +354,7 @@ class AuthController extends Controller
 
             if (!$user) {
                 return response()->json([
-                    'success' => false,
+                    'status' => false,
                     'message' => 'Unauthorized access.',
                 ], 401);
             }
@@ -370,13 +370,13 @@ class AuthController extends Controller
             ]);
 
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'User details retrieved successfully.',
                 'data' => $user,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'error' => $e->getMessage(),
             ], 500);
@@ -391,7 +391,7 @@ class AuthController extends Controller
 
             if ($validator->fails()) {
                 return response()->json([
-                    'success' => false,
+                    'status' => false,
                     'message' => 'Validation error.',
                     'data' => $validator->errors()
                 ], 422);
@@ -400,13 +400,13 @@ class AuthController extends Controller
             $user->name = $request->name;
             $user->save();
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'User details updated successfully.',
                 'data' => $user,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'error' => $e->getMessage(),
             ], 500);
@@ -418,13 +418,13 @@ class AuthController extends Controller
         try {
             $request->user()->currentAccessToken()->delete();
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'Logged out successfully.',
                 'data' => []
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'error' => $e->getMessage(),
             ], 500);
@@ -441,7 +441,7 @@ class AuthController extends Controller
 
             if ($validator->fails()) {
                 return response()->json([
-                    'success' => false,
+                    'status' => false,
                     'message' => 'Validation error.',
                     'data' => $validator->errors()
                 ], 422);
@@ -451,7 +451,7 @@ class AuthController extends Controller
 
             if (!Hash::check($request->old_password, $user->password)) {
                 return response()->json([
-                    'success' => false,
+                    'status' => false,
                     'message' => 'Invalid old password.',
                     'data' => []
                 ], 401);
@@ -461,13 +461,13 @@ class AuthController extends Controller
             $user->save();
 
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'Password updated successfully.',
                 'data' => []
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'error' => $e->getMessage(),
             ], 500);
@@ -483,7 +483,7 @@ class AuthController extends Controller
 
             if ($validator->fails()) {
                 return response()->json([
-                    'success' => false,
+                    'status' => false,
                     'message' => 'Validation error.',
                     'data' => $validator->errors()
                 ], 422);
@@ -493,7 +493,7 @@ class AuthController extends Controller
 
             if (!$user) {
                 return response()->json([
-                    'success' => false,
+                    'status' => false,
                     'message' => 'User not found.',
                     'data' => []
                 ], 404);
@@ -511,13 +511,13 @@ class AuthController extends Controller
             Mail::to($user->email)->send(new ResetPasswordMail($user, $token));
 
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'Password reset email sent successfully.',
                 'data' => []
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'error' => $e->getMessage(),
             ], 500);

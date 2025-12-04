@@ -29,19 +29,19 @@ class CustomUserPostController extends Controller
             $post = CustomUserPost::create($validated);
 
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'Post created successfully.',
                 'data' => $post
             ], 201);
         } catch (ValidationException $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation failed.',
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'error' => $e->getMessage(),
             ], 500);
@@ -58,7 +58,7 @@ class CustomUserPostController extends Controller
 
             if (!$post) {
                 return response()->json([
-                    'success' => false,
+                    'status' => false,
                     'message' => 'Post not found or unauthorized.'
                 ], 404);
             }
@@ -80,19 +80,19 @@ class CustomUserPostController extends Controller
             $post->update($validated);
 
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'Post updated successfully.',
                 'data' => $post
             ], 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation error.',
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'error' => $e->getMessage(),
             ], 500);

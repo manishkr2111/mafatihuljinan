@@ -18,7 +18,8 @@ class TafsirDataController extends Controller
             $tafsir->language
         );
         return response()->json([
-            'status' => 'success',
+            'status' => true,
+            'message' => 'Tafsir Data fetched successfully',
             'data' => $tafsir,
         ]);
     }

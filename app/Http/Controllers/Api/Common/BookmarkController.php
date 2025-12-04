@@ -133,7 +133,7 @@ class BookmarkController extends Controller
             }
 
             return response()->json([
-                'success'  => true,
+                'status'  => true,
                 'message'  => 'Bookmark processed successfully.',
                 'language' => $language,
                 'data'     => [
@@ -143,13 +143,13 @@ class BookmarkController extends Controller
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation failed.',
                 'errors'  => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'error'   => $e->getMessage(),
             ], 500);
@@ -173,7 +173,7 @@ class BookmarkController extends Controller
 
             if ($bookmark->isEmpty()) {
                 return response()->json([
-                    'success' => true,
+                    'status' => true,
                     'message' => 'No bookmark found.',
                     'data' => [],
                 ], 200);
@@ -225,14 +225,14 @@ class BookmarkController extends Controller
                 }
             }
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'bookmark retrieved successfully.',
                 'language' => $language,
                 'data' => $bookmarkData,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'error' => $e->getMessage(),
             ], 500);
@@ -326,7 +326,7 @@ class BookmarkController extends Controller
             }
 
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'Bookmark indexes processed successfully.',
                 'language' => $language,
                 'data' => [
@@ -336,13 +336,13 @@ class BookmarkController extends Controller
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation failed.',
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Something went wrong.',
                 'error' => $e->getMessage(),
             ], 500);
