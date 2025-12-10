@@ -4,6 +4,7 @@
 @section('content')
 <!-- Dashboard Stats Section -->
 <div class="mt-1">
+    @if(Auth::user()->role == 'admin')
     <!-- API Token Section -->
     <div class="bg-white rounded shadow p-5 mb-6">
         <h2 class="text-lg font-semibold text-[#034E7A] mb-3">API Token</h2>
@@ -25,6 +26,7 @@
             <p class="text-gray-500 text-sm">Keep this token safe. You can regenerate it if compromised.</p>
         </form>
     </div>
+    @endif
 </div>
 <!-- Users Section -->
 <div class="bg-white rounded shadow p-5 mt-6 overflow-y-auto max-h-[400px]">

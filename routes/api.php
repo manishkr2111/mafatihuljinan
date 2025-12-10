@@ -45,10 +45,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // bookmark
     Route::post('/create/bookmark-post', [BookmarkController::class, 'store']);
+    // Route::post('/create/bookmark-post-old', [BookmarkController::class, 'store_old']);
     Route::get('/all/bookmark/posts', [BookmarkController::class, 'getAllBookmark']);
     Route::post('/remove/bookmark/index', [BookmarkController::class, 'removeBookmarkIndex']);
     Route::post('/bookmark/delete', [BookmarkController::class, 'destroy']);
-
 
     Route::get('all/notes', [UserNotepadController::class, 'index'])->name('notes.index');
 

@@ -174,7 +174,7 @@
 
 
     <!-- Login Form -->
-    <form action="{{ route('login') }}" method="POST">
+    <form id="loginForm" action="{{ route('login') }}" method="POST">
       @csrf
       <input type="hidden" name="g-recaptcha-response" id="recaptcha_response">
 
@@ -203,6 +203,7 @@
 
 </body>
 <script>
+  /*
   grecaptcha.ready(function() {
     grecaptcha.execute("{{ env('GOOGLE_RECAPTCHA_KEY') }}", {
         action: 'login'
@@ -211,6 +212,35 @@
         document.getElementById('recaptcha_response').value = token;
       });
   });
+  */
+
+  document.addEventListener("DOMContentLoaded", function() {
+
+    const form = document.getElementById("loginForm");
+    if (!form) return;
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      grecaptcha.ready(function() {
+
+        grecaptcha.execute("{{ env('GOOGLE_RECAPTCHA_KEY') }}", {
+            action: 'login'
+          })
+          .then(function(token) {
+            document.getElementById("recaptcha_response").value = token;
+            form.submit();
+          })
+          .catch(function(err) {
+            console.error("Recaptcha execute error:", err);
+          });
+
+      });
+
+    });
+
+  });
 </script>
+
 
 </html>

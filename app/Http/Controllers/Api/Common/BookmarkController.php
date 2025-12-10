@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class BookmarkController extends Controller
 {
-
-    public function store(Request $request)
+    public function store_old(Request $request)
     {
         try {
             $validated = $request->validate([
@@ -155,6 +154,202 @@ class BookmarkController extends Controller
             ], 500);
         }
     }
+
+    public function store(Request $request)
+    {
+        try {
+
+            // -----------------------
+            // VALIDATION
+            // -----------------------
+            $validated = $request->validate([
+                'language' => [
+                    'required',
+                    'string',
+                    Rule::in(validLanguages()),
+                ],
+
+                'bookmark' => 'required|array|min:1',
+                'bookmark.*.post_type' => 'required|string|max:255',
+
+                'bookmark.*.post_ids' => 'required|array|min:1',
+
+                'bookmark.*.post_ids.*.post_id' => 'required|integer',
+
+                // c_data validation
+                'bookmark.*.post_ids.*.c_data' => 'required|array|min:1',
+                'bookmark.*.post_ids.*.c_data.*.type' =>
+                'required|string|in:arabic,transliteration,translation',
+
+                'bookmark.*.post_ids.*.c_data.*.indexes' => 'required|array|min:1',
+                'bookmark.*.post_ids.*.c_data.*.indexes.*' => 'integer',
+            ]);
+
+            $user      = Auth::user();
+            $language  = $validated['language'];
+
+            $inserted = [];
+            $skipped  = [];
+
+
+            // ------------------------------------------------
+            // LOOP THROUGH BOOKMARK GROUPS
+            // ------------------------------------------------
+            foreach ($validated['bookmark'] as $bookmarkGroup) {
+
+                $postType = $bookmarkGroup['post_type'];
+                $postItems = $bookmarkGroup['post_ids'];
+
+
+                // 1. GET MODEL CLASS BY LANGUAGE
+                if ($language === 'gujarati') {
+                    $modelClass = getGujaratiModel($postType);
+                } elseif ($language === 'english') {
+                    $modelClass = getEnglishModel($postType);
+                } elseif ($language === 'hindi') {
+                    $modelClass = getHindiModel($postType);
+                } elseif ($language === 'urdu') {
+                    $modelClass = getUrduModel($postType);
+                } elseif ($language === 'roman urdu') {
+                    $modelClass = getRomanUrduModel($postType);
+                } elseif ($language === 'swahili') {
+                    $modelClass = getSwahiliModel($postType);
+                } elseif ($language === 'french') {
+                    $modelClass = getFrenchModel($postType);
+                } else {
+                    $modelClass = null;
+                }
+
+                // If model missing
+                if (!$modelClass || !class_exists($modelClass)) {
+                    $skipped[] = [
+                        'post_type' => $postType,
+                        'reason'    => 'Invalid post type or model not found'
+                    ];
+                    continue;
+                }
+
+
+                // ------------------------------------------------
+                // LOOP THROUGH ALL POST IDs
+                // ------------------------------------------------
+                foreach ($postItems as $item) {
+
+                    $postId = $item['post_id'];
+                    $cData  = $item['c_data']; // NEW structure
+
+
+                    // Make sure post exists
+                    if (!$modelClass::where('id', $postId)->exists()) {
+                        $skipped[] = [
+                            'post_type' => $postType,
+                            'post_id'   => $postId,
+                            'reason'    => 'Post not found'
+                        ];
+                        continue;
+                    }
+
+                    $formatted = [];
+
+                    foreach ($cData as $row) {
+                        $type    = $row['type'];
+                        $indexes = $row['indexes'];
+
+                        if (!isset($formatted[$type])) {
+                            $formatted[$type] = [];
+                        }
+
+                        $formatted[$type] = array_values(array_unique(array_merge(
+                            $formatted[$type],
+                            $indexes
+                        )));
+                    }
+
+
+                    // ------------------------------------------------
+                    // CHECK IF BOOKMARK ALREADY EXISTS
+                    // ------------------------------------------------
+                    $bookmark = Bookmark::where([
+                        'user_id'   => $user->id,
+                        'post_id'   => $postId,
+                        'post_type' => $postType,
+                        'language'  => $language,
+                    ])->first();
+
+
+                    // ------------------------------------------------
+                    // UPDATE EXISTING BOOKMARK
+                    // ------------------------------------------------
+                    if ($bookmark) {
+
+                        $existing = json_decode($bookmark->bookmark_indexes, true) ?: [];
+
+                        // Merge type-wise
+                        foreach ($formatted as $type => $indexes) {
+                            if (!isset($existing[$type])) {
+                                $existing[$type] = [];
+                            }
+
+                            $existing[$type] = array_values(array_unique(array_merge(
+                                $existing[$type],
+                                $indexes
+                            )));
+                        }
+
+                        $bookmark->update([
+                            'bookmark_indexes' => json_encode($existing)
+                        ]);
+
+                        $inserted[] = [
+                            'post_type' => $postType,
+                            'post_id'   => $postId,
+                            'bookmark_indexes'   => $existing,
+                            'msg'       => 'Updated existing bookmark'
+                        ];
+                    } else {
+
+                        Bookmark::create([
+                            'user_id'          => $user->id,
+                            'post_id'          => $postId,
+                            'post_type'        => $postType,
+                            'language'         => $language,
+                            'bookmark_indexes' => json_encode($formatted),
+                        ]);
+
+                        $inserted[] = [
+                            'post_type' => $postType,
+                            'post_id'   => $postId,
+                            'bookmark_indexes'   => $formatted,
+                            'msg'       => 'Bookmark created'
+                        ];
+                    }
+                }
+            }
+
+            return response()->json([
+                'status'   => true,
+                'message'  => 'Bookmark processed successfully.',
+                'language' => $language,
+                'data'     => [
+                    'inserted' => $inserted,
+                    'skipped'  => $skipped,
+                ],
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Validation failed.',
+                'errors'  => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Something went wrong.',
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
+    }
+
 
 
     //// get all bookmark post

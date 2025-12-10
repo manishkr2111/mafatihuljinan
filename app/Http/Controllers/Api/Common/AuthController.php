@@ -49,7 +49,8 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Check your email to complete registration.'
+            'message' => 'Check your email to complete registration.',
+            'data' => []
         ]);
     }
     public function showSetPasswordForm($token = null)
