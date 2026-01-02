@@ -28,6 +28,11 @@ Route::post('/google/login', [AuthController::class, 'googleLogin']);
 Route::post('/google/login-id-token', [AuthController::class, 'googleLoginIdToken']);
 
 Route::post('/forget-password', [AuthController::class, 'forgetPassword']);
+
+Route::middleware(['ApiTokenMiddleware'])->group(function () {
+    Route::post('/store/fcm-token', [AuthController::class, 'storeFcmToken']);
+});
+
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/user/details', [AuthController::class, 'details']);

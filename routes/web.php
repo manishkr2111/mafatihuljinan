@@ -32,20 +32,8 @@ use App\Http\Controllers\Admin\Common\NotificationController;
 Route::get('/send-test-notification', [NotificationController::class, 'sendTestNotification']);
 
 
-Route::get('/test-firebase-credentials', function () {
-
-    // Get path from .env
-    $pathFromEnv = env('FIREBASE_CREDENTIALS');
-
-    // Convert to absolute storage path
-    $fullPath = storage_path(str_replace('/storage/', '', $pathFromEnv));
-
-    return [
-        'env_value' => $pathFromEnv,
-        'resolved_path' => $fullPath,
-        'file_exists' => file_exists($fullPath),
-        'is_readable' => is_readable($fullPath),
-    ];
+Route::get('/test-firebase-path', function () {
+    dd(storage_path('app/firebase/firebase-auth.json'));
 });
 
 Route::get('/google/redirect', [App\Http\Controllers\SocialLoginController::class, 'redirectToGoogle'])->name('google.redirect');

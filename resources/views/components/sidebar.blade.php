@@ -50,12 +50,6 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.notifications.schedule.index') }}"
-                        class="flex items-center px-2 py-2 rounded hover:bg-[#034E7A] hover:text-[#fff] {{ Route::is('admin.notifications.schedule.*') ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
-                        <i class="fa fa-file-text mr-2"></i> English Notification
-                    </a>
-                </li>
-                <li>
                     <a href="{{ route('admin.tafsir.index') }}"
                         class="flex items-center px-2 py-2 rounded hover:bg-[#034E7A] hover:text-[#fff] {{ Route::is('admin.tafsir.index') ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
                         <i class="fa fa-file-text mr-2"></i> Tafsir
@@ -899,12 +893,10 @@
                         <i class="fas fa-users mr-2"></i> Users
                     </a>
                 </li>
-
                 <li>
-                    <a href="#"
-                        class="flex items-center px-2 py-1 rounded 
-                      hover:bg-[#034E7A] hover:text-white">
-                        <i class="fas fa-bell mr-2"></i> Notifications
+                    <a href="{{ route('admin.notifications.schedule.index') }}"
+                        class="flex items-center px-2 py-2 rounded hover:bg-[#034E7A] hover:text-[#fff] {{ Route::is('admin.notifications.schedule.*') ? 'bg-[#034E7A] text-[#fff] font-semibold' : '' }}">
+                        <i class="fas fa-bell mr-2"></i> English Notification
                     </a>
                 </li>
             </ul>

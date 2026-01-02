@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Common\UserFcmToken;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -139,6 +140,9 @@ class AuthController extends Controller
             $credentials = $request->validate([
                 'email' => 'required|email',
                 'password' => 'required|string|min:6',
+                'fcm_token'  => 'required|string',
+                'device_id'  => 'required|string',
+                'device_type' => 'required|in:android,ios,web',
             ]);
 
             // Check user existence
@@ -158,6 +162,25 @@ class AuthController extends Controller
             // Create new token
             $token = $user->createToken('auth_token')->plainTextToken;
             $user['token'] = $token;
+
+            $userId = $user->id;
+            UserFcmToken::where('user_id', $userId)
+                ->where('fcm_token', '!=', $request->fcm_token)
+                ->delete();
+
+            UserFcmToken::updateOrCreate(
+                [
+                    'fcm_token' => $request->fcm_token,
+                ],
+                [
+                    'user_id'     => $userId,
+                    'device_id'   => $request->device_id,
+                    'device_type' => $request->device_type,
+                    'language'    => $request->language ?? 'en',
+                    'is_active'   => true,
+                ]
+            );
+
             return response()->json([
                 'status' => true,
                 'message' => 'Login successful.',
@@ -571,5 +594,35 @@ class AuthController extends Controller
         DB::table('password_reset_tokens')->where('email', $request->email)->delete();
         return back()->with('success', 'Password has been reset successfully.');
         return redirect()->back()->with('success', 'Password has been reset successfully.');
+    }
+
+    public function storeFcmToken(Request $request)
+    {
+        $request->validate([
+            'fcm_token'  => 'required|string',
+            'device_type' => 'required|in:android,ios,web',
+            'device_id'  => 'required|string',
+            'language'   => 'nullable|string|max:5',
+        ]);
+
+        $token = UserFcmToken::updateOrCreate(
+            [
+                'fcm_token'  => $request->fcm_token,
+            ],
+            [
+                'device_id' => $request->device_id,
+                'fcm_token'  => $request->fcm_token,
+                'device_type' => $request->device_type,
+                'language'   => $request->language ?? 'en',
+                'is_active'  => true,
+                'user_id'     => null,
+            ]
+        );
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'FCM token saved successfully',
+            'data'    => $token,
+        ]);
     }
 }
