@@ -18,13 +18,23 @@ class CustomUserPostController extends Controller
 
             $validated = $request->validate([
                 'title' => 'required|string|max:255',
-                'arabic_content' => 'nullable|string',
-                'transliteration_content' => 'nullable|string',
-                'translation_content' => 'nullable|string',
+                'content' => 'nullable|string',
+                // 'arabic_content' => 'nullable|string',
+                // 'transliteration_content' => 'nullable|string',
+                // 'translation_content' => 'nullable|string',
                 'language' => ['required', 'string', 'max:100', Rule::in(validLanguages())],
+                'audio' => 'nullable|file|mimes:mp3,wav,ogg|max:10240', // max 10MB
             ]);
 
             $validated['user_id'] = $user->id;
+
+            if ($request->hasFile('audio')) {
+                $audioFile = $request->file('audio');
+                $originalName = $audioFile->getClientOriginalName(); // get original file name
+                $audioPath = $audioFile->storeAs('audios', $originalName, 'public'); // keep original name
+                $validated['audio_url'] = $audioPath;
+                // dd($audioPath);
+            }
 
             $post = CustomUserPost::create($validated);
 
