@@ -32,10 +32,11 @@ class CustomUserPostController extends Controller
                 $audioFile = $request->file('audio');
                 $originalName = $audioFile->getClientOriginalName(); // get original file name
                 $audioPath = $audioFile->storeAs('audios', $originalName, 'public'); // keep original name
-                $validated['audio_url'] = Storage::disk('public')->url($audioPath);
+                $validated['audio_url'] = $audioPath;
             }
 
             $post = CustomUserPost::create($validated);
+            $post->audio_url = Storage::disk('public')->url($audioPath);
 
             return response()->json([
                 'status' => true,
