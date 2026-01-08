@@ -12,6 +12,8 @@ class CustomUserPost extends Model
     protected $fillable = [
         'title',
         'user_id',
+        'content',
+        'audio_url',
         'arabic_content',
         'transliteration_content',
         'translation_content',
