@@ -131,42 +131,44 @@ class FavoriteController extends Controller
 
             $favorites = $query->get();
 
+
+            $data = [];
+            $favoritesData = null;
             if ($favorites->isEmpty()) {
-                return response()->json([
+                /*return response()->json([
                     'status' => true,
                     'message' => 'No favorites found.',
                     'data' => [],
                 ], 200);
-            }
+				*/
+            } else {
+                foreach ($favorites->groupBy(['language', 'post_type']) as $lang => $types) {
+                    foreach ($types as $postType => $favItems) {
 
-            $data = [];
+                        // Select correct model for this language
+                        if ($lang === 'gujarati') {
+                            $modelClass = getGujaratiModel($postType);
+                        } elseif ($lang === 'english') {
+                            $modelClass = getEnglishModel($postType);
+                        } else {
+                            $modelClass = null;
+                        }
 
-            foreach ($favorites->groupBy(['language', 'post_type']) as $lang => $types) {
-                foreach ($types as $postType => $favItems) {
+                        if (!$modelClass || !class_exists($modelClass)) {
+                            continue;
+                        }
 
-                    // Select correct model for this language
-                    if ($lang === 'gujarati') {
-                        $modelClass = getGujaratiModel($postType);
-                    } elseif ($lang === 'english') {
-                        $modelClass = getEnglishModel($postType);
-                    } else {
-                        $modelClass = null;
+                        $postIds = $favItems->pluck('post_id')->toArray();
+
+                        // Fetch post details safely (ignore missing)
+                        $posts = $modelClass::whereIn('id', $postIds)
+                            ->get(['id', 'title',]);
+
+                        $favoritesData[] = [
+                            'post_type' => $postType,
+                            'posts' => $posts,
+                        ];
                     }
-
-                    if (!$modelClass || !class_exists($modelClass)) {
-                        continue;
-                    }
-
-                    $postIds = $favItems->pluck('post_id')->toArray();
-
-                    // Fetch post details safely (ignore missing)
-                    $posts = $modelClass::whereIn('id', $postIds)
-                        ->get(['id', 'title',]);
-
-                    $favoritesData[] = [
-                        'post_type' => $postType,
-                        'posts' => $posts,
-                    ];
                 }
             }
             // Fetch custom posts

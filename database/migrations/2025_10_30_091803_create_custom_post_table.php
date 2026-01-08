@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->unsignedBigInteger('user_id')->index();
+            $table->longText('content')->nullable();
+            $table->string('audio_url')->nullable();
             $table->longText('arabic_content')->nullable();
             $table->longText('transliteration_content')->nullable();
             $table->longText('translation_content')->nullable();

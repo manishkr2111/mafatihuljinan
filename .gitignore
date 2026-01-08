@@ -24,3 +24,4 @@ Homestead.yaml
 Thumbs.db
 /public/firebase-auth.json
 /storage/app/firebase/*.json
+.zip
