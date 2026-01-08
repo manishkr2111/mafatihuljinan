@@ -10,6 +10,8 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
 
 class FavoriteController extends Controller
 {
@@ -171,10 +173,17 @@ class FavoriteController extends Controller
                     }
                 }
             }
-            // Fetch custom posts
+
             $customPosts = CustomUserPost::where('user_id', $user->id)
                 ->where('language', 'like', $language)
-                ->get(['id', 'title', 'arabic_content', 'transliteration_content', 'translation_content']);
+                ->get(['id', 'title', 'content', 'audio_url'])
+                ->map(function ($post) {
+                    $post->audio_url = $post->audio_url
+                        ? Storage::disk('public')->url($post->audio_url)
+                        : null;
+
+                    return $post;
+                });
 
             // Prepare final structured response
             $data = [

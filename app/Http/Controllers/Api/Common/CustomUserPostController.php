@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Common\CustomUserPost;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rule;
-
+use Illuminate\Support\Facades\Storage;
 
 class CustomUserPostController extends Controller
 {
@@ -32,8 +32,7 @@ class CustomUserPostController extends Controller
                 $audioFile = $request->file('audio');
                 $originalName = $audioFile->getClientOriginalName(); // get original file name
                 $audioPath = $audioFile->storeAs('audios', $originalName, 'public'); // keep original name
-                $validated['audio_url'] = $audioPath;
-                // dd($audioPath);
+                $validated['audio_url'] = Storage::disk('public')->url($audioPath);
             }
 
             $post = CustomUserPost::create($validated);
