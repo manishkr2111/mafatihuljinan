@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="h-screen bg-gray-100 flex items-start">
-    <div class="bg-white rounded-xl shadow-lg w-full max-w-4xl p-6 space-y-6">
+    <div class="bg-white rounded-xl shadow-lg w-full p-6 space-y-6">
 
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">

@@ -38,7 +38,7 @@
             </thead>
             <tbody>
                 @forelse($categories as $category)
-                @include('admin.roman-urdu.category.partials.category-row', ['category' => $category, 'level' => 0])
+                @include('admin.RomanUrdu.category.partials.category-row', ['category' => $category, 'level' => 0])
                 @empty
                 <tr>
                     <td colspan="7" class="text-center p-4 text-gray-500">No categories found.</td>

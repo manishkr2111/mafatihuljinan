@@ -16,6 +16,7 @@ class EnglishCategory extends Model
         'slug',
         'deeplink_url',
         'post_type',
+        'popup_image',
         'description',
         'sort_number',
         'parent_id',

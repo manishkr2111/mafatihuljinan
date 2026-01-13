@@ -27,7 +27,7 @@ class CustomUserPostController extends Controller
             ]);
 
             $validated['user_id'] = $user->id;
-
+            $audioPath = null;
             if ($request->hasFile('audio')) {
                 $audioFile = $request->file('audio');
                 $originalName = $audioFile->getClientOriginalName(); // get original file name

@@ -9,13 +9,14 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $table = 'hindi_categories';
+    protected $table = 'french_categories';
 
     protected $fillable = [
         'name',
         'slug',
         'deeplink_url',
         'post_type',
+        'popup_image',
         'description',
         'sort_number',
         'parent_id',

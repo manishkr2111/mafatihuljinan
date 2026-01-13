@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\English\EnglishCategory;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -56,6 +57,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $post_type = $request->input('post_type', $request->post_type);
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -63,6 +65,7 @@ class CategoryController extends Controller
             'description' => 'nullable|string',
             'sort_number' => 'nullable|integer',
             'parent_id' => 'nullable|exists:english_categories,id',
+            'popup_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         $model = getEnglishModel($post_type);
         if (!$model) {
@@ -88,6 +91,19 @@ class CategoryController extends Controller
                 ->max('sort_number') + 1;
         }
         $validated['slug'] = Str::slug($validated['slug'], '-');
+
+        // Upload popup image
+        if ($request->hasFile('popup_image')) {
+            $file = $request->file('popup_image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs(
+                'amaal-namaz/english-popup-image',
+                $fileName,
+                'public'
+            );
+            $validated['popup_image'] = $path; // save path in DB
+        }
+
         $Category = EnglishCategory::create($validated);
         $Category->post_type = $post_type;
         $Category->save();
@@ -123,13 +139,31 @@ class CategoryController extends Controller
             'description' => 'nullable|string',
             'sort_number' => 'nullable|integer',
             'parent_id' => 'nullable|exists:english_categories,id',
+            'popup_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+        // dd($validated);
         $model = getEnglishModel($post_type);
         if (!$model) {
             return redirect()->back()->with('error', 'Invalid Post Type');
         }
         $validated['slug'] = Str::slug($validated['slug'], '-');
-
+        // Upload popup image
+        if ($request->hasFile('popup_image')) {
+            $oldFile = $category->popup_image;
+            if ($oldFile) {
+                Storage::disk('public')->delete($oldFile);
+            }
+            $file = $request->file('popup_image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs(
+                'amaal-namaz/english-popup-image',
+                $fileName,
+                'public'
+            );
+            $validated['popup_image'] = $path; // save path in DB
+        }else{
+            $validated['popup_image'] = $category->popup_image;
+        }
         $category->update($validated);
         $category->post_type = $post_type;
         $category->save();

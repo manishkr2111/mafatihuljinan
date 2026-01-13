@@ -14,7 +14,7 @@
     </div>
     @endif
 
-    <form action="{{ route('admin.roman-urdu.category.store') }}" method="POST" class="space-y-4">
+    <form action="{{ route('admin.roman-urdu.category.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
 
         <!-- Sort Number -->
@@ -57,9 +57,16 @@
                 </option>
                 @endforeach
             </select>
-
         </div>
-
+        <!-- Popup Image (Only for Amaal & Namaz) -->
+        <div id="popupImageWrapper" class="hidden">
+            <label class="block font-medium mb-1 text-[#034E7A]">
+                Popup Image (JPG / PNG):
+            </label>
+            <input type="file" name="popup_image"
+                accept="image/png,image/jpeg"
+                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A]">
+        </div>
         <!-- Parent Category -->
         <div>
             <label class="block font-medium mb-1 text-[#034E7A]">Parent Category:</label>
@@ -77,22 +84,43 @@
         </button>
     </form>
 </div>
-
 <!-- JS to dynamically load parent categories -->
 <script>
-    document.getElementById('post_type').addEventListener('change', function() {
-        const postType = this.value;
+    document.addEventListener('DOMContentLoaded', function() {
+        const postTypeSelect = document.getElementById('post_type');
+        const popupImageWrapper = document.getElementById('popupImageWrapper');
         const parentSelect = document.getElementById('parent_id');
-        parentSelect.innerHTML = '<option value="">Loading...</option>';
 
-        fetch(`{{ route('admin.roman-urdu.category.parents') }}?post_type=${postType}`)
-            .then(response => response.json())
-            .then(data => {
-                parentSelect.innerHTML = '<option value="">-- Select Parent --</option>';
-                for (const id in data) {
-                    parentSelect.innerHTML += `<option value="${id}">${data[id]}</option>`;
-                }
-            });
+        function handlePostTypeChange() {
+            const postType = postTypeSelect.value;
+
+            // Show / hide popup image
+            if (postType === 'amaal-namaz') {
+                popupImageWrapper.classList.remove('hidden');
+            } else {
+                popupImageWrapper.classList.add('hidden');
+            }
+
+            // Load parent categories
+            parentSelect.innerHTML = '<option value="">Loading...</option>';
+
+            fetch(`{{ route('admin.roman-urdu.category.parents') }}?post_type=${postType}`)
+                .then(response => response.json())
+                .then(data => {
+                    parentSelect.innerHTML = '<option value="">-- Select Parent --</option>';
+                    for (const id in data) {
+                        parentSelect.innerHTML += `<option value="${id}">${data[id]}</option>`;
+                    }
+                });
+        }
+
+        // Run on change
+        postTypeSelect.addEventListener('change', handlePostTypeChange);
+
+        //  Run once on page load (for validation errors)
+        if (postTypeSelect.value) {
+            handlePostTypeChange();
+        }
     });
 </script>
 @endsection

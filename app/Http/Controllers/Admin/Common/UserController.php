@@ -70,6 +70,7 @@ class UserController extends Controller
     // Update user data
     public function update(Request $request, User $user)
     {
+        // dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
@@ -87,7 +88,7 @@ class UserController extends Controller
         }
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->role = $request->role;
+        // $user->role = $request->role;
 
         // Update password if provided
         if ($request->filled('password')) {

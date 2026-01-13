@@ -14,7 +14,7 @@
     </div>
     @endif
 
-    <form action="{{ route('admin.roman-urdu.category.update', $category->id) }}" method="POST" class="space-y-4">
+    <form action="{{ route('admin.roman-urdu.category.update', $category->id) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
         @method('PUT')
 
@@ -59,7 +59,24 @@
             </select>
 
         </div>
-
+        <!-- Popup Image (Only for Amaal & Namaz) -->
+        <div id="popupImageWrapper" class="hidden">
+            <div class="flex gap-2 justify-between">
+                <label class="block font-medium mb-1 text-[#034E7A]">
+                    Popup Image (JPG / PNG):
+                </label>
+                @if($category->popup_image)
+                <div class="mb-2 bg-[#034E7A] text-white px-4 py-1 rounded">
+                    <a href="{{ asset('storage/' . $category->popup_image) }}" target="_blank">
+                        View Popup Image
+                    </a>
+                </div>
+                @endif
+            </div>
+            <input type="file" name="popup_image"
+                accept="image/png,image/jpeg"
+                class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#034E7A]">
+        </div>
         <!-- Parent Category -->
         <div>
             <label class="block font-medium mb-1 text-[#034E7A]">Parent Category:</label>
@@ -70,30 +87,51 @@
                 @endforeach
             </select>
         </div>
-
-        <!-- JS to handle dynamic loading -->
-        <script>
-            document.getElementById('post_type').addEventListener('change', function() {
-                const postType = this.value;
-                const parentSelect = document.getElementById('parent_id');
-                parentSelect.innerHTML = '<option value="">Loading...</option>';
-
-                fetch(`{{ route('admin.roman-urdu.category.parents') }}?post_type=${postType}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        parentSelect.innerHTML = '<option value="">-- Select Parent --</option>';
-                        for (const id in data) {
-                            parentSelect.innerHTML += `<option value="${id}">${data[id]}</option>`;
-                        }
-                    });
-            });
-        </script>
-
-
         <button type="submit"
             class="bg-[#034E7A] text-white px-4 py-2 rounded hover:bg-[#02629B] transition">
             Update Category
         </button>
     </form>
 </div>
+<!-- JS to handle dynamic loading -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const postTypeSelect = document.getElementById('post_type');
+        const popupImageWrapper = document.getElementById('popupImageWrapper');
+        const parentSelect = document.getElementById('parent_id');
+
+        function handlePostTypeChange() {
+            const postType = postTypeSelect.value;
+
+            // Show / hide popup image
+            if (postType === 'amaal-namaz') {
+                popupImageWrapper.classList.remove('hidden');
+            } else {
+                popupImageWrapper.classList.add('hidden');
+            }
+
+            // Load parent categories
+            parentSelect.innerHTML = '<option value="">Loading...</option>';
+
+            fetch(`{{ route('admin.roman-urdu.category.parents') }}?post_type=${postType}`)
+                .then(response => response.json())
+                .then(data => {
+                    parentSelect.innerHTML = '<option value="">-- Select Parent --</option>';
+
+                    for (const id in data) {
+                        const selected = id == "{{ old('parent_id', $category->parent_id) }}" ? 'selected' : '';
+                        parentSelect.innerHTML += `<option value="${id}" ${selected}>${data[id]}</option>`;
+                    }
+                });
+        }
+
+        // On change
+        postTypeSelect.addEventListener('change', handlePostTypeChange);
+
+        // On page load (edit + validation error)
+        if (postTypeSelect.value) {
+            handlePostTypeChange();
+        }
+    });
+</script>
 @endsection

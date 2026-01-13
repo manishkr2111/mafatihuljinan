@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Swahili\Category;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class SwahiliCategoryController extends Controller
 {
@@ -63,12 +64,25 @@ class SwahiliCategoryController extends Controller
             'description' => 'nullable|string',
             'sort_number' => 'nullable|integer',
             'parent_id' => 'nullable|exists:swahili_categories,id',
+            'popup_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         $model = getSwahiliModel($post_type);
-        if(!$model){
-            return redirect()->back()->with('error','Invalid Post Type');
+        if (!$model) {
+            return redirect()->back()->with('error', 'Invalid Post Type');
         }
         $validated['slug'] = Str::slug($validated['slug'], '-');
+
+        // Upload popup image
+        if ($request->hasFile('popup_image')) {
+            $file = $request->file('popup_image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs(
+                'amaal-namaz/swahili-popup-image',
+                $fileName,
+                'public'
+            );
+            $validated['popup_image'] = $path; // save path in DB
+        }
         $Category = Category::create($validated);
         $Category->post_type = $post_type;
         $Category->save();
@@ -103,13 +117,31 @@ class SwahiliCategoryController extends Controller
             'description' => 'nullable|string',
             'sort_number' => 'nullable|integer',
             'parent_id' => 'nullable|exists:swahili_categories,id',
+            'popup_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         $model = getSwahiliModel($post_type);
-        if(!$model){
-            return redirect()->back()->with('error','Invalid Post Type');
+        if (!$model) {
+            return redirect()->back()->with('error', 'Invalid Post Type');
         }
-        $validated['slug'] = Str::slug($validated['slug'], '-');     
+        $validated['slug'] = Str::slug($validated['slug'], '-');
 
+        // Upload popup image amaal namaz
+        if ($request->hasFile('popup_image')) {
+            $oldFile = $category->popup_image;
+            if ($oldFile) {
+                Storage::disk('public')->delete($oldFile);
+            }
+            $file = $request->file('popup_image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs(
+                'amaal-namaz/swahili-popup-image',
+                $fileName,
+                'public'
+            );
+            $validated['popup_image'] = $path; // save path in DB
+        } else {
+            $validated['popup_image'] = $category->popup_image;
+        }
         $category->update($validated);
         $category->post_type = $post_type;
         $category->save();
