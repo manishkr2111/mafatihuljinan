@@ -119,6 +119,7 @@ Route::middleware(['auth', 'role:admin,editor'])->prefix('admin')->name('admin.'
     Route::post('/tafsir/update/{id}', [TafsirDataController::class, 'update'])->name('tafsir.update');
     Route::delete('/tafsir/delete/{id}', [TafsirDataController::class, 'destroy'])->name('tafsir.destroy');
 
+    Route::get('/tafsir/{tafsir}', [TafsirDataController::class, 'show'])->name('tafsir.show');
 
     Route::get('/marquee', [MarqueeTextController::class, 'index'])->name('marquee.index');
     Route::post('/marquee/store', [MarqueeTextController::class, 'store'])->name('marquee.store');

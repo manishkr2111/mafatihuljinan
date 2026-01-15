@@ -63,7 +63,7 @@
                             class="inline" onsubmit="return confirm('Are you sure you want to delete this menu?');">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="text-red-600 bg-grey-200 px-3 py-1 rounded hover:bg-red-100 transition">
+                            <button type="submit" class="text-red-600 bg-grey-200 px-3 py-1 rounded hover:bg-red-300 transition">
                                 Delete
                             </button>
                         </form>

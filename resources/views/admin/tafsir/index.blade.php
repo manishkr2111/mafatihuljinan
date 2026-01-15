@@ -60,8 +60,12 @@
                         {{ commonPostTypeOptions()[$tafsir->post_type] ?? '-' }}
                     </td>
                     <td class="px-6 py-3 text-[#034E7A] tafsir-language">{{ $tafsir->language }}</td>
-                    <td class="px-6 py-3">
-                        <a href="{{ route('admin.tafsir.edit', $tafsir->id) }}"
+                    <td class="px-6 py-3 flex gap-2">
+                        <a href="{{ route('admin.tafsir.show', $tafsir->id) }}" target="_blank"
+                            class="text-white bg-[#034E7A] px-3 py-1 rounded hover:bg-[#02629B] transition">
+                            View
+                        </a>
+                        <a href="{{ route('admin.tafsir.edit', $tafsir->id) }}" target="_blank"
                             class="text-white bg-[#034E7A] px-3 py-1 rounded hover:bg-[#02629B] transition">
                             Edit
                         </a>
@@ -70,7 +74,7 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit"
-                                class="text-red-600 bg-grey-200 px-3 py-1 rounded hover:bg-red-100 transition">
+                            class="text-white bg-red-800 px-3 py-1 rounded hover:bg-red-400 transition">
                                 Delete
                             </button>
                         </form>

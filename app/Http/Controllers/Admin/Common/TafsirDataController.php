@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class TafsirDataController extends Controller
 {
+
+    public function show(TafsirData $tafsir)
+    {
+        return view('admin.tafsir.show', compact('tafsir'));
+    }
+
     public function index()
     {
         $tafsirs = TafsirData::orderBy('id', 'desc')->get();
