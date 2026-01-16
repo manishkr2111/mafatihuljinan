@@ -13,6 +13,7 @@ class BurialActsPrayers extends Model
         'slug',
         'search_text',
         'redirect_deep_link',
+        'redirect_deeplink_post_type',
         'roman_data',
         'sort_number',
         'arabic_islrc',
