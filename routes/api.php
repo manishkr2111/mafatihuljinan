@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::post('/create/custom-post', [CustomUserPostController::class, 'store']);
-    Route::put('/update/custom-posts/{id}', [CustomUserPostController::class, 'update']);
+    Route::post('/update/custom-posts/{id}', [CustomUserPostController::class, 'update']);
 
     // favorites
     Route::post('/create/favorite-post', [FavoriteController::class, 'store']);

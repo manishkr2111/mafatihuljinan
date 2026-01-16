@@ -30,13 +30,17 @@ class CustomUserPostController extends Controller
             $audioPath = null;
             if ($request->hasFile('audio')) {
                 $audioFile = $request->file('audio');
-                $originalName = $audioFile->getClientOriginalName(); // get original file name
+                $originalName = time().'_'.$audioFile->getClientOriginalName(); // get original file name
                 $audioPath = $audioFile->storeAs('audios', $originalName, 'public'); // keep original name
                 $validated['audio_url'] = $audioPath;
             }
 
             $post = CustomUserPost::create($validated);
-            $post->audio_url = Storage::disk('public')->url($audioPath);
+            if ($audioPath) {
+                $post->audio_url = Storage::disk('public')->url($audioPath);
+            } else {
+                $post->audio_url = null;
+            }
 
             return response()->json([
                 'status' => true,
@@ -75,9 +79,8 @@ class CustomUserPostController extends Controller
 
             $validated = $request->validate([
                 'title' => 'sometimes|required|string|max:255',
-                'arabic_content' => 'nullable|string',
-                'transliteration_content' => 'nullable|string',
-                'translation_content' => 'nullable|string',
+                'content' => 'nullable|string',
+                'audio' => 'nullable|file|mimes:mp3,wav,ogg|max:10240', // max 10MB
                 'language' => [
                     'sometimes',
                     'required',
@@ -86,9 +89,23 @@ class CustomUserPostController extends Controller
                     Rule::in(validLanguages()),
                 ],
             ]);
-
+            $audioPath  = null;
+            if ($request->hasFile('audio')) {
+                $oldAudioPath = $post->audio_url;
+                if ($oldAudioPath) {
+                    Storage::disk('public')->delete($oldAudioPath);
+                }
+                $audioFile = $request->file('audio');
+                $originalName = time().'_'.$audioFile->getClientOriginalName(); // get original file name
+                $audioPath = $audioFile->storeAs('audios', $originalName, 'public'); // keep original name
+                $validated['audio_url'] = $audioPath;
+            }
             $post->update($validated);
-
+            if ($audioPath) {
+                $post->audio_url = Storage::disk('public')->url($audioPath);
+            } else {
+                $post->audio_url = null;
+            }
             return response()->json([
                 'status' => true,
                 'message' => 'Post updated successfully.',
