@@ -48,52 +48,93 @@
 <!-- Post Counts Section -->
 <div class="bg-white rounded shadow p-5 mt-6 ">
     <h2 class="text-lg font-bold text-[#034E7A] mb-3">Post Counts by Language</h2>
+
+    <div class="flex items-center mb-4">
+        <label class="mr-2 font-semibold text-[#034E7A]">
+            Select Language:
+        </label>
+
+        <select
+            id="languageFilter"
+            class="border border-gray-300 rounded px-3 py-2 text-sm"
+            onchange="filterPostsByLanguage(this.value)">
+            <option value="all">All</option>
+            @foreach(array_keys($postCounts) as $language)
+            <option value="{{ $language }}" {{ $language === 'english' ? 'selected' : '' }}>
+                {{ ucfirst($language) }}
+            </option>
+            @endforeach
+        </select>
+
+    </div>
+
     <div class="overflow-y-auto max-h-[600px]">
         @foreach ($postCounts as $language => $posts)
-        <h3 class="text-md font-bold text-[#034E7A] mt-4 mb-2">{{ ucfirst($language) }}</h3>
+        <div class="language-section" data-language="{{ $language }}">
+            <h3 class="text-md font-bold text-[#034E7A] mt-4 mb-2">{{ ucfirst($language) }}</h3>
 
-        <!-- Responsive grid: 2 cols (mobile), 3 cols (tablet), 4 cols (desktop) -->
-        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            @foreach ($posts as $type => $counts)
-            <div class="bg-gray-50 rounded p-3 text-center shadow hover:shadow-md transition">
-                <h4 class="text-sm font-medium text-[#034E7A]">
-                    {{ str_replace('-', ' ', ucfirst($type)) }}
-                </h4>
-                <p class="text-xl font-bold text-[#034E7A] mt-1">
-                    Total: {{ $counts['total'] }}
-                </p>
-                <hr>
-                <p class="text-sm text-green-700 mt-1">
-                <div class="mt-2 text-sm text-green-700">
-                    <h5 class="font-semibold text-[#034E7A] mb-1">LRC Enabled For:</h5>
-                    <ul class="space-y-1">
-                        <li>
-                            <a href="{{ route('admin.lrc.posts', ['language' => $language, 'postType' => $type, 'lrcType' => 'arabic']) }}"
-                                target="_blank" class="text-green-700 hover:underline">
-                                Arabic: {{ $counts['arabic_lrc_enabled_count'] ?? 0 }}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.lrc.posts', ['language' => $language, 'postType' => $type, 'lrcType' => 'transliteration']) }}"
-                                target="_blank" class="text-green-700 hover:underline">
-                                Transliteration: {{ $counts['transliteration_lrc_enabled_count'] ?? 0 }}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.lrc.posts', ['language' => $language, 'postType' => $type, 'lrcType' => 'translation']) }}"
-                                target="_blank" class="text-green-700 hover:underline">
-                                Translation: {{ $counts['translation_lrc_enabled_count'] ?? 0 }}
-                            </a>
-                        </li>
-                    </ul>
+            <!-- Responsive grid: 2 cols (mobile), 3 cols (tablet), 4 cols (desktop) -->
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                @foreach ($posts as $type => $counts)
+                <div class="bg-gray-50 rounded p-3 text-center shadow hover:shadow-md transition">
+                    <h4 class="text-sm font-medium text-[#034E7A]">
+                        {{ str_replace('-', ' ', ucfirst($type)) }}
+                    </h4>
+                    <p class="text-xl font-bold text-[#034E7A] mt-1">
+                        Total: {{ $counts['total'] }}
+                    </p>
+                    <hr>
+                    <p class="text-sm text-green-700 mt-1">
+                    <div class="mt-2 text-sm text-green-700">
+                        <h5 class="font-semibold text-[#034E7A] mb-1">LRC Enabled For:</h5>
+                        <ul class="space-y-1">
+                            <li>
+                                <a href="{{ route('admin.lrc.posts', ['language' => $language, 'postType' => $type, 'lrcType' => 'arabic']) }}"
+                                    target="_blank" class="text-green-700 hover:underline">
+                                    Arabic: {{ $counts['arabic_lrc_enabled_count'] ?? 0 }}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.lrc.posts', ['language' => $language, 'postType' => $type, 'lrcType' => 'transliteration']) }}"
+                                    target="_blank" class="text-green-700 hover:underline">
+                                    Transliteration: {{ $counts['transliteration_lrc_enabled_count'] ?? 0 }}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.lrc.posts', ['language' => $language, 'postType' => $type, 'lrcType' => 'translation']) }}"
+                                    target="_blank" class="text-green-700 hover:underline">
+                                    Translation: {{ $counts['translation_lrc_enabled_count'] ?? 0 }}
+                                </a>
+                            </li>
+                        </ul>
 
+                    </div>
+                    </p>
                 </div>
-                </p>
+                @endforeach
             </div>
-            @endforeach
-        </div>
+        </div> <!-- end language section -->
         @endforeach
     </div>
 </div>
+<script>
+    function filterPostsByLanguage(language) {
+        const sections = document.querySelectorAll('.language-section');
+
+        sections.forEach(section => {
+            if (language === 'all' || section.dataset.language === language) {
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+            }
+        });
+    }
+
+    // 🔹 Default filter on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        filterPostsByLanguage('english');
+    });
+</script>
+
 
 @endsection

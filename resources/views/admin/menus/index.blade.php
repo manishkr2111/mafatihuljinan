@@ -46,15 +46,15 @@
                 @foreach($menus as $menu)
                 <tr class="border-b border-gray-200 hover:bg-[#E6F0F8]">
                     <!-- Serial Number -->
-                    <td class="px-6 py-3 text-[#034E7A] font-medium">{{ $counter++ }}</td>
+                    <td class="px-6 py-3 border text-[#034E7A] font-medium">{{ $counter++ }}</td>
 
-                    <td class="px-6 py-3 text-[#034E7A]">{{ $menu->sort_number }}</td>
-                    <td class="px-6 py-3 text-[#034E7A]">{{ $menu->menu_name }}</td>
-                    <td class="px-6 py-3 text-[#034E7A]">
+                    <td class="px-6 py-3 border text-[#034E7A]">{{ $menu->sort_number }}</td>
+                    <td class="px-6 py-3 border text-[#034E7A]">{{ $menu->menu_name }}</td>
+                    <td class="px-6 py-3 border text-[#034E7A]">
                         {{ commonPostTypeOptions()[$menu->post_type] ?? '-' }}
                     </td>
-                    <td class="px-6 py-3 text-[#034E7A] menu-language">{{ $menu->language }}</td>
-                    <td class="px-6 py-3">
+                    <td class="px-6 py-3 border text-[#034E7A] menu-language">{{ $menu->language }}</td>
+                    <td class="px-6 py-3 border">
                         <a href="{{ route('admin.menus.edit', $menu->id) }}"
                             class="text-white bg-[#034E7A] px-3 py-1 rounded hover:bg-[#02629B] transition">
                             Edit

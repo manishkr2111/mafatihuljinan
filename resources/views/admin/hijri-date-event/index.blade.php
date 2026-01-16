@@ -141,12 +141,12 @@
                         data-month="{{ strtolower($event->month) }}"
                         data-language="{{ strtolower($event->language) }}"
                         data-event="{{ strtolower($event->event) }}">
-                        <td class="px-4 py-2"><input type="checkbox" class="checkBoxClass" value="{{ $event->id }}"></td>
-                        <td class="px-4 py-2">{{ $event->date }} {{ $event->month }}</td>
-                        <td class="px-4 py-2">{{ $event->event }}</td>
-                        <td class="px-4 py-2">{{ $event->text_color }}</td>
-                        <td class="px-4 py-2">{{ ucfirst($event->language) }}</td>
-                        <td class="px-4 py-2">
+                        <td class="px-4 py-2 border"><input type="checkbox" class="checkBoxClass" value="{{ $event->id }}"></td>
+                        <td class="px-4 py-2 border">{{ $event->date }} {{ $event->month }}</td>
+                        <td class="px-4 py-2 border">{{ $event->event }}</td>
+                        <td class="px-4 py-2 border">{{ $event->text_color }}</td>
+                        <td class="px-4 py-2 border">{{ ucfirst($event->language) }}</td>
+                        <td class="px-4 py-2 border">
                             <a href="{{ route('admin.hijri.date.event.edit', $event->id) }}" class="text-[#034E7A] hover:underline">Edit</a>
                             <form action="{{ route('admin.hijri.date.event.delete', $event->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this event?');">
                                 @csrf

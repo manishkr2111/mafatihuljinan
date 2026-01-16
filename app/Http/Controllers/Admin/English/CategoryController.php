@@ -221,6 +221,9 @@ class CategoryController extends Controller
         if (!$deeplinkUrlCategory || ($deeplinkUrlCategory && !empty($deeplinkUrlCategory->deeplink_url))) {
             return redirect()->back()->with('error', 'Invalid Deeplink URL');
         }
+        if($deeplinkUrlCategory && $deeplinkUrlCategory->post_type == $post_type){
+            return redirect()->back()->with('error', 'Invalid Deeplink URL (can not use same deeplink url for same post type)');
+        }
         if ($request->parent_id) {
             $parent = EnglishCategory::find($request->parent_id);
 

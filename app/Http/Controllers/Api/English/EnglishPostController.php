@@ -161,7 +161,7 @@ class EnglishPostController extends Controller
                     });
                 }
                 if ($user) {
-                    isFavoritePosts($post_type, $posts,$user, 'english', $parent_category_id);
+                    isFavoritePosts($post_type, $posts, $user, 'english', $parent_category_id);
                 } else {
                     // If user not logged in, default is_fav to false
                     $posts->map(function ($post) {
@@ -320,6 +320,7 @@ class EnglishPostController extends Controller
 
         // Next post data
         $nextPost = null;
+        $postArray['next_post_id'] = null;
         if (isset($postArray['next_post_url'])) {
             $nextPost = $model::where('slug', $postArray['next_post_url'])
                 ->where('status', 'published')
@@ -359,7 +360,7 @@ class EnglishPostController extends Controller
             $postArray['translation_4line'],
             $postArray['word_meanings'],
             $postArray['next_post_url'],
-             $postArray['status'],
+            $postArray['status'],
         );
 
         $result['data'][] = $postArray;

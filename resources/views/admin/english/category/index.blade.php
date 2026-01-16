@@ -3,7 +3,7 @@
 @section('title', 'English Categories')
 
 @section('content')
-<div class="max-w-5xl mt-10 p-2 rounded shadow">
+<div class="mt-10 p-2 rounded shadow">
     <div class="flex flex-col md:flex-row md:justify-between gap-4">
         <div class="flex justify-between items-center mb-1">
             <a href="{{ route('admin.english.category.create') }}"

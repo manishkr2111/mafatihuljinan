@@ -142,8 +142,8 @@ class DashboardController extends Controller
     public function uploadAudiopage(Request $request)
     {
         $language = $request->get('language', 'english');
-        $directory = env('AUDIO_DIRECTORY').'/'.$language;
-        $webUrl = env('AUDIO_WEBURL').'/'.$language.'/';
+        $directory = env('AUDIO_DIRECTORY') . '/' . $language;
+        $webUrl = env('AUDIO_WEBURL') . '/' . $language . '/';
         // dd($directory,$webUrl);
         $files = [];
 
@@ -216,7 +216,7 @@ class DashboardController extends Controller
             $destination = env('AUDIO_DIRECTORY') . '/' . $request->language;
             $audio->move($destination, $fileName);
 
-            $url = env('AUDIO_WEBURL') .'/'.$request->language . '/'. $fileName;
+            $url = env('AUDIO_WEBURL') . '/' . $request->language . '/' . $fileName;
 
             return back()->with([
                 'success' => 'Audio uploaded successfully!',
@@ -229,6 +229,7 @@ class DashboardController extends Controller
 
     public function deleteAudio(Request $request)
     {
+        $language = $request->language;
         $fileName = $request->file_name;
 
         if (!$fileName) {
@@ -236,7 +237,7 @@ class DashboardController extends Controller
         }
 
         $directory = env('AUDIO_DIRECTORY');
-        $filePath = $directory . '/' . $fileName;
+        $filePath = $directory . '/' . $language . '/' . $fileName;
 
         if (file_exists($filePath)) {
             unlink($filePath);

@@ -54,16 +54,16 @@
                 @php $counter = 1; @endphp
                 @foreach($tafsirs as $tafsir)
                 <tr class="border-b border-gray-200 hover:bg-[#E6F0F8]">
-                    <td class="px-6 py-3 text-[#034E7A] font-medium">{{ $counter++ }}</td>
-                    <td class="px-6 py-3 text-[#034E7A] tafsir-title">{{ $tafsir->title }}</td>
-                    <td class="px-6 py-3 text-[#034E7A]">
+                    <td class="px-6 py-3 border text-[#034E7A] font-medium">{{ $counter++ }}</td>
+                    <td class="px-6 py-3 border text-[#034E7A] tafsir-title">{{ $tafsir->title }}</td>
+                    <td class="px-6 py-3 border text-[#034E7A]">
                         {{ commonPostTypeOptions()[$tafsir->post_type] ?? '-' }}
                     </td>
-                    <td class="px-6 py-3 text-[#034E7A] tafsir-language">{{ $tafsir->language }}</td>
-                    <td class="px-6 py-3 flex gap-2">
+                    <td class="px-6 py-3 border text-[#034E7A] tafsir-language">{{ $tafsir->language }}</td>
+                    <td class="px-6 py-3 border flex gap-2">
                         <a href="{{ route('admin.tafsir.show', $tafsir->id) }}" target="_blank"
                             class="text-white bg-[#034E7A] px-3 py-1 rounded hover:bg-[#02629B] transition">
-                            View
+                            View Here
                         </a>
                         <a href="{{ route('admin.tafsir.edit', $tafsir->id) }}" target="_blank"
                             class="text-white bg-[#034E7A] px-3 py-1 rounded hover:bg-[#02629B] transition">

@@ -158,6 +158,7 @@
                     @csrf
                     @method('DELETE')
                     <input type="hidden" name="file_name" value="{{ $file['name'] }}">
+                    <input type="hidden" name="language" value="{{ $language }}">
                     <button type="submit"
                         class="text-sm px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700 transition">
                         Delete
