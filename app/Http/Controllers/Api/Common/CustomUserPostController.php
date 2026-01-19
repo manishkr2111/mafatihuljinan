@@ -30,7 +30,7 @@ class CustomUserPostController extends Controller
             $audioPath = null;
             if ($request->hasFile('audio')) {
                 $audioFile = $request->file('audio');
-                $originalName = time().'_'.$audioFile->getClientOriginalName(); // get original file name
+                $originalName = time() . '_' . $audioFile->getClientOriginalName(); // get original file name
                 $audioPath = $audioFile->storeAs('audios', $originalName, 'public'); // keep original name
                 $validated['audio_url'] = $audioPath;
             }
@@ -96,7 +96,7 @@ class CustomUserPostController extends Controller
                     Storage::disk('public')->delete($oldAudioPath);
                 }
                 $audioFile = $request->file('audio');
-                $originalName = time().'_'.$audioFile->getClientOriginalName(); // get original file name
+                $originalName = time() . '_' . $audioFile->getClientOriginalName(); // get original file name
                 $audioPath = $audioFile->storeAs('audios', $originalName, 'public'); // keep original name
                 $validated['audio_url'] = $audioPath;
             }
@@ -117,6 +117,43 @@ class CustomUserPostController extends Controller
                 'message' => 'Validation error.',
                 'errors' => $e->errors(),
             ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Something went wrong.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        try {
+            $user = $request->user();
+            $post = CustomUserPost::where('id', $id)
+                ->where('user_id', $user->id)
+                ->first();
+
+            if (!$post) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Post not found or unauthorized.',
+                    'data' => []
+                ], 404);
+            }
+            if ($post->audio_url) {
+                $audioPath = str_replace(
+                    Storage::disk('public')->url(''),
+                    '',
+                    $post->audio_url
+                );
+                Storage::disk('public')->delete($audioPath);
+            }
+            $post->delete();
+            return response()->json([
+                'status' => true,
+                'message' => 'Post deleted successfully.'
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,

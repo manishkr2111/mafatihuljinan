@@ -17,7 +17,7 @@ return new class extends Migration
             'gujarati_categories',
             'hindi_categories',
             'urdu_categories',
-            'roman_Urdu_categories',
+            'roman_urdu_categories',
             'french_categories'
         ];
         foreach ($tables as $table) {

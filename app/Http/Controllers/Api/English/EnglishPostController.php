@@ -211,44 +211,6 @@ class EnglishPostController extends Controller
         }
     }
 
-
-    public function singlePostDate(Request $request, $id)
-    {
-        $post_type = $request->query('post_type', $request->post_type);
-        $model = getEnglishModel($post_type);
-        if (!$model) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Invalid post type',
-                'data' => null
-            ], 400);
-        }
-        $post = $model::find($id);
-        if (!$post) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Post not found',
-                'data' => null
-            ], 404);
-        }
-        if ($post->status != 'published') {
-            return response()->json([
-                'status' => false,
-                'message' => 'Post not published',
-                'data' => null
-            ], 403);
-        }
-
-        // Hide unnecessary fields
-        $post->makeHidden(['created_at', 'updated_at', 'category_ids']);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Post fetched successfully',
-            'data' => $post
-        ]);
-    }
-
     public function singlepostdata(Request $request)
     {
         $post_type = $request->query('post_type', $request->post_type);
@@ -264,7 +226,17 @@ class EnglishPostController extends Controller
             ->where('status', 'published')
             ->first();
         if ($post) {
-            $post->makeHidden(['wordpress_id', 'created_at', 'updated_at', 'category_ids', 'sort_number']);
+            if ($post->redirect_deep_link && $post->redirect_deeplink_post_type) {
+                $post_type = $post->redirect_deeplink_post_type;
+                $model = getEnglishModel($post->redirect_deeplink_post_type);
+                $post = $model::where('slug', $post->redirect_deep_link)
+                    ->where('status', 'published')
+                    ->first();
+                if ($post) {
+                    $post->redirect_deeplink_data = true;
+                }
+            }
+            $post->makeHidden(['wordpress_id', 'created_at', 'updated_at', 'category_ids', 'sort_number', 'redirect_deep_link', 'redirect_deeplink_post_type']);
             $post->post_type = $post_type;
         } else {
             // handle the case where the post is not found
@@ -337,7 +309,7 @@ class EnglishPostController extends Controller
         }
 
         $postArray['cData'] = $cData;
-        if ($post_type == 'surah') {
+        if ($post_type == 'surah' && isset($postArray['word_meanings'])) {
             $postArray['WordMeanings'] = json_decode($postArray['word_meanings'], true) ?? [];
         }
         // dd($nextPost);
