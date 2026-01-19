@@ -136,7 +136,7 @@ $baseUrl = rtrim(config('app.url'), '/') . '/';
                                 <select name="redirect_deeplink_post_type"
                                     class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-[#034E7A]">
                                     <option value="">Select Post Type</option>
-                                    @foreach($EnglishPostTypeOptions as $key => $label)
+                                    @foreach(commonPostTypeOptions() as $key => $label)
                                     <option value="{{ $key }}"
                                         {{ old('redirect_deeplink_post_type', $englishPost->redirect_deeplink_post_type) == $key ? 'selected' : '' }}>
                                         {{ $label }}

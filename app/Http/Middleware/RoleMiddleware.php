@@ -22,7 +22,7 @@ class RoleMiddleware
 
         // If user role is not in allowed roles, block access
         if (!in_array($user->role, $roles)) {
-            // abort(403, 'Unauthorized action.');
+            abort(403, 'Unauthorized action.');
         }
 
         return $next($request);

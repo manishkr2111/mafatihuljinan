@@ -205,7 +205,7 @@ class EnglishPostController extends Controller
                     'redirect_deeplink_post_type' => 'Deeplink post type or deeplink url is required.'
                 ])->withInput();
             }
-            $redirectDeepLinkModel = $modelClass = getEnglishModel($data['redirect_deeplink_post_type']);
+            $redirectDeepLinkModel = getEnglishModel($data['redirect_deeplink_post_type']);
             $redirectDeepLink = $redirectDeepLinkModel::where('slug', $data['redirect_deep_link'])->first();
             if (!$redirectDeepLink) {
                 return redirect()->back()->withErrors([

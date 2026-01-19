@@ -32,7 +32,13 @@ class SocialLoginController extends Controller
 
             // $user = User::create(['name' => $googleUser->name, 'email' => $googleUser->email, 'password' => \Hash::make(rand(100000, 999999))]);
         }
-
+        if (!in_array($user->role, ['admin', 'editor'])) {
+            return redirect()->route('login')->with('error', 'You are not allowed to access this page. If you want to be editor please ask admin to give relevent role to you.');
+        }
+        if ($user->email_verified_at == null) {
+            $user->email_verified_at = now();
+            $user->save();
+        }
         Auth::login($user);
 
         return redirect()->route('admin.dashboard');

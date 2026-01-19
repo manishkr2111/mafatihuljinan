@@ -73,9 +73,12 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => $request->password,
         ], $request->remember)) {
-
+            $user = Auth::user();
+            if (!in_array($user->role, ['admin', 'editor'])) {
+                Auth::logout();
+                return redirect()->back()->with('error', 'You are not allowed to access this page. If you want to be editor please ask admin to give relevent role to you.');
+            }
             return redirect('/admin/dashboard');
-            return redirect()->intended('/home');
         }
 
         // If authentication fails

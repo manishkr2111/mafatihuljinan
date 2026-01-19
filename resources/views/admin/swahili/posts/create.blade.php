@@ -5,7 +5,9 @@
 @section('title', 'Create ' . $SwahiliPostTypeOptions[$postType] . ' Post')
 
 @section('content')
-
+@php
+$baseUrl = rtrim(config('app.url'), '/') . '/';
+@endphp
 <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
 
     <div class="flex justify-between items-center mb-1 py-2">
@@ -94,6 +96,62 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Deep Link Toggle -->
+                    <div class="mt-4">
+                        <label class="flex items-center gap-3 px-4 py-3 bg-yellow-50 border-2 border-yellow-200 rounded-lg cursor-pointer hover:bg-yellow-100 transition">
+                            <input type="checkbox" id="enable_deeplink" name="enable_deeplink" value="1"
+                                {{ old('enable_deeplink') ? 'checked' : '' }}
+                                class="w-5 h-5 text-[#034E7A] border-gray-300 rounded focus:ring-[#034E7A] focus:ring-2">
+                            <span class="text-sm font-semibold text-gray-700">
+                                Enable Deep Link
+                            </span>
+                        </label>
+                    </div>
+                    <!-- Deep Link Fields -->
+                    <div id="deeplinkFields"
+                        class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4 {{ old('enable_deeplink') ? '' : 'hidden' }}">
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Deep Link URL
+                            </label>
+                            <div class="flex items-center rounded-lg overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-[#034E7A] bg-white transition">
+                                <span class="bg-gray-100 text-gray-600 px-3 py-3 text-sm whitespace-nowrap select-none">
+                                    {{ $baseUrl }}
+                                </span>
+                                <input type="text" name="redirect_deep_link" value="{{ old('redirect_deep_link') }}"
+                                    placeholder="enter-slug-here"
+                                    class="w-full px-3 py-3 text-gray-800 text-sm focus:outline-none" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Deep Link Post Type
+                            </label>
+                            <select name="redirect_deeplink_post_type"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">
+                                <option value="">Select Post Type</option>
+                                @foreach(commonPostTypeOptions() as $key => $label)
+                                <option value="{{ $key }}" {{ old('redirect_deeplink_post_type') == $key ? 'selected' : '' }}>
+                                    {{ $label }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const checkbox = document.getElementById('enable_deeplink');
+                            const fields = document.getElementById('deeplinkFields');
+
+                            if (checkbox) {
+                                checkbox.addEventListener('change', function() {
+                                    fields.classList.toggle('hidden', !this.checked);
+                                });
+                            }
+                        });
+                    </script>
                 </div>
             </div>
 
@@ -297,10 +355,6 @@
             </div>
             @endif
             <!-- Next Post & Internal Links Card -->
-            @php
-            $baseUrl = rtrim(config('app.url'), '/') . '/';
-            @endphp
-
             <div class="bg-white rounded-xl shadow-md overflow-hidden">
                 <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">
                     <h2 class="text-xl font-semibold text-white flex items-center">

@@ -39,7 +39,7 @@ class RomanUrduPostController extends Controller
             return redirect()->back()->withErrors(['post_type' => 'Invalid post type specified.']);
         }
         $query = $modelClass::query();
-        // ✅ Search by title or category name
+        // Search by title or category name
         if ($request->filled('search')) {
             $search = trim($request->search);
             // Find matching category IDs based on name
@@ -59,7 +59,7 @@ class RomanUrduPostController extends Controller
                 }
             });
         }
-        // ✅ Filter by category dropdown
+        // Filter by category dropdown
         if ($request->filled('category')) {
             $categoryName = strtolower($request->category);
             // Find the matching category ID
@@ -112,6 +112,7 @@ class RomanUrduPostController extends Controller
             'title' => 'required|string|max:255',
             'search_text' => 'nullable|string',
             'redirect_deep_link' => 'nullable|string|max:255',
+            'redirect_deeplink_post_type' => 'nullable|string|max:255',
             'roman_data' => 'nullable|string',
             'sort_number' => 'nullable|integer',
 
@@ -195,7 +196,25 @@ class RomanUrduPostController extends Controller
                 }
             }
         }
-
+        // redirect_deep_link handle
+        if ($request->has('enable_deeplink')) {
+            if (empty($data['redirect_deep_link']) || empty($data['redirect_deeplink_post_type'])) {
+                return redirect()->back()->withErrors([
+                    'redirect_deeplink_post_type' => 'Deeplink post type or deeplink url is required.'
+                ])->withInput();
+            }
+            $redirectDeepLinkModel = getRomanUrduModel($data['redirect_deeplink_post_type']);
+            $redirectDeepLink = $redirectDeepLinkModel::where('slug', $data['redirect_deep_link'])->first();
+            if (!$redirectDeepLink) {
+                return redirect()->back()->withErrors([
+                    'redirect_deeplink_post_type' => 'Invalid deeplink post type or deeplink url selected.'
+                ]);
+            }
+        } else {
+            $data['redirect_deep_link'] = null;
+            $data['redirect_deeplink_post_type'] = null;
+        }
+        // redirect_deep_link handle end
         $post = $modelClass::create($data);
         $slug = Str::slug($data['title']) . '-' . $post->id;
         $post->update([
@@ -246,6 +265,7 @@ class RomanUrduPostController extends Controller
             'title' => 'required|string|max:255',
             'search_text' => 'nullable|string',
             'redirect_deep_link' => 'nullable|string|max:255',
+            'redirect_deeplink_post_type' => 'nullable|string|max:255',
             'roman_data' => 'nullable|string',
             'sort_number' => 'nullable|integer',
 
@@ -334,7 +354,32 @@ class RomanUrduPostController extends Controller
                 }
             }
         }
+        // deeplink url handle
+        if ($request->has('enable_deeplink')) {
+            if (empty($data['redirect_deep_link']) || empty($data['redirect_deeplink_post_type'])) {
+                return redirect()->back()->withErrors([
+                    'redirect_deeplink_post_type' => 'Deep link URL and post type are required.'
+                ])->withInput();
+            }
 
+            $redirectModel = getRomanUrduModel($data['redirect_deeplink_post_type']);
+            if (!$redirectModel) {
+                return redirect()->back()->withErrors([
+                    'redirect_deeplink_post_type' => 'Invalid deep link post type.'
+                ])->withInput();
+            }
+
+            $exists = $redirectModel::where('slug', $data['redirect_deep_link'])->exists();
+            if (!$exists) {
+                return redirect()->back()->withErrors([
+                    'redirect_deep_link' => 'Invalid deep link slug.'
+                ])->withInput();
+            }
+        } else {
+            $data['redirect_deep_link'] = null;
+            $data['redirect_deeplink_post_type'] = null;
+        }
+        // deeplink url handle end
         $Post->update($data);
 
         // updated menu time to retreve data in refresh content
