@@ -95,7 +95,8 @@ class MenuController extends Controller
 
         return response()->json([
             'status' => true,
-            'hijri_category' => $categoryName,
+            'language' => $language,
+            'message' => 'Menu fetched successfully',
             // 'amaal_available' => (bool) $amaalCategory,
             'data' => $menus
         ]);
