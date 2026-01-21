@@ -121,6 +121,7 @@ return new class extends Migration
         foreach ($tables as $table) {
             Schema::table($table, function (Blueprint $table) {
                 $table->string('redirect_deeplink_post_type')->after('redirect_deep_link')->nullable();
+                $table->longText('significance_content')->after('simple_translation')->nullable();
             });
         }
     }
@@ -239,7 +240,8 @@ return new class extends Migration
         ];
         foreach ($tables as $table) {
             Schema::table($table, function (Blueprint $table) {
-                $table->dropColumn('deeplink_poat_type');
+                $table->dropColumn('redirect_deeplink_post_type');
+                $table->dropColumn('significance_content');
             });
         }
     }

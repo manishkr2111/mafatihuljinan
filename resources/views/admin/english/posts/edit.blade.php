@@ -391,7 +391,16 @@ $baseUrl = rtrim(config('app.url'), '/') . '/';
                     </div>
                 </div>
                 @endif
-
+                <!-- Significance Content -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4 mb-1">
+                        <h2 class="text-xl font-semibold text-white flex items-center">
+                            <label>Significance Content</label>
+                        </h2>
+                    </div>
+                    <textarea name="significance_content" rows="5"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#034E7A] focus:border-transparent transition">{{ old('significance_content', $englishPost->significance_content) }}</textarea>
+                </div>
                 <!-- Next Post & Internal Links Card -->
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
                     <div class="bg-gradient-to-r from-[#034E7A] to-[#02629B] px-6 py-4">

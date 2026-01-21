@@ -32,6 +32,7 @@ class Surah extends Model
         'translation_audio_url',
         'translation_content',
         'simple_translation',
+        'significance_content',
         'word_meanings',
         'next_post_title',
         'next_post_url',

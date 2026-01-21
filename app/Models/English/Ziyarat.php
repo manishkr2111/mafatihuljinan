@@ -32,6 +32,7 @@ class Ziyarat extends Model
         'translation_audio_url',
         'translation_content',
         'simple_translation',
+        'significance_content',
         'next_post_title',
         'next_post_url',
         'internal_link',

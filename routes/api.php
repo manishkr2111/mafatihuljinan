@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Common\AuthController;
 use App\Http\Controllers\Api\Common\HijriDateEventController;
 use App\Http\Controllers\Api\English\EnglishCategoryController;
 use App\Http\Controllers\Api\English\EnglishPostController;
+use App\Http\Controllers\Api\Gujarati\GujaratiPostController;
 use App\Http\Controllers\Api\Common\CustomUserPostController;
 use App\Http\Controllers\Api\Common\FavoriteController;
 use App\Http\Controllers\Api\Common\BookmarkController;
@@ -42,7 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/create/custom-post', [CustomUserPostController::class, 'store']);
     Route::post('/update/custom-post/{id}', [CustomUserPostController::class, 'update']);
-    Route::delete('/delete/custom-post/{id}',[CustomUserPostController::class, 'destroy']);
+    Route::delete('/delete/custom-post/{id}', [CustomUserPostController::class, 'destroy']);
 
 
     // favorites
@@ -88,16 +89,19 @@ Route::middleware(['ApiTokenMiddleware'])->group(function () {
 
     Route::get('/eventpopup', [EventPopupController::class, 'GetEventPopUp']);
 
+    Route::get('tafsir/data/{id}', [TafsirDataController::class, 'TafsirData']);
+
+
     Route::get('english/categories', [EnglishCategoryController::class, 'index']);
-
     Route::get('english/all/categories', [EnglishCategoryController::class, 'allDualCategories']);
-
-
     Route::get('english/posts', [EnglishPostController::class, 'SahifasShlulbayt']);
     Route::get('english/posts/{id}', [EnglishPostController::class, 'show']);
-
     Route::get('english/DuaData', [EnglishPostController::class, 'DuaData']);
     Route::get('english/single-post/{id}', [EnglishPostController::class, 'singlepostdata']);
 
-    Route::get('tafsir/data/{id}', [TafsirDataController::class, 'TafsirData']);
+
+    Route::get('gujarati/categories', [EnglishCategoryController::class, 'index']);
+    Route::get('gujarati/all/categories', [EnglishCategoryController::class, 'allDualCategories']);
+    Route::get('gujarati/DuaData', [GujaratiPostController::class, 'DuaData']);
+    Route::get('gujarati/single-post/{id}', [GujaratiPostController::class, 'singlepostdata']);
 });
