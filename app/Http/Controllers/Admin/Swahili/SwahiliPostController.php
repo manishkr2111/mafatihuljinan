@@ -137,6 +137,9 @@ class SwahiliPostController extends Controller
             'translation_content' => 'nullable|string',
             'simple_translation' => 'nullable|string',
 
+            // Significance content
+            'significance_content' => 'nullable|string',
+
             // Next post / internal link
             'next_post_title' => 'nullable|string|max:255',
             'next_post_url' => 'nullable|string|max:255',
@@ -289,6 +292,9 @@ class SwahiliPostController extends Controller
             'translation_audio_url' => 'nullable|url|max:255',
             'translation_content' => 'nullable|string',
             'simple_translation' => 'nullable|string',
+
+            // Significance content
+            'significance_content' => 'nullable|string',
 
             // Next post / internal link
             'next_post_title' => 'nullable|string|max:255',
