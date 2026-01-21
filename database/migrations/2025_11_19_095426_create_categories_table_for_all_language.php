@@ -14,7 +14,7 @@ return new class extends Migration
         $tables = [
             'hindi_categories',
             'urdu_categories',
-            'roman_urdu_categories',
+            'roman_Urdu_categories',
             'french_categories',
             'swahili_categories',
         ];
@@ -42,7 +42,7 @@ return new class extends Migration
         $table = [
             'hindi_categories',
             'urdu_categories',
-            'roman_urdu_categories',
+            'roman_Urdu_categories',
             'french_categories',
             'swahili_categories',
         ];

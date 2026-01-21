@@ -7,7 +7,7 @@ use App\Models\RomanUrdu\Category;
 
 class Dua extends Model
 {
-    protected $table = 'roman_urdu_dua';
+    protected $table = 'roman_Urdu_dua';
 
     protected $fillable = [
         'title',

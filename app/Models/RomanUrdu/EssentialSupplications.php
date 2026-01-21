@@ -6,7 +6,7 @@ use App\Models\RomanUrdu\Category;
 
 class EssentialSupplications extends Model
 {
-    protected $table = 'roman_urdu_essential_supplications';
+    protected $table = 'roman_Urdu_essential_supplications';
 
     protected $fillable = [
         'title',

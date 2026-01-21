@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\RomanUrdu\Category;
 class Amaal extends Model
 {
-    protected $table = 'roman_urdu_amaal';
+    protected $table = 'roman_Urdu_amaal';
 
     protected $fillable = [
         'title',

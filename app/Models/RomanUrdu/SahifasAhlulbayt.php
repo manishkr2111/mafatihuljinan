@@ -7,7 +7,7 @@ use App\Models\RomanUrdu\Category;
 
 class SahifasAhlulbayt extends Model
 {
-    protected $table = 'roman_urdu_sahifas_ahlulbayt';
+    protected $table = 'roman_Urdu_sahifas_ahlulbayt';
 
     protected $fillable = [
         'title',

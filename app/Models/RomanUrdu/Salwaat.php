@@ -7,7 +7,7 @@ use App\Models\RomanUrdu\Category;
 
 class Salwaat extends Model
 {
-    protected $table = 'roman_urdu_salwaat';
+    protected $table = 'roman_Urdu_salwaat';
 
     protected $fillable = [
         'title',

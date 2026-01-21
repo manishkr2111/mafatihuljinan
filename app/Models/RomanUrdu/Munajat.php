@@ -7,7 +7,7 @@ use App\Models\RomanUrdu\Category;
 
 class Munajat extends Model
 {
-    protected $table = 'roman_urdu_munajat';
+    protected $table = 'roman_Urdu_munajat';
 
     protected $fillable = [
         'title',

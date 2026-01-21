@@ -7,7 +7,7 @@ use App\Models\RomanUrdu\Category;
 
 class Tasbih extends Model
 {
-    protected $table = 'roman_urdu_tasbih';
+    protected $table = 'roman_Urdu_tasbih';
 
     protected $fillable = [
         'title',

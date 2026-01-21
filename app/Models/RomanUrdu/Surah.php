@@ -7,7 +7,7 @@ use App\Models\RomanUrdu\Category;
 
 class Surah extends Model
 {
-    protected $table = 'roman_urdu_surah';
+    protected $table = 'roman_Urdu_surah';
 
     protected $fillable = [
         'title',

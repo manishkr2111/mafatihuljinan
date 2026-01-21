@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\RomanUrdu\Category;
 class BurialActsPrayers extends Model
 {
-    protected $table = 'roman_urdu_burial_acts_prayers';
+    protected $table = 'roman_Urdu_burial_acts_prayers';
 
     protected $fillable = [
         'title',

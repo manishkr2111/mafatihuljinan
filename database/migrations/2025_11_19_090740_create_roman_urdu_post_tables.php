@@ -22,7 +22,7 @@ return new class extends Migration
             'roman_Urdu_munajat',
             'roman_Urdu_salaat_namaz',
             'roman_Urdu_salwaat',
-            'roman_urdu_sahifas_ahlulbayt',
+            'roman_Urdu_sahifas_ahlulbayt',
             'roman_Urdu_tasbih',
             'roman_Urdu_travel_ziyarat',
             'roman_Urdu_ziyarat',
